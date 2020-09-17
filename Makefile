@@ -1,5 +1,5 @@
 CHART_REPO := gs://jenkinsxio/charts
-NAME := jx-git-operator
+NAME := tekton
 
 fetch:
 	rm -f tekton/templates/*.yaml
@@ -10,8 +10,8 @@ fetch:
 
 build: clean
 	rm -rf Chart.lock
-	helm dependency build
-	helm lint
+	#helm dependency build
+	helm lint ${NAME}
 
 install: clean build
 	helm install . --name ${NAME}

@@ -1,7 +1,7 @@
 auth:
   git:
-    username:
-    password:
+    username: "admin"
+    password: "dummy"
     url: https://github.com
   docker:
     # if specified use the docker config.json style secret like this:
