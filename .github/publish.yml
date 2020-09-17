@@ -1,0 +1,3 @@
+- name: Helm Publish
+  uses: J12934/helm-gh-pages-action@v2.0.0
+
