@@ -1,2 +1,0 @@
-# tekton pipelines helm chart
-
