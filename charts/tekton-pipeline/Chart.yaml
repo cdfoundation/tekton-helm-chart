@@ -1,7 +1,9 @@
 apiVersion: v2
 description: A Helm chart for Tekton Pipelines
-name: tekton
+name: tekton-pipeline
 version: 0.0.1-SNAPSHOT
+appVersion: 0.16.3
 icon: https://avatars2.githubusercontent.com/u/47602533
-home: https://github.com/jenkins-x-charts/tekton/
+home: https://github.com/cdfoundation/tekton-helm-chart
+
 

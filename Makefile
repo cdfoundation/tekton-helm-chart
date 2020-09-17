@@ -1,4 +1,4 @@
-NAME := tekton
+NAME := tekton-pipeline
 CHART_DIR := charts/${NAME}
 
 CHART_REPO := gs://jenkinsxio/charts
