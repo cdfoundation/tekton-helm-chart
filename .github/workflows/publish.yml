@@ -14,3 +14,4 @@ jobs:
         with:
           access-token: ${{ secrets.ACCESS_TOKEN }}
           charts-folder: "tekton"
+          deploy-branch: "gh-pages"
