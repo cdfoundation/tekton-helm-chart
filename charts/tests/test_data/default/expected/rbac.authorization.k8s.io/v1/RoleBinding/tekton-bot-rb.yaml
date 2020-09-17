@@ -1,0 +1,13 @@
+# Source: tekton/templates/build-bot-rolebinding.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: tekton-bot
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: tekton-bot
+subjects:
+- kind: ServiceAccount
+  name: tekton-bot
+  namespace: jx

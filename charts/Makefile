@@ -13,10 +13,10 @@ build: clean
 	#helm dependency build
 	helm lint ${NAME}
 
-install: clean build
+install: clean ../build
 	helm install . --name ${NAME}
 
-upgrade: clean build
+upgrade: clean ../build
 	helm upgrade ${NAME} .
 
 delete:
