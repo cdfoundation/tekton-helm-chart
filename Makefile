@@ -1,22 +1,24 @@
-CHART_REPO := gs://jenkinsxio/charts
 NAME := tekton
+CHART_DIR := charts/${NAME}
+
+CHART_REPO := gs://jenkinsxio/charts
 
 fetch:
-	rm -f tekton/templates/*.yaml
-	curl https://storage.googleapis.com/tekton-releases/pipeline/latest/release.yaml > tekton/templates/resource.yaml
-	jx gitops split -d tekton/templates
-	jx gitops rename -d tekton/templates
-	cp src/templates/* tekton/templates
+	rm -f ${CHART_DIR}/templates/*.yaml
+	curl https://storage.googleapis.com/tekton-releases/pipeline/latest/release.yaml > ${CHART_DIR}/templates/resource.yaml
+	jx gitops split -d ${CHART_DIR}/templates
+	jx gitops rename -d ${CHART_DIR}/templates
+	cp src/templates/* ${CHART_DIR}/templates
 
 build: clean
 	rm -rf Chart.lock
 	#helm dependency build
 	helm lint ${NAME}
 
-install: clean ../build
+install: clean build
 	helm install . --name ${NAME}
 
-upgrade: clean ../build
+upgrade: clean build
 	helm upgrade ${NAME} .
 
 delete:
