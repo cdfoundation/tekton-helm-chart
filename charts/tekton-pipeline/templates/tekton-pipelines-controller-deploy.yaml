@@ -98,6 +98,8 @@ spec:
           value: config-leader-election
         - name: METRICS_DOMAIN
           value: tekton.dev/pipeline
+        - name: KUBERNETES_MIN_VERSION
+          value: "1.15.0"
         securityContext:
           allowPrivilegeEscalation: false
           runAsUser: 1001
