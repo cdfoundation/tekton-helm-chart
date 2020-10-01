@@ -9,7 +9,7 @@ import (
 )
 
 func TestChartsWithDifferentValues(t *testing.T) {
-	chart := "../tekton"
+	chart := "../charts/tekton-pipeline"
 
 	cmd := util.Command{
 		Name: "helm",

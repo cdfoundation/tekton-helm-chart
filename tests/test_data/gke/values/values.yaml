@@ -1,0 +1,4 @@
+serviceaccount:
+  enabled: false
+  annotations:
+    iam.gke.io/gcp-service-account: mycluster-tekton@myproject.iam.gserviceaccount.com

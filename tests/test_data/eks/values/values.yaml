@@ -1,2 +1,5 @@
 serviceaccount:
   enabled: false
+  annotations:
+    eks.amazonaws.com/role-arn: arn:aws:iam::myproject:role/myclsuter-mynamespace-tekton-bot
+  
