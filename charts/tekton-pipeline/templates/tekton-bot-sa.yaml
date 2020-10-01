@@ -20,6 +20,9 @@ metadata:
     app.kubernetes.io/component: controller
     app.kubernetes.io/instance: default
     app.kubernetes.io/part-of: tekton-pipelines
+  {{- if .Values.serviceaccount.annotations }}
+  annotations: {{ toYaml .Values.serviceaccount.annotations | nindent 4 }}
+  {{- end }}
 secrets:
 - name: tekton-git
 - name: tekton-container-registry-auth
