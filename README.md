@@ -31,7 +31,7 @@ See chart [readme](charts/tekton/README.md) for install and config options.
 
 You can [browse the chart repository](https://cdfoundation.github.io/tekton-helm-chart/)
 
-Or view the YAML at: [index.yaml](index.yaml)
+Or view the YAML at: [index.yaml](https://cdfoundation.github.io/tekton-helm-chart/index.yaml)
 
 
 
