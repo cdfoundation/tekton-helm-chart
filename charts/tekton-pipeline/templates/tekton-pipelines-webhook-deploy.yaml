@@ -24,12 +24,12 @@ metadata:
     app.kubernetes.io/name: webhook
     app.kubernetes.io/component: webhook
     app.kubernetes.io/instance: default
-    app.kubernetes.io/version: "v0.16.3"
+    app.kubernetes.io/version: "v0.17.1"
     app.kubernetes.io/part-of: tekton-pipelines
     # tekton.dev/release value replaced with inputs.params.versionTag in pipeline/tekton/publish.yaml
-    pipeline.tekton.dev/release: "v0.16.3"
+    pipeline.tekton.dev/release: "v0.17.1"
     # labels below are related to istio and should not be used for resource lookup
-    version: "v0.16.3"
+    version: "v0.17.1"
 spec:
   replicas: 1
   selector:
@@ -46,20 +46,20 @@ spec:
         app.kubernetes.io/name: webhook
         app.kubernetes.io/component: webhook
         app.kubernetes.io/instance: default
-        app.kubernetes.io/version: "v0.16.3"
+        app.kubernetes.io/version: "v0.17.1"
         app.kubernetes.io/part-of: tekton-pipelines
         # tekton.dev/release value replaced with inputs.params.versionTag in pipeline/tekton/publish.yaml
-        pipeline.tekton.dev/release: "v0.16.3"
+        pipeline.tekton.dev/release: "v0.17.1"
         # labels below are related to istio and should not be used for resource lookup
         app: tekton-pipelines-webhook
-        version: "v0.16.3"
+        version: "v0.17.1"
     spec:
       serviceAccountName: tekton-pipelines-webhook
       containers:
       - name: webhook
         # This is the Go import path for the binary that is containerized
         # and substituted here.
-        image: gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/webhook:v0.16.3@sha256:5087d4022a4688990cf04eee003d76fc736a939b011a62a160c89ae5bd6b7c20
+        image: gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/webhook:v0.17.1@sha256:0ebac19d31ae7e76b2a6df13afe4d49b8381c524f21829cbb3b86733de105f67
         env:
         - name: SYSTEM_NAMESPACE
           valueFrom:
@@ -80,11 +80,10 @@ spec:
           value: webhook-certs
         - name: METRICS_DOMAIN
           value: tekton.dev/pipeline
-        - name: KUBERNETES_MIN_VERSION
-          value: "1.15.0"
         securityContext:
           allowPrivilegeEscalation: false
-          runAsUser: 1001
+          # User 65532 is the distroless nonroot user ID
+          runAsUser: 65532
         ports:
         - name: metrics
           containerPort: 9090
