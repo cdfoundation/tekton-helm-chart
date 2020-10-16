@@ -25,7 +25,7 @@ The chart installs resources into the `tekton-pipelines` namespace
 
 ## Configuration
 
-See chart [readme](charts/tekton/README.md) for install and config options.
+See chart [readme](charts/tekton-pipeline/README.md) for install and config options.
 
 ## Repository 
 
