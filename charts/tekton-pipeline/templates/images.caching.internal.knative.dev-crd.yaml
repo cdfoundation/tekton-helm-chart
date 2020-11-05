@@ -28,10 +28,10 @@ spec:
     plural: images
     singular: image
     categories:
-    - knative-internal
-    - caching
+      - knative-internal
+      - caching
     shortNames:
-    - img
+      - img
   scope: Namespaced
   subresources:
     status: {}

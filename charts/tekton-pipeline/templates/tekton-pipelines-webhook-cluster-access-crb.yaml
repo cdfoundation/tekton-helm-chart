@@ -7,9 +7,9 @@ metadata:
     app.kubernetes.io/instance: default
     app.kubernetes.io/part-of: tekton-pipelines
 subjects:
-- kind: ServiceAccount
-  name: tekton-pipelines-webhook
-  namespace: tekton-pipelines
+  - kind: ServiceAccount
+    name: tekton-pipelines-webhook
+    namespace: tekton-pipelines
 roleRef:
   kind: ClusterRole
   name: tekton-pipelines-webhook-cluster-access
