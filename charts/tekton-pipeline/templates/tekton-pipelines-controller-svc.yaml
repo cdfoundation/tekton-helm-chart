@@ -5,13 +5,13 @@ metadata:
     app.kubernetes.io/name: controller
     app.kubernetes.io/component: controller
     app.kubernetes.io/instance: default
-    app.kubernetes.io/version: "v0.17.3"
+    app.kubernetes.io/version: "v0.18.0"
     app.kubernetes.io/part-of: tekton-pipelines
     # tekton.dev/release value replaced with inputs.params.versionTag in pipeline/tekton/publish.yaml
-    pipeline.tekton.dev/release: "v0.17.3"
+    pipeline.tekton.dev/release: "v0.18.0"
     # labels below are related to istio and should not be used for resource lookup
     app: tekton-pipelines-controller
-    version: "v0.17.3"
+    version: "v0.18.0"
   name: tekton-pipelines-controller
   namespace: tekton-pipelines
 spec:
@@ -20,6 +20,8 @@ spec:
       port: 9090
       protocol: TCP
       targetPort: 9090
+    - name: probes
+      port: 8080
   selector:
     app.kubernetes.io/name: controller
     app.kubernetes.io/component: controller
