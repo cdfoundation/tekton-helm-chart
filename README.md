@@ -11,7 +11,7 @@ Please refer to Helm's [documentation](https://helm.sh/docs/) to get started.
 
 Once Helm is set up properly, add the repo as follows:
 
-```bash 
+```bash
 helm repo add cdf https://cdfoundation.github.io/tekton-helm-chart/
 ```
 
@@ -27,13 +27,8 @@ The chart installs resources into the `tekton-pipelines` namespace
 
 See chart [readme](charts/tekton-pipeline/README.md) for install and config options.
 
-## Repository 
+## Repository
 
 You can [browse the chart repository](https://cdfoundation.github.io/tekton-helm-chart/)
 
 Or view the YAML at: [index.yaml](https://cdfoundation.github.io/tekton-helm-chart/index.yaml)
-
-
-
-
-
