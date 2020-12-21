@@ -9,6 +9,7 @@ fetch:
 	jx gitops split -d ${CHART_DIR}/templates
 	jx gitops rename -d ${CHART_DIR}/templates
 	cp src/templates/* ${CHART_DIR}/templates
+	git add charts
 
 build: clean
 	rm -rf Chart.lock
