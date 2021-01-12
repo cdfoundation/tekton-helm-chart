@@ -24,5 +24,10 @@ metadata:
   annotations: {{ toYaml .Values.serviceaccount.annotations | nindent 4 }}
   {{- end }}
 secrets:
+{{- if .Values.auth.git.password }}
 - name: tekton-git
+{{- end }}
+{{- if .Values.auth.docker.configJson }}
 - name: tekton-container-registry-auth
+{{- end }}
+
