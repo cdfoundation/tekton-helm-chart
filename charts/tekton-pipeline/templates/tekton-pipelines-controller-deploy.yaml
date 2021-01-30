@@ -21,12 +21,12 @@ metadata:
     app.kubernetes.io/name: controller
     app.kubernetes.io/component: controller
     app.kubernetes.io/instance: default
-    app.kubernetes.io/version: "v0.19.0"
+    app.kubernetes.io/version: "v0.20.1"
     app.kubernetes.io/part-of: tekton-pipelines
     # tekton.dev/release value replaced with inputs.params.versionTag in pipeline/tekton/publish.yaml
-    pipeline.tekton.dev/release: "v0.19.0"
+    pipeline.tekton.dev/release: "v0.20.1"
     # labels below are related to istio and should not be used for resource lookup
-    version: "v0.19.0"
+    version: "v0.20.1"
 spec:
   replicas: 1
   selector:
@@ -43,24 +43,24 @@ spec:
         app.kubernetes.io/name: controller
         app.kubernetes.io/component: controller
         app.kubernetes.io/instance: default
-        app.kubernetes.io/version: "v0.19.0"
+        app.kubernetes.io/version: "v0.20.1"
         app.kubernetes.io/part-of: tekton-pipelines
         # tekton.dev/release value replaced with inputs.params.versionTag in pipeline/tekton/publish.yaml
-        pipeline.tekton.dev/release: "v0.19.0"
+        pipeline.tekton.dev/release: "v0.20.1"
         # labels below are related to istio and should not be used for resource lookup
         app: tekton-pipelines-controller
-        version: "v0.19.0"
+        version: "v0.20.1"
     spec:
       serviceAccountName: tekton-pipelines-controller
       containers:
         - name: tekton-pipelines-controller
-          image: gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/controller:v0.19.0@sha256:aa5402ebc709a50db65d888bcbc9953545000babe305289b534ae3efe89d38e2
+          image: gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/controller:v0.20.1@sha256:2e7c84d4280a03d75a7a8f32dbe4084f608f01d7ddf43f903560645bd6cd46de
           args: [
             # Version, to be replace at release time
-            "-version", "v0.19.0",
+            "-version", "v0.20.1",
             # These images are built on-demand by `ko resolve` and are replaced
             # by image references by digest.
-            "-kubeconfig-writer-image", "gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/kubeconfigwriter:v0.19.0@sha256:69126c3e42f99ff32fd9d00a5cd1b47ddf2e50c10fc8f15df268cc4b08434b7b", "-creds-image", "gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/creds-init:v0.19.0@sha256:ae7755ff04f556847cae11fd971fe2cad147d20b53141ad52ea62a12be6cf59f", "-git-image", "gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/git-init:v0.19.0@sha256:db3e7431b11917f21c6978f478298dcb5b2b4048e9f1ec5c0246d72b66c820c7", "-entrypoint-image", "gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/entrypoint:v0.19.0@sha256:67fceb87f3f76baefcfdb35fd04d0ebfc8d91117dccb7f3194056d6727bac636", "-nop-image", "gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/nop:v0.19.0@sha256:7f825dd9ae0ca98f34f6c0a4b4bc80ef2ec5838c2cbdc64a1ba0558fc4cab5d4", "-imagedigest-exporter-image", "gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/imagedigestexporter:v0.19.0@sha256:b862c4bc93a297fd76ac644949c4720663125366d8e251793b7c846dd0de9194", "-pr-image", "gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/pullrequest-init:v0.19.0@sha256:dc0bd612a136d9816ca8f824b62f0370bb663d757f076330dfac4d04d0d3aa25", "-build-gcs-fetcher-image", "gcr.io/tekton-releases/github.com/tektoncd/pipeline/vendor/github.com/googlecloudplatform/cloud-builders/gcs-fetcher/cmd/gcs-fetcher:v0.19.0@sha256:a96f07efed2fec28453aef519198dd47f6956fe60b01f6b63735b3b9f9ebe4a3",
+            "-kubeconfig-writer-image", "gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/kubeconfigwriter:v0.20.1@sha256:b2c6d0962cda88fb3095128b6202da9b0e6c9c0df3ef6cf7863505ffd25072fd", "-git-image", "gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/git-init:v0.20.1@sha256:a0f7a0948152a401f587dde580b41b5e80b52f3432aba7902166aa79941e8835", "-entrypoint-image", "gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/entrypoint:v0.20.1@sha256:15f7c3c278decc9373dfe49e220734fb9f55bfc5263ddbbddb44ac24ed7d4638", "-nop-image", "gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/nop:v0.20.1@sha256:4e2aeda1d2ffc7d4d71ab5967ef42706f4957b45ec43742b2d3b9e846d3db0d2", "-imagedigest-exporter-image", "gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/imagedigestexporter:v0.20.1@sha256:b3cde192d0f82d49ef93d3f3f0c0f60fac116463c021a85619b273425655feb7", "-pr-image", "gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/pullrequest-init:v0.20.1@sha256:69633ecd0e948f6462c61bb9e008b940a05b143ef51c67e6e4093278a23dac53", "-build-gcs-fetcher-image", "gcr.io/tekton-releases/github.com/tektoncd/pipeline/vendor/github.com/googlecloudplatform/cloud-builders/gcs-fetcher/cmd/gcs-fetcher:v0.20.1@sha256:184a9ee5730cdd4fd219c9f57b503b1bb1b5093b53f359cbd118ab58f7959dd4",
             # This is gcr.io/google.com/cloudsdktool/cloud-sdk:302.0.0-slim
             "-gsutil-image", "gcr.io/google.com/cloudsdktool/cloud-sdk@sha256:27b2c22bf259d9bc1a291e99c63791ba0c27a04d2db0a43241ba0f1f20f4067f",
             # The shell image must be root in order to create directories and copy files to PVCs.
@@ -102,8 +102,12 @@ spec:
               value: tekton.dev/pipeline
           securityContext:
             allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - all
             # User 65532 is the distroless nonroot user ID
             runAsUser: 65532
+            runAsGroup: 65532
           ports:
             - name: probes
               containerPort: 8080
