@@ -9,6 +9,10 @@ fetch:
 	curl https://storage.googleapis.com/tekton-releases/pipeline/latest/release.yaml > ${CHART_DIR}/templates/resource.yaml
 	jx gitops split -d ${CHART_DIR}/templates
 	jx gitops rename -d ${CHART_DIR}/templates
+	# kustomize the resources to include some helm template blocs
+	kustomize build ${CHART_DIR} | sed '/helmTemplateRemoveMe/d' > ${CHART_DIR}/templates/resource.yaml
+	jx gitops split -d ${CHART_DIR}/templates
+	jx gitops rename -d ${CHART_DIR}/templates
 	cp src/templates/* ${CHART_DIR}/templates
 	git add charts
 
