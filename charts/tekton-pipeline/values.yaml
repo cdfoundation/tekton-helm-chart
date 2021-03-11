@@ -11,3 +11,15 @@ auth:
 serviceaccount:
   enabled: true
   annotations: {}
+
+controller:
+  deployment:
+    labels: {}
+  pod:
+    labels: {}
+
+webhook:
+  deployment:
+    labels: {}
+  pod:
+    labels: {}

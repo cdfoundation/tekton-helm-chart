@@ -1,0 +1,10 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+- templates/tekton-pipelines-controller-deploy.yaml
+- templates/tekton-pipelines-webhook-deploy.yaml
+
+patchesStrategicMerge:
+- patches/tekton-pipelines-controller-deploy.yaml
+- patches/tekton-pipelines-webhook-deploy.yaml
