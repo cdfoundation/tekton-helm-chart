@@ -16,3 +16,9 @@ spec:
           {{- with .Values.controller.pod.labels }}
             {{- toYaml . | nindent 8 }}
           {{- end}}
+      annotations:
+        fake: value
+        helmTemplateRemoveMe: |
+          {{- with .Values.controller.pod.annotations }}
+            {{- toYaml . | nindent 8 }}
+          {{- end}}

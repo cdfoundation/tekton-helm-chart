@@ -17,6 +17,7 @@ controller:
     labels: {}
   pod:
     labels: {}
+    annotations: {}
 
 webhook:
   deployment:
