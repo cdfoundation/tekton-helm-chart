@@ -1,12 +1,12 @@
 auth:
   git:
-    username: "admin"
-    password: ""
+    username: 'admin'
+    password: ''
     url: https://github.com
   docker:
     # if specified use the docker config.json style secret like this:
     # https://github.com/tektoncd/pipeline/blob/master/docs/auth.md#configuring-docker-authentication-for-docker
-    configJson: ""
+    configJson: ''
 
 serviceaccount:
   enabled: true
@@ -24,3 +24,41 @@ webhook:
     labels: {}
   pod:
     labels: {}
+
+imageConfig:
+  imageRegistry: gcr.io
+  imageRepository: tekton-releases/github.com/tektoncd/pipeline/cmd
+
+images:
+  controller:
+    name: controller
+    sha: sha256:360fb05aff2235b6c85d8106b5cfc501ec1865fa072993da561036bae6c1d1f0
+  webhook:
+    name: webhook
+    sha: sha256:fbc317c68da9cc406cce58508869b35b240fc11034efffac113ed1f980ee3c7a
+  kubeconfigwriter:
+    name: kubeconfigwriter
+    sha: sha256:4447e94c0e8ab90c3959b2b1d666ae94656dcc259766e87188fff491eb1aa0bf
+  git:
+    name: git-init
+    sha: sha256:2ea2ea78928b365d6d13c5308f9fff63f685063684c843611be74abc43ea4f1c
+  entrypoint:
+    name: entrypoint
+    sha: sha256:5489d6a444ff63b14d94dead8cc10b221ec147cd817b18254dbf28f3d70f4fa5
+  nop:
+    name: nop
+    sha: sha256:4be56f9a7c5ecfcb17b2a2b84ad58321bf4be61237509b4cc4b510293d222148
+  digest:
+    name: imagedigestexporter
+    sha: sha256:5650b03d1682b7e6df8194c9f454e4990245b27535833f2b094124aaaea446c2
+  pullrequest:
+    name: pullrequest-init
+    sha: sha256:3d6a15c9fb8e1d22292bc51b6829d74ddf22ca9e810745bdbc7052cb5ebf9bc9
+  cloud:
+    name: cloud-sdk
+    repository: google.com/cloudsdktool
+    sha: sha256:27b2c22bf259d9bc1a291e99c63791ba0c27a04d2db0a43241ba0f1f20f4067f
+  shell:
+    name: base
+    repository: distroless
+    sha: sha256:92720b2305d7315b5426aec19f8651e9e04222991f877cae71f40b3141d2f07e

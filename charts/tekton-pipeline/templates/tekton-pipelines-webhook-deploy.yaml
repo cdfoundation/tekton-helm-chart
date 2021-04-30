@@ -6,12 +6,12 @@ metadata:
     app.kubernetes.io/instance: default
     app.kubernetes.io/name: webhook
     app.kubernetes.io/part-of: tekton-pipelines
-    app.kubernetes.io/version: v0.23.0
+    app.kubernetes.io/version: {{ .Chart.AppVersion }}
       {{- with .Values.webhook.deployment.labels }}
         {{- toYaml . | nindent 4 }}
       {{- end}}
-    pipeline.tekton.dev/release: v0.23.0
-    version: v0.23.0
+    pipeline.tekton.dev/release: {{ .Chart.AppVersion }}
+    version: {{ .Chart.AppVersion }}
   name: tekton-pipelines-webhook
   namespace: tekton-pipelines
 spec:
@@ -32,12 +32,12 @@ spec:
         app.kubernetes.io/instance: default
         app.kubernetes.io/name: webhook
         app.kubernetes.io/part-of: tekton-pipelines
-        app.kubernetes.io/version: v0.23.0
+        app.kubernetes.io/version: {{ .Chart.AppVersion }}
           {{- with .Values.webhook.pod.labels }}
             {{- toYaml . | nindent 8 }}
           {{- end}}
-        pipeline.tekton.dev/release: v0.23.0
-        version: v0.23.0
+        pipeline.tekton.dev/release: {{ .Chart.AppVersion }}
+        version: {{ .Chart.AppVersion }}
     spec:
       affinity:
         podAntiAffinity:
@@ -69,7 +69,7 @@ spec:
           value: webhook-certs
         - name: METRICS_DOMAIN
           value: tekton.dev/pipeline
-        image: gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/webhook:v0.23.0@sha256:fbc317c68da9cc406cce58508869b35b240fc11034efffac113ed1f980ee3c7a
+        image: {{ include "common.images.image" (dict "context" $ "imageRoot" .Values.images.webhook) | quote }}
         livenessProbe:
           httpGet:
             path: /health

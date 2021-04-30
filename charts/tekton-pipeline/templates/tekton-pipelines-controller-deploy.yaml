@@ -6,12 +6,12 @@ metadata:
     app.kubernetes.io/instance: default
     app.kubernetes.io/name: controller
     app.kubernetes.io/part-of: tekton-pipelines
-    app.kubernetes.io/version: v0.23.0
+    app.kubernetes.io/version: {{ .Chart.AppVersion }}
       {{- with .Values.controller.deployment.labels }}
         {{- toYaml . | nindent 4 }}
       {{- end}}
-    pipeline.tekton.dev/release: v0.23.0
-    version: v0.23.0
+    pipeline.tekton.dev/release: {{ .Chart.AppVersion }}
+    version: {{ .Chart.AppVersion }}
   name: tekton-pipelines-controller
   namespace: tekton-pipelines
 spec:
@@ -36,33 +36,33 @@ spec:
         app.kubernetes.io/instance: default
         app.kubernetes.io/name: controller
         app.kubernetes.io/part-of: tekton-pipelines
-        app.kubernetes.io/version: v0.23.0
+        app.kubernetes.io/version: {{ .Chart.AppVersion }}
           {{- with .Values.controller.pod.labels }}
             {{- toYaml . | nindent 8 }}
           {{- end}}
-        pipeline.tekton.dev/release: v0.23.0
-        version: v0.23.0
+        pipeline.tekton.dev/release: {{ .Chart.AppVersion }}
+        version: {{ .Chart.AppVersion }}
     spec:
       containers:
       - args:
         - -version
-        - v0.23.0
+        - {{ .Chart.AppVersion }}
         - -kubeconfig-writer-image
-        - gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/kubeconfigwriter:v0.23.0@sha256:4447e94c0e8ab90c3959b2b1d666ae94656dcc259766e87188fff491eb1aa0bf
+        - {{ include "common.images.image" (dict "context" $ "imageRoot" .Values.images.kubeconfigwriter) | quote }}
         - -git-image
-        - gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/git-init:v0.23.0@sha256:2ea2ea78928b365d6d13c5308f9fff63f685063684c843611be74abc43ea4f1c
+        - {{ include "common.images.image" (dict "context" $ "imageRoot" .Values.images.git) | quote }}
         - -entrypoint-image
-        - gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/entrypoint:v0.23.0@sha256:5489d6a444ff63b14d94dead8cc10b221ec147cd817b18254dbf28f3d70f4fa5
+        - {{ include "common.images.image" (dict "context" $ "imageRoot" .Values.images.entrypoint) | quote }}
         - -nop-image
-        - gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/nop:v0.23.0@sha256:4be56f9a7c5ecfcb17b2a2b84ad58321bf4be61237509b4cc4b510293d222148
+        - {{ include "common.images.image" (dict "context" $ "imageRoot" .Values.images.nop) | quote }}
         - -imagedigest-exporter-image
-        - gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/imagedigestexporter:v0.23.0@sha256:5650b03d1682b7e6df8194c9f454e4990245b27535833f2b094124aaaea446c2
+        - {{ include "common.images.image" (dict "context" $ "imageRoot" .Values.images.digest) | quote }}
         - -pr-image
-        - gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/pullrequest-init:v0.23.0@sha256:3d6a15c9fb8e1d22292bc51b6829d74ddf22ca9e810745bdbc7052cb5ebf9bc9
+        - {{ include "common.images.image" (dict "context" $ "imageRoot" .Values.images.pullrequest) | quote }}
         - -gsutil-image
-        - gcr.io/google.com/cloudsdktool/cloud-sdk@sha256:27b2c22bf259d9bc1a291e99c63791ba0c27a04d2db0a43241ba0f1f20f4067f
+        - {{ include "common.images.notagimage" (dict "context" $ "imageRoot" .Values.images.cloud) | quote }}
         - -shell-image
-        - gcr.io/distroless/base@sha256:92720b2305d7315b5426aec19f8651e9e04222991f877cae71f40b3141d2f07e
+        - {{ include "common.images.notagimage" (dict "context" $ "imageRoot" .Values.images.shell) | quote }}
         env:
         - name: SYSTEM_NAMESPACE
           valueFrom:
@@ -88,7 +88,7 @@ spec:
           value: /etc/ssl/certs
         - name: METRICS_DOMAIN
           value: tekton.dev/pipeline
-        image: gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/controller:v0.23.0@sha256:360fb05aff2235b6c85d8106b5cfc501ec1865fa072993da561036bae6c1d1f0
+        image: {{ include "common.images.image" (dict "context" $ "imageRoot" .Values.images.controller) | quote }}
         livenessProbe:
           httpGet:
             path: /health
