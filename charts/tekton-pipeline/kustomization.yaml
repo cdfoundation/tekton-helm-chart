@@ -4,7 +4,9 @@ kind: Kustomization
 resources:
 - templates/tekton-pipelines-controller-deploy.yaml
 - templates/tekton-pipelines-webhook-deploy.yaml
+- templates/config-defaults-cm.yaml
 
 patchesStrategicMerge:
 - patches/tekton-pipelines-controller-deploy.yaml
 - patches/tekton-pipelines-webhook-deploy.yaml
+- patches/config-defaults-cm.yaml

@@ -24,3 +24,5 @@ webhook:
     labels: {}
   pod:
     labels: {}
+
+configDefaults: {}
