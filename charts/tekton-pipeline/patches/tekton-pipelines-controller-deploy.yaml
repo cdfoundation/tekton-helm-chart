@@ -22,3 +22,10 @@ spec:
           {{- with .Values.controller.pod.annotations }}
             {{- toYaml . | nindent 8 }}
           {{- end}}
+    spec:
+      containers:
+      - name: tekton-pipelines-controller
+        envFrom:
+        - secretRef:
+            name: "{{ .Values.controller.envFromSecret }}"
+            optional: true

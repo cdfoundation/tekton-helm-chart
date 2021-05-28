@@ -97,6 +97,10 @@ spec:
           value: /etc/ssl/certs
         - name: METRICS_DOMAIN
           value: tekton.dev/pipeline
+        envFrom:
+        - secretRef:
+            name: '{{ .Values.controller.envFromSecret }}'
+            optional: true
         image: gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/controller:v0.24.1@sha256:c7578d9f48aa1c0c5f8d3fe6470c3c07dcab31f015038baac580995be4582506
         livenessProbe:
           httpGet:

@@ -77,6 +77,10 @@ spec:
           value: webhook-certs
         - name: METRICS_DOMAIN
           value: tekton.dev/pipeline
+        envFrom:
+        - secretRef:
+            name: '{{ .Values.webhook.envFromSecret }}'
+            optional: true
         image: gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/webhook:v0.24.1@sha256:c28b41082c4654c49baf4aa91d00b5ede9554a1ca24299bb91b6bb74c72cf3bb
         livenessProbe:
           httpGet:
