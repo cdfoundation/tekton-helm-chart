@@ -47,7 +47,7 @@ data:
     # but that a TaskRun does not explicitly provide.
     # default-task-run-workspace-binding: |
     #   emptyDir: {}
-    {{- toYaml .Values.configDefaults | nindent 2 }}
+    {{- if .Values.configDefaults -}}{{- toYaml .Values.configDefaults | nindent 2 }}{{ end }}
 kind: ConfigMap
 metadata:
   labels:
