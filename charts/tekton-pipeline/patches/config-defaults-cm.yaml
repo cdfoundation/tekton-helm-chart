@@ -3,7 +3,6 @@ kind: ConfigMap
 metadata:
   name: config-defaults
   namespace: tekton-pipelines
-helmTemplateRemoveMe: |
-    {{- if .Values.configDefaults -}}
-      {{- toYaml .Values.configDefaults | nindent 2 }}
-    {{- end -}}
+data:
+  helmTemplateRemoveMe: |
+    {{- toYaml .Values.configDefaults | nindent 2 }}
