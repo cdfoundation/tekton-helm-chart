@@ -16,3 +16,10 @@ spec:
           {{- with .Values.webhook.pod.labels }}
             {{- toYaml . | nindent 8 }}
           {{- end}}
+    spec:
+      containers:
+      - name: webhook
+        envFrom:
+        - secretRef:
+            name: "{{ .Values.webhook.envFromSecret }}"
+            optional: true
