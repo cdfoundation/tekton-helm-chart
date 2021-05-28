@@ -48,3 +48,6 @@ test:
 test-regen:
 	cd tests && export HELM_UNIT_REGENERATE_EXPECTED=true && go test -v
 
+
+verify:
+	jx kube test run
