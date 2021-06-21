@@ -1,4 +1,4 @@
-# Copyright 2020 The Tekton Authors
+# Copyright 2021 The Tekton Authors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,13 +13,17 @@
 # limitations under the License.
 
 apiVersion: v1
-kind: Secret
+kind: ConfigMap
 metadata:
-  name: webhook-certs
+  name: pipelines-info
   namespace: tekton-pipelines
   labels:
-    app.kubernetes.io/component: webhook
     app.kubernetes.io/instance: default
     app.kubernetes.io/part-of: tekton-pipelines
-    pipeline.tekton.dev/release: "v0.25.0"
-# The data is populated at install time.
+data:
+  # Contains pipelines version which can be queried by external
+  # tools such as CLI. Elevated permissions are already given to
+  # this ConfigMap such that even if we don't have access to
+  # other resources in the namespace we still can have access to
+  # this ConfigMap.
+  version: "v0.25.0"
