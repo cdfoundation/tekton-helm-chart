@@ -104,7 +104,7 @@ spec:
         - secretRef:
             name: '{{ .Values.controller.envFromSecret }}'
             optional: true
-        image: gcr.io/tekton-prow-13/tpipeline-e2e-img/controller-10a3e32792f33651396d02b6855a6e36@sha256:30931c94268bafc14a81b4e38d87fd6d2c5ac6afbcc98df023e3ad004253af44
+        image: ghcr.io/jenkins-x/controller-10a3e32792f33651396d02b6855a6e36:latest
         livenessProbe:
           httpGet:
             path: /health
