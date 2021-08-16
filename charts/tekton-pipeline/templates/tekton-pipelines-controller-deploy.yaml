@@ -6,12 +6,12 @@ metadata:
     app.kubernetes.io/instance: default
     app.kubernetes.io/name: controller
     app.kubernetes.io/part-of: tekton-pipelines
-    app.kubernetes.io/version: v0.26.0
+    app.kubernetes.io/version: v0.27.0
       {{- with .Values.controller.deployment.labels }}
         {{- toYaml . | nindent 4 }}
       {{- end}}
-    pipeline.tekton.dev/release: v0.26.0
-    version: v0.26.0
+    pipeline.tekton.dev/release: v0.27.0
+    version: v0.27.0
   name: tekton-pipelines-controller
   namespace: tekton-pipelines
 spec:
@@ -25,7 +25,6 @@ spec:
   template:
     metadata:
       annotations:
-        cluster-autoscaler.kubernetes.io/safe-to-evict: "false"
         fake: value
           {{- with .Values.controller.pod.annotations }}
             {{- toYaml . | nindent 8 }}
@@ -36,12 +35,12 @@ spec:
         app.kubernetes.io/instance: default
         app.kubernetes.io/name: controller
         app.kubernetes.io/part-of: tekton-pipelines
-        app.kubernetes.io/version: v0.26.0
+        app.kubernetes.io/version: v0.27.0
           {{- with .Values.controller.pod.labels }}
             {{- toYaml . | nindent 8 }}
           {{- end}}
-        pipeline.tekton.dev/release: v0.26.0
-        version: v0.26.0
+        pipeline.tekton.dev/release: v0.27.0
+        version: v0.27.0
     spec:
       affinity:
         nodeAffinity:
@@ -54,20 +53,18 @@ spec:
                 - windows
       containers:
       - args:
-        - -version
-        - v0.26.0
         - -kubeconfig-writer-image
-        - gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/kubeconfigwriter:v0.26.0@sha256:a4471a7ef4bdec4b4f4d08c20df0b762140142701c1197e1f57eca10b741db3a
+        - gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/kubeconfigwriter:v0.27.0@sha256:81074a7039daa1f2d579e74fdc0b41eeac0c1136bf6a487f67ff14240aaac378
         - -git-image
-        - gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/git-init:v0.26.0@sha256:8a5ed01f5a0684a90a2f42d247a10a2274f974759562329b200abaed4a804508
+        - gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/git-init:v0.27.0@sha256:8bfb6edbd8ce4608af957a3a38444512c14713bc9fc0d60308f228c61be4c83f
         - -entrypoint-image
-        - gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/entrypoint:v0.26.0@sha256:6a99fea33bb3dd1c20a16837cd88af0a120ba699c3f3e18ea9338fba78387556
+        - gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/entrypoint:v0.27.0@sha256:b8a0bed8e402138f7b14b44115719f44460255497132b8a8233e710692ef6930
         - -nop-image
-        - gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/nop:v0.26.0@sha256:8c6a241f71b54c39c001c94128013e6abd8693c64aa1231f1d19b2e50f57d3af
+        - gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/nop:v0.27.0@sha256:96c203f18b3eba750fcbf9c018ac1c97a68860053035524f3629ef7093a64d9c
         - -imagedigest-exporter-image
-        - gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/imagedigestexporter:v0.26.0@sha256:92a090944f89a679bb3632ae1b8c8afa30ef5a9eb7d4a3bdbca6f13967db8d3d
+        - gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/imagedigestexporter:v0.27.0@sha256:32fa5aa9d17c0e999053e515264b70037168760fc835cbb513c6e92b3afc77bb
         - -pr-image
-        - gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/pullrequest-init:v0.26.0@sha256:1ab4207300c431f2098e6f6cbdb3fd6c8058900bbf06b398f159668419903b68
+        - gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/pullrequest-init:v0.27.0@sha256:fe7734cced1b9a2ce37dd78df5fc5998d29ac8bef8e8bd984c6b6a8bbb58e4f4
         - -gsutil-image
         - gcr.io/google.com/cloudsdktool/cloud-sdk@sha256:27b2c22bf259d9bc1a291e99c63791ba0c27a04d2db0a43241ba0f1f20f4067f
         - -shell-image
@@ -107,7 +104,7 @@ spec:
         - secretRef:
             name: '{{ .Values.controller.envFromSecret }}'
             optional: true
-        image: gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/controller:v0.26.0@sha256:db1d486fac10b1eca6d7b8daf4764a15f8c70e67961457c73d8c04964a3e4929
+        image: gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/controller:v0.27.0@sha256:015e8f9cf38416652545ce5e16776379a979af64373250ec489861886a468fcf
         livenessProbe:
           httpGet:
             path: /health
