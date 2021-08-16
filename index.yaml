@@ -3,7 +3,18 @@ entries:
   tekton-pipeline:
   - apiVersion: v1
     appVersion: 0.27.0
-    created: "2021-08-16T13:30:15.403374874Z"
+    created: "2021-08-16T13:55:54.921146036Z"
+    description: A Helm chart for Tekton Pipelines
+    digest: 6da4392b196bbf620398de1b28f3bd2c46a903dba9b926bde647645b8b016f36
+    home: https://github.com/cdfoundation/tekton-helm-chart
+    icon: https://avatars2.githubusercontent.com/u/47602533
+    name: tekton-pipeline
+    urls:
+    - tekton-pipeline-0.27.2.tgz
+    version: 0.27.2
+  - apiVersion: v1
+    appVersion: 0.27.0
+    created: "2021-08-16T13:55:54.920085831Z"
     description: A Helm chart for Tekton Pipelines
     digest: 33430044a4c5d42d770ce37f36f93e3e9cbed3fbf36a00c54a822a8981f569eb
     home: https://github.com/cdfoundation/tekton-helm-chart
@@ -14,7 +25,7 @@ entries:
     version: 0.27.1
   - apiVersion: v1
     appVersion: 0.27.0
-    created: "2021-08-16T13:30:15.402474268Z"
+    created: "2021-08-16T13:55:54.918976125Z"
     description: A Helm chart for Tekton Pipelines
     digest: c6b82cac5c4312344e95d6fc865714ba64c57e2636995470e4715f79b23840f8
     home: https://github.com/cdfoundation/tekton-helm-chart
@@ -25,7 +36,7 @@ entries:
     version: 0.27.0
   - apiVersion: v1
     appVersion: 0.26.0
-    created: "2021-08-16T13:30:15.401479462Z"
+    created: "2021-08-16T13:55:54.917652019Z"
     description: A Helm chart for Tekton Pipelines
     digest: f1b88ddabb3d6685d7a5b43b759cb9005650a2a908f2d593e5a676db5bb5ef9c
     home: https://github.com/cdfoundation/tekton-helm-chart
@@ -36,7 +47,7 @@ entries:
     version: 0.26.1
   - apiVersion: v1
     appVersion: 0.26.0
-    created: "2021-08-16T13:30:15.400534555Z"
+    created: "2021-08-16T13:55:54.916266612Z"
     description: A Helm chart for Tekton Pipelines
     digest: 1596f084b203531f356d7ecfda7e2616fdd67d9b1b063597f1ac3bee47cffcd2
     home: https://github.com/cdfoundation/tekton-helm-chart
@@ -47,7 +58,7 @@ entries:
     version: 0.26.0
   - apiVersion: v1
     appVersion: 0.25.0
-    created: "2021-08-16T13:30:15.399572548Z"
+    created: "2021-08-16T13:55:54.914821906Z"
     description: A Helm chart for Tekton Pipelines
     digest: bbd83e62567d8e0eecf5bfd175b88b828e9c8af2e3206a7a412ee0efb4a19ca2
     home: https://github.com/cdfoundation/tekton-helm-chart
@@ -58,7 +69,7 @@ entries:
     version: 0.25.0
   - apiVersion: v1
     appVersion: 0.24.1
-    created: "2021-08-16T13:30:15.398552441Z"
+    created: "2021-08-16T13:55:54.9136853Z"
     description: A Helm chart for Tekton Pipelines
     digest: dffccaa92960280e32212a942f5d29775f93505ebb0f7af4bf318a3619cd7a34
     home: https://github.com/cdfoundation/tekton-helm-chart
@@ -69,7 +80,7 @@ entries:
     version: 0.24.4
   - apiVersion: v1
     appVersion: 0.24.3
-    created: "2021-08-16T13:30:15.397600535Z"
+    created: "2021-08-16T13:55:54.910303584Z"
     description: A Helm chart for Tekton Pipelines
     digest: e6b99911ec3acb60336dd5dcdba0b9d14f32ef898b69c427f55b423b05685fcb
     home: https://github.com/cdfoundation/tekton-helm-chart
@@ -80,7 +91,7 @@ entries:
     version: 0.24.3
   - apiVersion: v1
     appVersion: 0.24.2
-    created: "2021-08-16T13:30:15.396704229Z"
+    created: "2021-08-16T13:55:54.908842877Z"
     description: A Helm chart for Tekton Pipelines
     digest: 34c9da17522673f91584dcefe744e5da67127265661321b3a869e5a99eb0fcc4
     home: https://github.com/cdfoundation/tekton-helm-chart
@@ -91,7 +102,7 @@ entries:
     version: 0.24.2
   - apiVersion: v1
     appVersion: 0.24.1
-    created: "2021-08-16T13:30:15.395835423Z"
+    created: "2021-08-16T13:55:54.906190065Z"
     description: A Helm chart for Tekton Pipelines
     digest: 59c5580921aaa5935ee49b676c9bf1459968dcb51397540e75a7a207cfde501a
     home: https://github.com/cdfoundation/tekton-helm-chart
@@ -102,7 +113,7 @@ entries:
     version: 0.24.1
   - apiVersion: v1
     appVersion: 0.23.0
-    created: "2021-08-16T13:30:15.394830716Z"
+    created: "2021-08-16T13:55:54.904482156Z"
     description: A Helm chart for Tekton Pipelines
     digest: bb66d8e2fb80ee134647917baf6c757a7dec8115d465b7967f2d291e260fc9e0
     home: https://github.com/cdfoundation/tekton-helm-chart
@@ -113,7 +124,7 @@ entries:
     version: 0.23.0
   - apiVersion: v1
     appVersion: 0.22.0
-    created: "2021-08-16T13:30:15.393575207Z"
+    created: "2021-08-16T13:55:54.902836149Z"
     description: A Helm chart for Tekton Pipelines
     digest: 3f152ba1ddb318667f60ee2e4ab6751f7d8a09bdaa12c3a88c39921124972c6c
     home: https://github.com/cdfoundation/tekton-helm-chart
@@ -124,7 +135,7 @@ entries:
     version: 0.22.0
   - apiVersion: v1
     appVersion: 0.21.0
-    created: "2021-08-16T13:30:15.391707495Z"
+    created: "2021-08-16T13:55:54.901928144Z"
     description: A Helm chart for Tekton Pipelines
     digest: aa018d44d4a0f6eec1322a8efbe52c963b0cfaa9884c05ef60ba0a8d4657e4bc
     home: https://github.com/cdfoundation/tekton-helm-chart
@@ -135,7 +146,7 @@ entries:
     version: 0.21.1
   - apiVersion: v1
     appVersion: 0.21.0
-    created: "2021-08-16T13:30:15.390826389Z"
+    created: "2021-08-16T13:55:54.900882839Z"
     description: A Helm chart for Tekton Pipelines
     digest: 062faedf649a44f148f558731b09cae122fc0cc1b3d4c23063ab8c01de00e58e
     home: https://github.com/cdfoundation/tekton-helm-chart
@@ -146,7 +157,7 @@ entries:
     version: 0.21.0
   - apiVersion: v1
     appVersion: 0.20.1
-    created: "2021-08-16T13:30:15.389980183Z"
+    created: "2021-08-16T13:55:54.899851034Z"
     description: A Helm chart for Tekton Pipelines
     digest: ff6319e4eb830ded1f6dbc2442ef0116112e6f492bc37b44cc302705236f72ab
     home: https://github.com/cdfoundation/tekton-helm-chart
@@ -157,7 +168,7 @@ entries:
     version: 0.20.1
   - apiVersion: v1
     appVersion: 0.19.0
-    created: "2021-08-16T13:30:15.389078477Z"
+    created: "2021-08-16T13:55:54.89890163Z"
     description: A Helm chart for Tekton Pipelines
     digest: c8f66674e3c36e0664373d61658b3450f6bfe725f801d63d4a771f9e30495380
     home: https://github.com/cdfoundation/tekton-helm-chart
@@ -168,7 +179,7 @@ entries:
     version: 0.19.1
   - apiVersion: v1
     appVersion: 0.19.0
-    created: "2021-08-16T13:30:15.388258771Z"
+    created: "2021-08-16T13:55:54.897942125Z"
     description: A Helm chart for Tekton Pipelines
     digest: 114529a11aec12fde86d99a4c5c99c755d5d9a11c4a647ba1f63ee5e7ecef186
     home: https://github.com/cdfoundation/tekton-helm-chart
@@ -179,7 +190,7 @@ entries:
     version: 0.19.0
   - apiVersion: v1
     appVersion: 0.18.0
-    created: "2021-08-16T13:30:15.387416365Z"
+    created: "2021-08-16T13:55:54.89679712Z"
     description: A Helm chart for Tekton Pipelines
     digest: 28b905e4fc617cd4208eb31b38e8a06ed1190ad09de73a399e47e66e7627f2ec
     home: https://github.com/cdfoundation/tekton-helm-chart
@@ -190,7 +201,7 @@ entries:
     version: 0.18.0
   - apiVersion: v1
     appVersion: 0.18.0
-    created: "2021-08-16T13:30:15.386043956Z"
+    created: "2021-08-16T13:55:54.895802215Z"
     description: A Helm chart for Tekton Pipelines
     digest: c0907c33cf50ab641fe068469b605936c99ff2f0a5ae64b267204fb5f14e5c4b
     home: https://github.com/cdfoundation/tekton-helm-chart
@@ -201,7 +212,7 @@ entries:
     version: 0.18.0-1
   - apiVersion: v1
     appVersion: 0.17.3
-    created: "2021-08-16T13:30:15.384830248Z"
+    created: "2021-08-16T13:55:54.894830711Z"
     description: A Helm chart for Tekton Pipelines
     digest: 1048f9390cf8aebb46fe8c2f166c6f4032cef8ea3768257b76eca026c34c9fb8
     home: https://github.com/cdfoundation/tekton-helm-chart
@@ -212,7 +223,7 @@ entries:
     version: 0.17.3
   - apiVersion: v1
     appVersion: 0.17.1
-    created: "2021-08-16T13:30:15.383821341Z"
+    created: "2021-08-16T13:55:54.893652505Z"
     description: A Helm chart for Tekton Pipelines
     digest: dfc17e0e617b0e410cb0bcf0e375e18f31c327d94df26874006a537ab64c93ba
     home: https://github.com/cdfoundation/tekton-helm-chart
@@ -223,7 +234,7 @@ entries:
     version: 0.17.1
   - apiVersion: v1
     appVersion: 0.16.3
-    created: "2021-08-16T13:30:15.382999235Z"
+    created: "2021-08-16T13:55:54.892106198Z"
     description: A Helm chart for Tekton Pipelines
     digest: 5e13c2928db94be36fb212e2f92cb56787552d598cbd987e0fe36e464090e471
     home: https://github.com/cdfoundation/tekton-helm-chart
@@ -234,7 +245,7 @@ entries:
     version: 0.0.5
   - apiVersion: v1
     appVersion: 0.16.3
-    created: "2021-08-16T13:30:15.38222063Z"
+    created: "2021-08-16T13:55:54.89051339Z"
     description: A Helm chart for Tekton Pipelines
     digest: 52811d985d5602f698b47529cb0eb581419afec3b314897ec9b1d93de06d21d3
     home: https://github.com/cdfoundation/tekton-helm-chart
@@ -245,7 +256,7 @@ entries:
     version: 0.0.4
   - apiVersion: v1
     appVersion: 0.16.3
-    created: "2021-08-16T13:30:15.381026821Z"
+    created: "2021-08-16T13:55:54.888137379Z"
     description: A Helm chart for Tekton Pipelines
     digest: 1142187eefe09ab81fda16c2c1779552831ff03f8bdbcd52f160317fcaaabc07
     home: https://github.com/cdfoundation/tekton-helm-chart
@@ -256,7 +267,7 @@ entries:
     version: 0.0.3
   - apiVersion: v1
     appVersion: 0.16.3
-    created: "2021-08-16T13:30:15.379749613Z"
+    created: "2021-08-16T13:55:54.886679872Z"
     description: A Helm chart for Tekton Pipelines
     digest: 6ca363c08004b41cd5ee2df379afd3ba3999b3b0fe10fde40596ca66c953621f
     home: https://github.com/cdfoundation/tekton-helm-chart
@@ -267,7 +278,7 @@ entries:
     version: 0.0.2
   - apiVersion: v1
     appVersion: 0.16.3
-    created: "2021-08-16T13:30:15.378464304Z"
+    created: "2021-08-16T13:55:54.885045864Z"
     description: A Helm chart for Tekton Pipelines
     digest: a07282df48814fbedd0a29cd14cde087fb881cc8556ea477ff3ef362c55cea0b
     home: https://github.com/cdfoundation/tekton-helm-chart
@@ -276,4 +287,4 @@ entries:
     urls:
     - tekton-pipeline-0.0.1.tgz
     version: 0.0.1
-generated: "2021-08-16T13:30:15.377440697Z"
+generated: "2021-08-16T13:55:54.883293656Z"
