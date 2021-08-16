@@ -104,7 +104,7 @@ spec:
         - secretRef:
             name: '{{ .Values.controller.envFromSecret }}'
             optional: true
-        image: gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/controller:v0.27.0@sha256:015e8f9cf38416652545ce5e16776379a979af64373250ec489861886a468fcf
+        image: gcr.io/tekton-prow-13/tpipeline-e2e-img/controller-10a3e32792f33651396d02b6855a6e36@sha256:30931c94268bafc14a81b4e38d87fd6d2c5ac6afbcc98df023e3ad004253af44
         livenessProbe:
           httpGet:
             path: /health
