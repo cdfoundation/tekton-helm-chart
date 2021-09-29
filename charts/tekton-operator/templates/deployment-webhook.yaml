@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "tekton-operator.fullname" . }}-webhook
+  namespace: {{ template "tekton-operator.namespace" . }}
+  labels:
+    {{- include "tekton-operator.labels" . | nindent 4 }}
+    tekton: webhook
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "tekton-operator.selectorLabels" . | nindent 6 }}
+      tekton: webhook
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "tekton-operator.labels" . | nindent 8 }}
+        tekton: webhook
+    spec:
+      containers:
+        - env:
+            - name: SYSTEM_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            - name: CONFIG_LOGGING_NAME
+              value: config-logging
+            - name: WEBHOOK_SERVICE_NAME
+              value: tekton-operator-webhook
+            - name: WEBHOOK_SECRET_NAME
+              value: tekton-operator-webhook-certs
+          image: gcr.io/tekton-releases/github.com/tektoncd/operator/cmd/kubernetes/webhook:v0.49.0@sha256:25374b5e15738301b1173e7397248aa46419e164a99d2d8a1343204f02e0e75d
+          name: webhook
+          ports:
+            - containerPort: 8443
+              name: https-webhook
+      serviceAccountName: {{ include "tekton-operator.serviceAccountName" . }}
