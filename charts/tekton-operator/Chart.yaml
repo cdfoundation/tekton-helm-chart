@@ -3,6 +3,6 @@ name: tekton-operator
 description: A Helm chart for Tekton Operator
 type: application
 version: 0.1.0
-appVersion: "1.16.0"
+appVersion: "0.49.0"
 icon: https://avatars2.githubusercontent.com/u/47602533
 home: https://github.com/cdfoundation/tekton-helm-chart
