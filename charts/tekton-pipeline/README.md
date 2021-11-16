@@ -13,7 +13,7 @@ helm repo update
 
 ## Basic install
 ```
-helm upgrade --install tekton cdf/tekton
+helm upgrade --install tekton cdf/tekton-pipeline
 ```
 
 ## Authenticated Git requests
