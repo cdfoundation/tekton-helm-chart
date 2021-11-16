@@ -4,7 +4,7 @@
 First add the Jenkins X chart repository
 
 ```sh
-helm repo add jenkins-x https://storage.googleapis.com/chartmuseum.jenkins-x.io
+helm repo add cdf https://cdfoundation.github.io/tekton-helm-chart/
 ```
 If it already exists be sure to update the local cache
 ```
@@ -13,7 +13,7 @@ helm repo update
 
 ## Basic install
 ```
-helm upgrade --install tekton jenkins-x/tekton
+helm upgrade --install tekton cdf/tekton
 ```
 
 ## Authenticated Git requests
