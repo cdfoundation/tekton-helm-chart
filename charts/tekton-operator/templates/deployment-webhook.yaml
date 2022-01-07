@@ -39,4 +39,18 @@ spec:
           ports:
             - containerPort: 8443
               name: https-webhook
+          resources:
+            {{- toYaml .Values.webhook.resources | nindent 12 }}
       serviceAccountName: {{ include "tekton-operator.serviceAccountName" . }}
+      {{- with .Values.webhook.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.webhook.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.webhook.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
