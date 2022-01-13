@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "tekton-operator.fullname" . }}-controller
+  namespace: {{ template "tekton-operator.namespace" . }}
+  labels:
+    {{- include "tekton-operator.labels" . | nindent 4 }}
+spec:
+  ports:
+    - name: http-metrics
+      port: 9090
+      protocol: TCP
+      targetPort: 9090
+  selector:
+    {{- include "tekton-operator.selectorLabels" . | nindent 4 }}
+    tekton: operator
