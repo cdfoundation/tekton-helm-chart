@@ -107,12 +107,7 @@ spec:
           periodSeconds: 10
           timeoutSeconds: 5
         resources:
-          limits:
-            cpu: 500m
-            memory: 500Mi
-          requests:
-            cpu: 100m
-            memory: 100Mi
+          {{- toYaml .Values.resources | nindent 12 }}
         securityContext:
           allowPrivilegeEscalation: false
           capabilities:
