@@ -28,6 +28,13 @@ webhook:
     labels: {}
   # specifies the name of an optional kubernetes secret to mount environment variables from for things like HTTP proxy
   envFromSecret: "tekton-env"
+  resources:
+    limits:
+      cpu: 2
+      memory: 500Mi
+    requests:
+      cpu: 1
+      memory: 250Mi
 
 # overrides any configuration in the config-defaults ConfigMap
 configDefaults: {}
