@@ -6,12 +6,12 @@ metadata:
     app.kubernetes.io/instance: default
     app.kubernetes.io/name: webhook
     app.kubernetes.io/part-of: tekton-pipelines
-    app.kubernetes.io/version: v0.29.0
+    app.kubernetes.io/version: v0.27.0
       {{- with .Values.webhook.deployment.labels }}
         {{- toYaml . | nindent 4 }}
       {{- end}}
-    pipeline.tekton.dev/release: v0.29.0
-    version: v0.29.0
+    pipeline.tekton.dev/release: v0.27.0
+    version: v0.27.0
   name: tekton-pipelines-webhook
   namespace: tekton-pipelines
 spec:
@@ -30,12 +30,12 @@ spec:
         app.kubernetes.io/instance: default
         app.kubernetes.io/name: webhook
         app.kubernetes.io/part-of: tekton-pipelines
-        app.kubernetes.io/version: v0.29.0
+        app.kubernetes.io/version: v0.27.0
           {{- with .Values.webhook.pod.labels }}
             {{- toYaml . | nindent 8 }}
           {{- end}}
-        pipeline.tekton.dev/release: v0.29.0
-        version: v0.29.0
+        pipeline.tekton.dev/release: v0.27.0
+        version: v0.27.0
     spec:
       affinity:
         nodeAffinity:
@@ -69,8 +69,6 @@ spec:
           value: config-observability
         - name: CONFIG_LEADERELECTION_NAME
           value: config-leader-election
-        - name: CONFIG_FEATURE_FLAGS_NAME
-          value: feature-flags
         - name: WEBHOOK_SERVICE_NAME
           value: tekton-pipelines-webhook
         - name: WEBHOOK_SECRET_NAME
@@ -81,7 +79,7 @@ spec:
         - secretRef:
             name: '{{ .Values.webhook.envFromSecret }}'
             optional: true
-        image: gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/webhook:v0.29.0@sha256:46d5b90a7f4e9996351ad893a26bcbd27216676ad4d5316088ce351fb2c2c3dd
+        image: ghcr.io/jenkins-x/webhook-d4749e605405422fd87700164e31b2d1:latest
         livenessProbe:
           httpGet:
             path: /health
