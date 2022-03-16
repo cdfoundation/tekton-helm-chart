@@ -2,14 +2,12 @@ apiVersion: v1
 data:
   disable-affinity-assistant: "false"
   disable-creds-init: "false"
-  disable-home-env-overwrite: "true"
-  disable-working-directory-overwrite: "true"
   enable-api-fields: stable
   enable-custom-tasks: "false"
   enable-tekton-oci-bundles: "false"
   require-git-ssh-secret-known-hosts: "false"
   running-in-environment-with-injected-sidecars: "true"
-  scope-when-expressions-to-task: "false"
+  scope-when-expressions-to-task: "true"
   {{- if .Values.featureFlags -}}{{- toYaml .Values.featureFlags | nindent 2 }}{{ end }}
 kind: ConfigMap
 metadata:
