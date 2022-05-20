@@ -9,21 +9,21 @@ images:
     repository: gcr.io/tekton-releases/github.com/tektoncd/operator/cmd/kubernetes/operator
     pullPolicy: IfNotPresent
     # Overrides the image tag whose default is the chart appVersion.
-    tag: v0.49.0@sha256:bd055c27d897f327ddb4e846782fccfda3b1d3d2397d5c764d8038547acde391
+    tag: v0.53.0@sha256:bc2c20bed07ca2ab78ce05525d142019374a4f959c1edc292fe97eb2b27e9c9f
   
   webhook:
     repository: gcr.io/tekton-releases/github.com/tektoncd/operator/cmd/kubernetes/webhook
     pullPolicy: IfNotPresent
     # Overrides the image tag whose default is the chart appVersion.
-    tag: v0.49.0@sha256:25374b5e15738301b1173e7397248aa46419e164a99d2d8a1343204f02e0e75d
+    tag: v0.53.0@sha256:88811100723b68540780e0cb2981f04ffc155975629a30691b6108523e413b72
 
   proxy:
     repository: gcr.io/tekton-releases/github.com/tektoncd/operator/cmd/kubernetes/proxy-webhook
-    tag: v0.49.0@sha256:561dc8867bb94007208806178d24efff59a290f4082b6e72a0406d8532060c18
+    tag: v0.53.0@sha256:9a8d434ef0299f7bd1ae0c69796a5f410472f9d1c3817296428482abf7f0651c
 
   pruner:
     repository: gcr.io/tekton-releases/dogfooding/tkn
-    tag: "@sha256:f69a02ef099d8915e9e4ea1b74e43b7a9309fc97cf23cb457ebf191e73491677"
+    tag: "@sha256:025de221fb059ca24a3b2d988889ea34bce48dc76c0cf0d6b4499edb8c21325f"
 
 
 imagePullSecrets: []
@@ -60,36 +60,30 @@ service:
   type: ClusterIP
   port: 443
 
-ingress:
-  enabled: false
-  # className: ""
-  # annotations: {}
-  #   # kubernetes.io/ingress.class: nginx
-  #   # kubernetes.io/tls-acme: "true"
-  # hosts:
-  #   - host: chart-example.local
-  #     paths:
-  #       - path: /
-  #         pathType: ImplementationSpecific
-  # tls: []
-  # #  - secretName: chart-example-tls
-  # #    hosts:
-  # #      - chart-example.local
+operator:
+  resources: {}
+    # We usually recommend not to specify default resources and to leave this as a conscious
+    # choice for the user. This also increases chances charts run on environments with little
+    # resources, such as Minikube. If you do want to specify resources, uncomment the following
+    # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+    # limits:
+    #   cpu: 100m
+    #   memory: 128Mi
+    # requests:
+    #   cpu: 100m
+    #   memory: 128Mi
+  
+  nodeSelector: {}
+  
+  tolerations: []
+  
+  affinity: {}
 
-resources: {}
-  # We usually recommend not to specify default resources and to leave this as a conscious
-  # choice for the user. This also increases chances charts run on environments with little
-  # resources, such as Minikube. If you do want to specify resources, uncomment the following
-  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
-  # limits:
-  #   cpu: 100m
-  #   memory: 128Mi
-  # requests:
-  #   cpu: 100m
-  #   memory: 128Mi
+webhook:
+  resources: {}
 
-nodeSelector: {}
-
-tolerations: []
-
-affinity: {}
+  nodeSelector: {}
+  
+  tolerations: []
+  
+  affinity: {}
