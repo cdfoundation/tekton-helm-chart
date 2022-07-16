@@ -5,4 +5,4 @@ metadata:
   namespace: tekton-pipelines
 data:
   helmTemplateRemoveMe: |
-    {{- if .Values.configDefaults -}}{{- toYaml .Values.configDefaults | nindent 2 }}{{ end }}
+    {{- toYaml .Values.configDefaults | nindent 2 }}
