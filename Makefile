@@ -1,12 +1,17 @@
 NAME := tekton-pipeline
 CHART_DIR := charts/${NAME}
+CHART_VERSION ?= latest
 
 CHART_REPO := gs://jenkinsxio/charts
 
 fetch:
 	rm -f ${CHART_DIR}/templates/*.yaml
 	mkdir -p ${CHART_DIR}/templates
+ifeq ($(CHART_VERSION),latest)
 	curl https://storage.googleapis.com/tekton-releases/pipeline/latest/release.yaml > ${CHART_DIR}/templates/resource.yaml
+else
+	curl https://storage.googleapis.com/tekton-releases/pipeline/previous/v${CHART_VERSION}/release.yaml > ${CHART_DIR}/templates/resource.yaml
+endif
 	jx gitops split -d ${CHART_DIR}/templates
 	jx gitops rename -d ${CHART_DIR}/templates
 	# kustomize the resources to include some helm template blocs
@@ -14,7 +19,9 @@ fetch:
 	jx gitops split -d ${CHART_DIR}/templates
 	jx gitops rename -d ${CHART_DIR}/templates
 	cp src/templates/* ${CHART_DIR}/templates
-	git add charts
+ifneq ($(CHART_VERSION),latest)
+	sed -i "s/^appVersion:.*/appVersion: ${CHART_VERSION}/" ${CHART_DIR}/Chart.yaml
+endif
 
 build:
 	rm -rf Chart.lock

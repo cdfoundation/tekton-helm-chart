@@ -6,6 +6,29 @@ CDF official helm chart for [Tekton Pipelines](https://github.com/tektoncd/pipel
 
 ## Usage
 
+Ensure that you have [kustomize](https://kubectl.docs.kubernetes.io/installation/kustomize/) installed.
+
+### Jenkins X
+
+If you are creating a template to be used in Jenkins X version, you can run the following command:
+
+```bash
+make fetch
+```
+
+This will fetch the latest version.
+To fetch a specific version (say 0.32.0), use CHART_VERSION
+
+```bash
+make CHART_VERSION=0.32.0 fetch
+```
+
+Also, remember to change the `version` in `charts/tekton-pipeline/Chart.yaml`.
+The `app_version` will be set to the `CHART_VERSION` automatically by the makefile if a `CHART_VERSION` is specified.
+For latest set `app_version` to the latest tekton version from the [tekton release page](https://github.com/tektoncd/pipeline/releases) and not `latest`.
+
+### Other usecases
+
 [Helm](https://helm.sh) must be installed to use the charts.
 Please refer to Helm's [documentation](https://helm.sh/docs/) to get started.
 
