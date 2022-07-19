@@ -3,5 +3,6 @@ kind: ConfigMap
 metadata:
   name: feature-flags
   namespace: tekton-pipelines
-helmTemplateRemoveMe: |
-  {{- if .Values.featureFlags -}}{{- toYaml .Values.featureFlags | nindent 2 }}{{ end }}
+data:
+  helmTemplateRemoveMe: |
+    {{- toYaml .Values.featureFlags | nindent 2 }}

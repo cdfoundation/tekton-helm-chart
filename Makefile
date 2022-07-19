@@ -8,12 +8,18 @@ fetch:
 	rm -f ${CHART_DIR}/templates/*.yaml
 	mkdir -p ${CHART_DIR}/templates
 ifeq ($(CHART_VERSION),latest)
-	curl https://storage.googleapis.com/tekton-releases/pipeline/latest/release.yaml > ${CHART_DIR}/templates/resource.yaml
+	curl -sS https://storage.googleapis.com/tekton-releases/pipeline/latest/release.yaml > ${CHART_DIR}/templates/resource.yaml
 else
-	curl https://storage.googleapis.com/tekton-releases/pipeline/previous/v${CHART_VERSION}/release.yaml > ${CHART_DIR}/templates/resource.yaml
+	curl -sS https://storage.googleapis.com/tekton-releases/pipeline/previous/v${CHART_VERSION}/release.yaml > ${CHART_DIR}/templates/resource.yaml
 endif
 	jx gitops split -d ${CHART_DIR}/templates
 	jx gitops rename -d ${CHART_DIR}/templates
+	# move content of data: from feature-slags-cm.yaml to featureFlags: in values.yaml
+	yq -i '.featureFlags = load("$(CHART_DIR)/templates/feature-flags-cm.yaml").data' $(CHART_DIR)/values.yaml
+	yq -i '.data = null' $(CHART_DIR)/templates/feature-flags-cm.yaml
+	# move content of data: from config-defaults-cm.yaml to configDefaults: in values.yaml
+	yq -i '.configDefaults = load("$(CHART_DIR)/templates/config-defaults-cm.yaml").data' $(CHART_DIR)/values.yaml
+	yq -i '.data = null' $(CHART_DIR)/templates/config-defaults-cm.yaml
 	# kustomize the resources to include some helm template blocs
 	kustomize build ${CHART_DIR} | sed '/helmTemplateRemoveMe/d' > ${CHART_DIR}/templates/resource.yaml
 	jx gitops split -d ${CHART_DIR}/templates
