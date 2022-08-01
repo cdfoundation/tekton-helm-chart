@@ -55,23 +55,23 @@ spec:
       serviceAccountName: tekton-pipelines-controller
       containers:
       - name: tekton-pipelines-controller
-        image: gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/controller:v0.16.3@sha256:a14129ffff1c46b39a9cb82e44096b49770efc4f1f8b85fb67d1bb00af906c44
+        image: {{ template "default_registry" . }}tekton-releases/github.com/tektoncd/pipeline/cmd/controller:v0.16.3@sha256:a14129ffff1c46b39a9cb82e44096b49770efc4f1f8b85fb67d1bb00af906c44
         args: [
           # These images are built on-demand by `ko resolve` and are replaced
           # by image references by digest.
-          "-kubeconfig-writer-image", "gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/kubeconfigwriter:v0.16.3@sha256:e35c309c4ddba302d550e84ab99f9fcd1593a257e06749435d58974f7544b042",
-          "-creds-image", "gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/creds-init:v0.16.3@sha256:6511445893b09699cf74ab7fb5874c43f490d8e29fb3ea1f4cde0b83dacb03ac",
-          "-git-image", "gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/git-init:v0.16.3@sha256:17d8d9f55002fccf40e0c83ff2773a1db120beddfa53b87e5e2879e149050659",
-          "-entrypoint-image", "gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/entrypoint:v0.16.3@sha256:2c691255e2b1e3987235d18c11da6081626f194ec5e44c1317d76d8b4eb80ef6",
-          "-nop-image", "gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/nop:v0.16.3@sha256:04ef155888ef3616266c511873069813f9da31d32c31a5d74f9443dc93058699",
-          "-imagedigest-exporter-image", "gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/imagedigestexporter:v0.16.3@sha256:42578816dbaf7fb79bce7b6d347e655bb30aa5c545697f06cd84bcafbead4482",
-          "-pr-image", "gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/pullrequest-init:v0.16.3@sha256:7fe4999ed8d5c0d46ee7d99ef5c2a0ccc7bfbe36d349e443d9e9ce73143453d0",
-          "-build-gcs-fetcher-image", "gcr.io/tekton-releases/github.com/tektoncd/pipeline/vendor/github.com/googlecloudplatform/cloud-builders/gcs-fetcher/cmd/gcs-fetcher:v0.16.3@sha256:cfd7324098dfc0913930f33889920d6f7205994c730f436d50c22ef267300fa2",
+          "-kubeconfig-writer-image", "{{ template "default_registry" . }}tekton-releases/github.com/tektoncd/pipeline/cmd/kubeconfigwriter:v0.16.3@sha256:e35c309c4ddba302d550e84ab99f9fcd1593a257e06749435d58974f7544b042",
+          "-creds-image", "{{ template "default_registry" . }}tekton-releases/github.com/tektoncd/pipeline/cmd/creds-init:v0.16.3@sha256:6511445893b09699cf74ab7fb5874c43f490d8e29fb3ea1f4cde0b83dacb03ac",
+          "-git-image", "{{ template "default_registry" . }}tekton-releases/github.com/tektoncd/pipeline/cmd/git-init:v0.16.3@sha256:17d8d9f55002fccf40e0c83ff2773a1db120beddfa53b87e5e2879e149050659",
+          "-entrypoint-image", "{{ template "default_registry" . }}tekton-releases/github.com/tektoncd/pipeline/cmd/entrypoint:v0.16.3@sha256:2c691255e2b1e3987235d18c11da6081626f194ec5e44c1317d76d8b4eb80ef6",
+          "-nop-image", "{{ template "default_registry" . }}tekton-releases/github.com/tektoncd/pipeline/cmd/nop:v0.16.3@sha256:04ef155888ef3616266c511873069813f9da31d32c31a5d74f9443dc93058699",
+          "-imagedigest-exporter-image", "{{ template "default_registry" . }}tekton-releases/github.com/tektoncd/pipeline/cmd/imagedigestexporter:v0.16.3@sha256:42578816dbaf7fb79bce7b6d347e655bb30aa5c545697f06cd84bcafbead4482",
+          "-pr-image", "{{ template "default_registry" . }}tekton-releases/github.com/tektoncd/pipeline/cmd/pullrequest-init:v0.16.3@sha256:7fe4999ed8d5c0d46ee7d99ef5c2a0ccc7bfbe36d349e443d9e9ce73143453d0",
+          "-build-gcs-fetcher-image", "{{ template "default_registry" . }}tekton-releases/github.com/tektoncd/pipeline/vendor/github.com/googlecloudplatform/cloud-builders/gcs-fetcher/cmd/gcs-fetcher:v0.16.3@sha256:cfd7324098dfc0913930f33889920d6f7205994c730f436d50c22ef267300fa2",
           # This is google/cloud-sdk:302.0.0-slim
           "-gsutil-image", "google/cloud-sdk@sha256:27b2c22bf259d9bc1a291e99c63791ba0c27a04d2db0a43241ba0f1f20f4067f",
           # The shell image must be root in order to create directories and copy files to PVCs.
-          # gcr.io/distroless/base:debug-nonroot as of July 23, 2020
-          "-shell-image", "gcr.io/distroless/base@sha256:60f5ffe6fc481e9102747b043b3873a01893a5a8138f970c5f5fc06fb7494656"]
+          # {{ template "default_registry" . }}distroless/base:debug-nonroot as of July 23, 2020
+          "-shell-image", "{{ template "default_registry" . }}distroless/base@sha256:60f5ffe6fc481e9102747b043b3873a01893a5a8138f970c5f5fc06fb7494656"]
         volumeMounts:
         - name: config-logging
           mountPath: /etc/config-logging

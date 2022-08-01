@@ -81,7 +81,7 @@ spec:
         - secretRef:
             name: '{{ .Values.webhook.envFromSecret }}'
             optional: true
-        image: gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/webhook:v0.32.4@sha256:b6cb1ddbd4caa76c9c8b3773d9ad428582537894a15fb458e8ed9acde9a0fc1c
+        image: {{ template "default_registry" . }}{{ template "webhook_image" . }}
         livenessProbe:
           httpGet:
             path: /health

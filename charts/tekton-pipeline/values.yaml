@@ -1,3 +1,5 @@
+global:
+  DefaultRegistry: ""
 auth:
   git:
     username: "admin"
@@ -10,9 +12,33 @@ auth:
 serviceaccount:
   enabled: true
   annotations: {}
+
 controller:
   deployment:
     labels: {}
+    images: 
+      controller:
+        image: "gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/controller"
+        tag: "v0.32.4@sha256:e383f3e6f65e45fd55d954ef1a6aab4ace5f930eac3949c298e28e0275d3b3e0"
+      kubeconfig-writer-image:
+        image: "gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/kubeconfigwriter:v0.32.4@sha256:f0502a38ac30516eaa524fc29f672b269957ecbdce9eda5eb7cea71cd80ec38f"
+      git-image:
+        image: "gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/git-init:v0.32.4@sha256:76f52c9b19f2edf65765f2ecf9c9225e02678207c9519234f419bc47651c34ff"
+      entrypoint-image:
+        image: "gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/entrypoint:v0.32.4@sha256:9a9940b41d140b023e7ea7a445bb071939b7dcd19ccd4444d901e1cade537d92"
+      nop-image:
+        image: "gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/nop:v0.32.4@sha256:4e6f2a8b8872d01c0abbe62ec0026181361f93e94e6a3613fab9ddbfd7edb1ed"
+      imagedigest-exporter-image:
+        image: "gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/imagedigestexporter:v0.32.4@sha256:81188b0d22574161cb040742105ba9a35b3f8dcf72d32bf50cf2b139ef234f55"
+      pr-image:
+        image: "gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/pullrequest-init:v0.32.4@sha256:6978e7f8b1ee43b79b7180e41a43f2c9b8c92503424f008c0592a69fa3c38ce7"
+      gsutil-image:
+        image: "gcr.io/google.com/cloudsdktool/cloud-sdk@sha256:27b2c22bf259d9bc1a291e99c63791ba0c27a04d2db0a43241ba0f1f20f4067f"
+      shell-image:
+        image: "gcr.io/distroless/base@sha256:cfdc553400d41b47fd231b028403469811fcdbc0e69d66ea8030c5a0b5fbac2b"
+      shell-image-win:
+        image: "mcr.microsoft.com/powershell:nanoserver@sha256:b6d5ff841b78bdf2dfed7550000fd4f3437385b8fa686ec0f010be24777654d6"
+
   pod:
     labels: {}
     annotations: {}
@@ -20,6 +46,8 @@ controller:
   envFromSecret: "tekton-env"
 webhook:
   deployment:
+    images: "gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/webhook"
+    tag: "v0.32.4@sha256:b6cb1ddbd4caa76c9c8b3773d9ad428582537894a15fb458e8ed9acde9a0fc1c"
     labels: {}
   pod:
     labels: {}
