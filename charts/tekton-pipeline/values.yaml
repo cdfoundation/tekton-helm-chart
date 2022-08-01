@@ -1,3 +1,5 @@
+global:
+  DefaultRegistry: ""
 auth:
   git:
     username: "admin"
