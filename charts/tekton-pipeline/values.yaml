@@ -12,6 +12,7 @@ serviceaccount:
   annotations: {}
 controller:
   deployment:
+    image: "gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/controller:v0.33.4@sha256:c43fbd20e72d6f60d898d6dac15620acee8e65278da6c639a3be72f76081a7b6"
     labels: {}
   pod:
     labels: {}

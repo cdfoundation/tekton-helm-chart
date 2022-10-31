@@ -29,3 +29,5 @@ spec:
         - secretRef:
             name: "{{ .Values.controller.envFromSecret }}"
             optional: true
+      helmTemplateRemoveMe: |
+        image: {{ .Values.controller.deployment.image }}
