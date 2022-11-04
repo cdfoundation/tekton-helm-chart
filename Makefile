@@ -20,6 +20,10 @@ endif
 	# move content of data: from config-defaults-cm.yaml to configDefaults: in values.yaml
 	yq -i '.configDefaults = load("$(CHART_DIR)/templates/config-defaults-cm.yaml").data' $(CHART_DIR)/values.yaml
 	yq -i '.data = null' $(CHART_DIR)/templates/config-defaults-cm.yaml
+	# Retrieve the image value from the template
+	yq -i '.controller.deployment.image = load("$(CHART_DIR)/templates/tekton-pipelines-controller-deploy.yaml").spec.template.spec.containers[].image' $(CHART_DIR)/values.yaml
+	# Remove the image value, so that end users can customize the image
+	yq -i '.spec.template.spec.containers[].image = null'  charts/tekton-pipeline/templates/tekton-pipelines-controller-deploy.yaml
 	# kustomize the resources to include some helm template blocs
 	kustomize build ${CHART_DIR} | sed '/helmTemplateRemoveMe/d' > ${CHART_DIR}/templates/resource.yaml
 	jx gitops split -d ${CHART_DIR}/templates
