@@ -6,12 +6,12 @@ metadata:
     app.kubernetes.io/instance: default
     app.kubernetes.io/name: controller
     app.kubernetes.io/part-of: tekton-pipelines
-    app.kubernetes.io/version: v0.33.4
+    app.kubernetes.io/version: v0.34.1
       {{- with .Values.controller.deployment.labels }}
         {{- toYaml . | nindent 4 }}
       {{- end}}
-    pipeline.tekton.dev/release: v0.33.4
-    version: v0.33.4
+    pipeline.tekton.dev/release: v0.34.1
+    version: v0.34.1
   name: tekton-pipelines-controller
   namespace: tekton-pipelines
 spec:
@@ -35,12 +35,12 @@ spec:
         app.kubernetes.io/instance: default
         app.kubernetes.io/name: controller
         app.kubernetes.io/part-of: tekton-pipelines
-        app.kubernetes.io/version: v0.33.4
+        app.kubernetes.io/version: v0.34.1
           {{- with .Values.controller.pod.labels }}
             {{- toYaml . | nindent 8 }}
           {{- end}}
-        pipeline.tekton.dev/release: v0.33.4
-        version: v0.33.4
+        pipeline.tekton.dev/release: v0.34.1
+        version: v0.34.1
     spec:
       affinity:
         nodeAffinity:
@@ -54,19 +54,19 @@ spec:
       containers:
       - args:
         - -kubeconfig-writer-image
-        - gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/kubeconfigwriter:v0.33.4@sha256:7ff55a5646b600619ad0925a49fc4d31fbf61b83e50e6ab635c2d4e1026569a9
+        - gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/kubeconfigwriter:v0.34.1@sha256:523016e4db827cd34babd844624d1cda86841e056fe6c890b3ad1c956a5638b0
         - -git-image
-        - gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/git-init:v0.33.4@sha256:a04f03c53b5e589ed2b7b01c086c8293c51f45216c26800319fbd6b8bec96b3e
+        - gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/git-init:v0.34.1@sha256:8bf237e7b8c983e4159686f0cc021c9189bab4ea99f91cb20ec19cfb4b4a916d
         - -entrypoint-image
-        - gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/entrypoint:v0.33.4@sha256:51fc61fd83ad736c5619cb1861ca53c914b78064322188272784f6611d9a21a8
+        - gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/entrypoint:v0.34.1@sha256:df16538ccfe1b36004d98ad5f511f222f9676028f137f14853805e5b08f57f86
         - -nop-image
-        - gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/nop:v0.33.4@sha256:2e6837e720e485587690577551c4b58652977a5178081a1e65f18dfbfc664f2a
+        - gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/nop:v0.34.1@sha256:ba2276abe579a82d41d38daeca020a7679575b61fb551908f67b4972ff63a2a3
         - -imagedigest-exporter-image
-        - gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/imagedigestexporter:v0.33.4@sha256:50dd606564b12ec24d9cbce8fd17f171ad22eac133f51acc9ff83272e37fa185
+        - gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/imagedigestexporter:v0.34.1@sha256:b1d4a689bb67f36b8458aebe1db63724e88bba549e711fb994b6adb4792d9dd7
         - -pr-image
-        - gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/pullrequest-init:v0.33.4@sha256:bc6e715d1dbde21b20c706466333e753b8aabcae5c5220fbff25817999a0aa5a
+        - gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/pullrequest-init:v0.34.1@sha256:a3a402632d5e9ed58a2857ca107fef185b9b702799a683b2c698014ec3d1c5df
         - -workingdirinit-image
-        - gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/workingdirinit:v0.33.4@sha256:1d481e9b728651dd9e3f7bdf5c1ad135b52b516b4c2d631c220431d2d6c98eb4
+        - gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/workingdirinit:v0.34.1@sha256:1d481e9b728651dd9e3f7bdf5c1ad135b52b516b4c2d631c220431d2d6c98eb4
         - -gsutil-image
         - gcr.io/google.com/cloudsdktool/cloud-sdk@sha256:27b2c22bf259d9bc1a291e99c63791ba0c27a04d2db0a43241ba0f1f20f4067f
         - -shell-image
