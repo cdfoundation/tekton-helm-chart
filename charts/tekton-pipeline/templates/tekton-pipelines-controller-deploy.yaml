@@ -6,12 +6,12 @@ metadata:
     app.kubernetes.io/instance: default
     app.kubernetes.io/name: controller
     app.kubernetes.io/part-of: tekton-pipelines
-    app.kubernetes.io/version: v0.34.1
+    app.kubernetes.io/version: v0.35.1
       {{- with .Values.controller.deployment.labels }}
         {{- toYaml . | nindent 4 }}
       {{- end}}
-    pipeline.tekton.dev/release: v0.34.1
-    version: v0.34.1
+    pipeline.tekton.dev/release: v0.35.1
+    version: v0.35.1
   name: tekton-pipelines-controller
   namespace: tekton-pipelines
 spec:
@@ -35,12 +35,12 @@ spec:
         app.kubernetes.io/instance: default
         app.kubernetes.io/name: controller
         app.kubernetes.io/part-of: tekton-pipelines
-        app.kubernetes.io/version: v0.34.1
+        app.kubernetes.io/version: v0.35.1
           {{- with .Values.controller.pod.labels }}
             {{- toYaml . | nindent 8 }}
           {{- end}}
-        pipeline.tekton.dev/release: v0.34.1
-        version: v0.34.1
+        pipeline.tekton.dev/release: v0.35.1
+        version: v0.35.1
     spec:
       affinity:
         nodeAffinity:
@@ -54,23 +54,23 @@ spec:
       containers:
       - args:
         - -kubeconfig-writer-image
-        - gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/kubeconfigwriter:v0.34.1@sha256:523016e4db827cd34babd844624d1cda86841e056fe6c890b3ad1c956a5638b0
+        - gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/kubeconfigwriter:v0.35.1@sha256:4a24c6b8d81da315036e8ea59e99c8f8ef912156d1b288bf0a61b90ac790b9de
         - -git-image
-        - gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/git-init:v0.34.1@sha256:8bf237e7b8c983e4159686f0cc021c9189bab4ea99f91cb20ec19cfb4b4a916d
+        - gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/git-init:v0.35.1@sha256:ce47e7392b37fc8f1dea8009e74f863656a9de37e03c7ee7371d8530cf7a9e07
         - -entrypoint-image
-        - gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/entrypoint:v0.34.1@sha256:df16538ccfe1b36004d98ad5f511f222f9676028f137f14853805e5b08f57f86
+        - gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/entrypoint:v0.35.1@sha256:4fc8631a27bdd1b4c149a08b7db0465a706559ccddd979d0b9dbc93ef676105d
         - -nop-image
-        - gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/nop:v0.34.1@sha256:ba2276abe579a82d41d38daeca020a7679575b61fb551908f67b4972ff63a2a3
+        - gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/nop:v0.35.1@sha256:d45b4397536ee390078fd4da1074dd4cae76b6e418786c73f9aed43b9bc66545
         - -imagedigest-exporter-image
-        - gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/imagedigestexporter:v0.34.1@sha256:b1d4a689bb67f36b8458aebe1db63724e88bba549e711fb994b6adb4792d9dd7
+        - gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/imagedigestexporter:v0.35.1@sha256:77d2118589fb5c411e40f08627173156bc05dfc84b8745ece28a3e40e86ae5ef
         - -pr-image
-        - gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/pullrequest-init:v0.34.1@sha256:a3a402632d5e9ed58a2857ca107fef185b9b702799a683b2c698014ec3d1c5df
+        - gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/pullrequest-init:v0.35.1@sha256:d69868d24398af88bd389f58c23e6d0275c88112f7f7c4f092e34c107b7b0400
         - -workingdirinit-image
-        - gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/workingdirinit:v0.34.1@sha256:1d481e9b728651dd9e3f7bdf5c1ad135b52b516b4c2d631c220431d2d6c98eb4
+        - gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/workingdirinit:v0.35.1@sha256:aa9e932310df7384972212ec16a5d71999aab7e741e6bac21d8dc0bb0215f1d0
         - -gsutil-image
         - gcr.io/google.com/cloudsdktool/cloud-sdk@sha256:27b2c22bf259d9bc1a291e99c63791ba0c27a04d2db0a43241ba0f1f20f4067f
         - -shell-image
-        - gcr.io/distroless/base@sha256:3cebc059e7e52a4f5a389aa6788ac2b582227d7953933194764ea434f4d70d64
+        - ghcr.io/distroless/busybox@sha256:19f02276bf8dbdd62f069b922f10c65262cc34b710eea26ff928129a736be791
         - -shell-image-win
         - mcr.microsoft.com/powershell:nanoserver@sha256:b6d5ff841b78bdf2dfed7550000fd4f3437385b8fa686ec0f010be24777654d6
         env:
