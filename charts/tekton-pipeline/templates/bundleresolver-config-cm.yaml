@@ -1,4 +1,4 @@
-# Copyright 2019 The Tekton Authors
+# Copyright 2022 The Tekton Authors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,9 +15,14 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: config-defaults
-  namespace: tekton-pipelines
+  name: bundleresolver-config
+  namespace: tekton-pipelines-resolvers
   labels:
+    app.kubernetes.io/component: resolvers
     app.kubernetes.io/instance: default
     app.kubernetes.io/part-of: tekton-pipelines
-data: null
+data:
+  # the default service account name to use for bundle requests.
+  default-service-account: "default"
+  # The default layer kind in the bundle image.
+  default-kind: "task"

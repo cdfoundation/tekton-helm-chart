@@ -1,4 +1,4 @@
-# Copyright 2020 Tekton Authors LLC
+# Copyright 2022 The Tekton Authors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,10 +15,9 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: config-leader-election
+  name: config-trusted-resources
   namespace: tekton-pipelines
   labels:
-    app.kubernetes.io/component: resolvers
     app.kubernetes.io/instance: default
     app.kubernetes.io/part-of: tekton-pipelines
 data:
@@ -36,18 +35,7 @@ data:
     # These sample configuration options may be copied out of
     # this example block and unindented to be in the data block
     # to actually change the configuration.
-    # lease-duration is how long non-leaders will wait to try to acquire the
-    # lock; 15 seconds is the value used by core kubernetes controllers.
-    lease-duration: "60s"
-    # renew-deadline is how long a leader will try to renew the lease before
-    # giving up; 10 seconds is the value used by core kubernetes controllers.
-    renew-deadline: "40s"
-    # retry-period is how long the leader election client waits between tries of
-    # actions; 2 seconds is the value used by core kubernetes controllers.
-    retry-period: "10s"
-    # buckets is the number of buckets used to partition key space of each
-    # Reconciler. If this number is M and the replica number of the controller
-    # is N, the N replicas will compete for the M buckets. The owner of a
-    # bucket will take care of the reconciling for the keys partitioned into
-    # that bucket.
-    buckets: "1"
+
+    # publickeys specifies the list of public keys, the paths are separated by comma
+    # publickeys: "/etc/verification-secrets/cosign.pub,
+    # gcpkms://projects/tekton/locations/us/keyRings/trusted-resources/cryptoKeys/trusted-resources"
