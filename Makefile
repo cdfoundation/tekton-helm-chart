@@ -14,6 +14,10 @@ else
 endif
 	jx gitops split -d ${CHART_DIR}/templates
 	jx gitops rename -d ${CHART_DIR}/templates
+    # Remove tekton-pipelines-resolvers-ns
+	rm -r charts/tekton-pipeline/templates/tekton-pipelines-resolvers-ns.yaml
+	# Remove namespace from metadata to force with helm install
+	yq -i eval 'del(.metadata.namespace)' charts/tekton-pipeline/templates/*
 	# move content of data: from feature-slags-cm.yaml to featureFlags: in values.yaml
 	yq -i '.featureFlags = load("$(CHART_DIR)/templates/feature-flags-cm.yaml").data' $(CHART_DIR)/values.yaml
 	yq -i '.data = null' $(CHART_DIR)/templates/feature-flags-cm.yaml
@@ -24,6 +28,9 @@ endif
 	yq -i '.controller.deployment.image = load("$(CHART_DIR)/templates/tekton-pipelines-controller-deploy.yaml").spec.template.spec.containers[].image' $(CHART_DIR)/values.yaml
 	# Remove the image value, so that end users can customize the image
 	yq -i '.spec.template.spec.containers[].image = null'  charts/tekton-pipeline/templates/tekton-pipelines-controller-deploy.yaml
+	# Amend tekton-resolver-ns
+	yq -i '.subjects[].namespace = "tekton-pipelines"'   charts/tekton-pipeline/templates/tekton-pipelines-resolvers-namespace-rbac-rb.yaml
+	yq -i '.subjects[].namespace = "tekton-pipelines"'   charts/tekton-pipeline/templates/tekton-pipelines-resolvers-crb.yaml
 	# kustomize the resources to include some helm template blocs
 	kustomize build ${CHART_DIR} | sed '/helmTemplateRemoveMe/d' > ${CHART_DIR}/templates/resource.yaml
 	jx gitops split -d ${CHART_DIR}/templates
