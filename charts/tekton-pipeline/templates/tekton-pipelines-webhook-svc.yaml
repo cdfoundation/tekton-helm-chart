@@ -13,7 +13,6 @@ metadata:
     app: tekton-pipelines-webhook
     version: "v0.42.0"
   name: tekton-pipelines-webhook
-  namespace: tekton-pipelines
 spec:
   ports:
     # Define metrics and profiling for them to be accessible within service meshes.
