@@ -1,4 +1,4 @@
-# Copyright 2019 The Tekton Authors
+# Copyright 2022 The Tekton Authors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,9 +15,18 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: config-defaults
-  namespace: tekton-pipelines
+  name: cluster-resolver-config
+  namespace: tekton-pipelines-resolvers
   labels:
+    app.kubernetes.io/component: resolvers
     app.kubernetes.io/instance: default
     app.kubernetes.io/part-of: tekton-pipelines
-data: null
+data:
+  # The default kind to fetch.
+  default-kind: "task"
+  # The default namespace to look for resources in.
+  default-namespace: ""
+  # An optional comma-separated list of namespaces which the resolver is allowed to access. Defaults to empty, meaning all namespaces are allowed.
+  allowed-namespaces: ""
+  # An optional comma-separated list of namespaces which the resolver is blocked from accessing. Defaults to empty, meaning all namespaces are allowed.
+  blocked-namespaces: ""

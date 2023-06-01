@@ -1,4 +1,4 @@
-# Copyright 2021 The Tekton Authors
+# Copyright 2022 The Tekton Authors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,14 +15,20 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: pipelines-info
+  name: hubresolver-config
+  namespace: tekton-pipelines-resolvers
   labels:
+    app.kubernetes.io/component: resolvers
     app.kubernetes.io/instance: default
     app.kubernetes.io/part-of: tekton-pipelines
 data:
-  # Contains pipelines version which can be queried by external
-  # tools such as CLI. Elevated permissions are already given to
-  # this ConfigMap such that even if we don't have access to
-  # other resources in the namespace we still can have access to
-  # this ConfigMap.
-  version: "v0.42.0"
+  # the default Tekton Hub catalog from where to pull the resource.
+  default-tekton-hub-catalog: "Tekton"
+  # the default Artifact Hub Task catalog from where to pull the resource.
+  default-artifact-hub-task-catalog: "tekton-catalog-tasks"
+  # the default Artifact Hub Pipeline catalog from where to pull the resource.
+  default-artifact-hub-pipeline-catalog: "tekton-catalog-pipelines"
+  # the default layer kind in the hub image.
+  default-kind: "task"
+  # the default hub source to pull the resource from.
+  default-type: "artifact"
