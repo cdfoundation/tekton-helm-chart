@@ -23,7 +23,7 @@ metadata:
 subjects:
   - kind: ServiceAccount
     name: tekton-pipelines-controller
-    namespace: tekton-pipelines
+    namespace: '{{ .Release.Namespace }}'
 roleRef:
   kind: Role
   name: tekton-pipelines-controller

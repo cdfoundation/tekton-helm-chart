@@ -16,9 +16,15 @@ endif
 	jx gitops rename -d ${CHART_DIR}/templates
     # Remove tekton-pipelines-resolvers-ns
 	rm -r charts/tekton-pipeline/templates/tekton-pipelines-resolvers-ns.yaml
-	# Amend tekton-resolver-ns
+	# Amend subjects.namespace with release.namespace
 	yq -i '.subjects[].namespace = "{{ .Release.Namespace }}" '   charts/tekton-pipeline/templates/tekton-pipelines-resolvers-namespace-rbac-rb.yaml
 	yq -i '.subjects[].namespace = "{{ .Release.Namespace }}" '   charts/tekton-pipeline/templates/tekton-pipelines-resolvers-crb.yaml
+	yq -i '.subjects[].namespace = "{{ .Release.Namespace }}" '	  charts/tekton-pipeline/templates/tekton-pipelines-webhook-rb.yaml
+	yq -i '.subjects[].namespace = "{{ .Release.Namespace }}" '	  charts/tekton-pipeline/templates/tekton-pipelines-controller-rb.yaml
+	yq -i '.subjects[].namespace = "{{ .Release.Namespace }}" '	  charts/tekton-pipeline/templates/tekton-pipelines-controller-tenant-access-crb.yaml
+	yq -i '.subjects[].namespace = "{{ .Release.Namespace }}" '	  charts/tekton-pipeline/templates/tekton-pipelines-webhook-cluster-access-crb.yaml
+	yq -i '.subjects[].namespace = "{{ .Release.Namespace }}" '	  charts/tekton-pipeline/templates/tekton-pipelines-webhook-leaderelection-rb.yaml
+	
 	# Remove namespace from metadata to force with helm install
 	yq -i eval 'del(.metadata.namespace)' charts/tekton-pipeline/templates/*.yaml
 	# move content of data: from feature-slags-cm.yaml to featureFlags: in values.yaml
