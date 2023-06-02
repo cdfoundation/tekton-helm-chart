@@ -23,7 +23,7 @@ metadata:
 subjects:
   - kind: ServiceAccount
     name: tekton-pipelines-resolvers
-    namespace: tekton-pipelines
+    namespace: '{{ .Release.Namespace }}'
 roleRef:
   kind: Role
   name: tekton-pipelines-resolvers-namespace-rbac

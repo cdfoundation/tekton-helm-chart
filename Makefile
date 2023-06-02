@@ -17,10 +17,10 @@ endif
     # Remove tekton-pipelines-resolvers-ns
 	rm -r charts/tekton-pipeline/templates/tekton-pipelines-resolvers-ns.yaml
 	# Amend tekton-resolver-ns
-	yq -i '.subjects[].namespace = "tekton-pipelines"'   charts/tekton-pipeline/templates/tekton-pipelines-resolvers-namespace-rbac-rb.yaml
-	yq -i '.subjects[].namespace = "tekton-pipelines"'   charts/tekton-pipeline/templates/tekton-pipelines-resolvers-crb.yaml
+	yq -i '.subjects[].namespace = "{{ .Release.Namespace }}" '   charts/tekton-pipeline/templates/tekton-pipelines-resolvers-namespace-rbac-rb.yaml
+	yq -i '.subjects[].namespace = "{{ .Release.Namespace }}" '   charts/tekton-pipeline/templates/tekton-pipelines-resolvers-crb.yaml
 	# Remove namespace from metadata to force with helm install
-	yq -i eval 'del(.metadata.namespace)' charts/tekton-pipeline/templates/*
+	yq -i eval 'del(.metadata.namespace)' charts/tekton-pipeline/templates/*.yaml
 	# move content of data: from feature-slags-cm.yaml to featureFlags: in values.yaml
 	yq -i '.featureFlags = load("$(CHART_DIR)/templates/feature-flags-cm.yaml").data' $(CHART_DIR)/values.yaml
 	yq -i '.data = null' $(CHART_DIR)/templates/feature-flags-cm.yaml
