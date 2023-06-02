@@ -13,6 +13,7 @@ metadata:
 subjects:
   - kind: ServiceAccount
     name: tekton-pipelines-controller
+    namespace: tekton-pipelines
 roleRef:
   kind: ClusterRole
   name: tekton-pipelines-controller-tenant-access
