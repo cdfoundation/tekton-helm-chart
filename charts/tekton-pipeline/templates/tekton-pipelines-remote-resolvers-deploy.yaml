@@ -65,8 +65,8 @@ spec:
           image: gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/resolvers:v0.42.0@sha256:eaa7d21d45f0bc1c411823d6a943e668c820f9cf52f1549d188edb89e992f6e0
           resources:
             requests:
-              cpu: 100m
-              memory: 100Mi
+              cpu: '{{ .Values.resources.requests.cpu }}'
+              memory: '{{ .Values.resources.requests.memory }}'
             limits:
               cpu: '{{ .Values.resources.limits.cpu }}'
               memory: '{{ .Values.resources.limits.memory }}'

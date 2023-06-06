@@ -16,8 +16,9 @@ endif
 	jx gitops rename -d ${CHART_DIR}/templates
     # Remove tekton-pipelines-resolvers-ns
 	rm -r charts/tekton-pipeline/templates/tekton-pipelines-resolvers-ns.yaml
-    # Amend tekton-pipelines-remote-resolvers-deploy to declare pod resources
-	yq eval -i '.spec.template.spec.containers[].resources.limits.cpu = "{{ .Values.resources.limits.cpu }}" | .spec.template.spec.containers[].resources.limits.memory = "{{ .Values.resources.limits.memory }}"' charts/tekton-pipeline/templates/tekton-pipelines-remote-resolvers-deploy.yaml 
+    # Amend tekton-pipelines-remote-resolvers-deploy to declare pod resources (requests and limits)
+	yq eval -i '.spec.template.spec.containers[].resources.limits.cpu = "{{ .Values.resources.limits.cpu }}" | .spec.template.spec.containers[].resources.limits.memory = "{{ .Values.resources.limits.memory }}"' charts/tekton-pipeline/templates/tekton-pipelines-remote-resolvers-deploy.yaml
+	yq eval -i '.spec.template.spec.containers[].resources.requests.cpu = "{{ .Values.resources.requests.cpu }}" | .spec.template.spec.containers[].resources.requests.memory = "{{ .Values.resources.requests.memory }}"' charts/tekton-pipeline/templates/tekton-pipelines-remote-resolvers-deploy.yaml
 	# Amend subjects.namespace with release.namespace
 	yq -i '.subjects[].namespace = "{{ .Release.Namespace }}" '   charts/tekton-pipeline/templates/tekton-pipelines-resolvers-namespace-rbac-rb.yaml
 	yq -i '.subjects[].namespace = "{{ .Release.Namespace }}" '   charts/tekton-pipeline/templates/tekton-pipelines-resolvers-crb.yaml
