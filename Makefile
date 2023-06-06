@@ -16,6 +16,8 @@ endif
 	jx gitops rename -d ${CHART_DIR}/templates
     # Remove tekton-pipelines-resolvers-ns
 	rm -r charts/tekton-pipeline/templates/tekton-pipelines-resolvers-ns.yaml
+    # Amend tekton-pipelines-remote-resolvers-deploy to declare pod resources
+	yq eval -i '.spec.template.spec.containers[].resources.limits.cpu = "{{ .Values.resources.limits.cpu }}" | .spec.template.spec.containers[].resources.limits.memory = "{{ .Values.resources.limits.memory }}"' charts/tekton-pipeline/templates/tekton-pipelines-remote-resolvers-deploy.yaml 
 	# Amend subjects.namespace with release.namespace
 	yq -i '.subjects[].namespace = "{{ .Release.Namespace }}" '   charts/tekton-pipeline/templates/tekton-pipelines-resolvers-namespace-rbac-rb.yaml
 	yq -i '.subjects[].namespace = "{{ .Release.Namespace }}" '   charts/tekton-pipeline/templates/tekton-pipelines-resolvers-crb.yaml
@@ -24,13 +26,12 @@ endif
 	yq -i '.subjects[].namespace = "{{ .Release.Namespace }}" '	  charts/tekton-pipeline/templates/tekton-pipelines-controller-tenant-access-crb.yaml
 	yq -i '.subjects[].namespace = "{{ .Release.Namespace }}" '	  charts/tekton-pipeline/templates/tekton-pipelines-webhook-cluster-access-crb.yaml
 	yq -i '.subjects[].namespace = "{{ .Release.Namespace }}" '	  charts/tekton-pipeline/templates/tekton-pipelines-webhook-leaderelection-rb.yaml
-	
 	# Remove namespace from metadata to force with helm install
 	yq -i eval 'del(.metadata.namespace)' charts/tekton-pipeline/templates/*.yaml
-	# move content of data: from feature-slags-cm.yaml to featureFlags: in values.yaml
+	# Move content of data: from feature-slags-cm.yaml to featureFlags: in values.yaml
 	yq -i '.featureFlags = load("$(CHART_DIR)/templates/feature-flags-cm.yaml").data' $(CHART_DIR)/values.yaml
 	yq -i '.data = null' $(CHART_DIR)/templates/feature-flags-cm.yaml
-	# move content of data: from config-defaults-cm.yaml to configDefaults: in values.yaml
+	# Move content of data: from config-defaults-cm.yaml to configDefaults: in values.yaml
 	yq -i '.configDefaults = load("$(CHART_DIR)/templates/config-defaults-cm.yaml").data' $(CHART_DIR)/values.yaml
 	yq -i '.data = null' $(CHART_DIR)/templates/config-defaults-cm.yaml
 	# Retrieve the image value from the template
