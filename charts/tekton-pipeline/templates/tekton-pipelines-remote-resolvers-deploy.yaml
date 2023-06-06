@@ -15,7 +15,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: tekton-pipelines-remote-resolvers
-  namespace: tekton-pipelines-resolvers
   labels:
     app.kubernetes.io/name: resolvers
     app.kubernetes.io/component: resolvers

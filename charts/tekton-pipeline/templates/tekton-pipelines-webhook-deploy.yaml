@@ -19,7 +19,6 @@ metadata:
   # config/400-webhook-service.yaml. If you change this name, you must also
   # change the value of WEBHOOK_SERVICE_NAME below.
   name: tekton-pipelines-webhook
-  namespace: tekton-pipelines
   labels:
     app.kubernetes.io/name: webhook
     app.kubernetes.io/component: webhook
