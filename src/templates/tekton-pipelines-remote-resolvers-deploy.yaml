@@ -63,7 +63,7 @@ spec:
       containers:
         - name: controller
           image: gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/resolvers:v0.42.0@sha256:eaa7d21d45f0bc1c411823d6a943e668c820f9cf52f1549d188edb89e992f6e0
-          {{- with .Values.pod.resources }}
+          {{- with .Values.remoteResolversPod.resources }}
           resources: {{- toYaml . | trim | nindent 15 }}
           {{- end }}
           ports:
