@@ -86,13 +86,14 @@ configDefaults:
     # of combinations from a Matrix, if none is specified.
     default-max-matrix-combinations-count: "256"
 # Settings to increase deployment resources for tekton-pipelines-remote-resolvers-deployment
-resources:
-  limits:
-    cpu: 1000m
-    memory: 1000Mi
-  requests:
-    cpu: 100m
-    memory: 100Mi
+pod:
+  resources:
+    limits:
+      cpu: 1000m
+      memory: 1000Mi
+    requests:
+      cpu: 100m
+      memory: 100Mi
 # feature flags to put in feature-flags ConfigMap
 featureFlags:
   # Setting this flag to "true" will prevent Tekton to create an
