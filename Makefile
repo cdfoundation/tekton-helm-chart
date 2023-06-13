@@ -24,13 +24,12 @@ endif
 	yq -i '.subjects[].namespace = "{{ .Release.Namespace }}" '	  charts/tekton-pipeline/templates/tekton-pipelines-controller-tenant-access-crb.yaml
 	yq -i '.subjects[].namespace = "{{ .Release.Namespace }}" '	  charts/tekton-pipeline/templates/tekton-pipelines-webhook-cluster-access-crb.yaml
 	yq -i '.subjects[].namespace = "{{ .Release.Namespace }}" '	  charts/tekton-pipeline/templates/tekton-pipelines-webhook-leaderelection-rb.yaml
-	
 	# Remove namespace from metadata to force with helm install
 	yq -i eval 'del(.metadata.namespace)' charts/tekton-pipeline/templates/*.yaml
-	# move content of data: from feature-slags-cm.yaml to featureFlags: in values.yaml
+	# Move content of data: from feature-slags-cm.yaml to featureFlags: in values.yaml
 	yq -i '.featureFlags = load("$(CHART_DIR)/templates/feature-flags-cm.yaml").data' $(CHART_DIR)/values.yaml
 	yq -i '.data = null' $(CHART_DIR)/templates/feature-flags-cm.yaml
-	# move content of data: from config-defaults-cm.yaml to configDefaults: in values.yaml
+	# Move content of data: from config-defaults-cm.yaml to configDefaults: in values.yaml
 	yq -i '.configDefaults = load("$(CHART_DIR)/templates/config-defaults-cm.yaml").data' $(CHART_DIR)/values.yaml
 	yq -i '.data = null' $(CHART_DIR)/templates/config-defaults-cm.yaml
 	# Retrieve the image value from the template
