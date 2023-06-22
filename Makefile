@@ -17,7 +17,7 @@ endif
     # Remove tekton-pipelines-resolvers-ns
 	rm -r charts/tekton-pipeline/templates/tekton-pipelines-resolvers-ns.yaml
 	# Amend subjects.namespace with release.namespace
-	find . -type f \( -name "*-crb*" -o -name "*-rb*" \) ! -name "*-role*" ! -name "*-info*" -exec yq -i '.subjects[].namespace = "{{ .Release.Namespace }}"' "{}" \;
+	find . -type f \( -name "*-crb.yaml" -o -name "*-rb.yaml" \)  -exec yq -i '(.subjects[] | select(has("namespace"))).namespace = "{{ .Release.Namespace }}"' "{}" \;
 	# Remove namespace from metadata to force with helm install
 	yq -i eval 'del(.metadata.namespace)' charts/tekton-pipeline/templates/*.yaml
 	# Move content of data: from feature-slags-cm.yaml to featureFlags: in values.yaml
