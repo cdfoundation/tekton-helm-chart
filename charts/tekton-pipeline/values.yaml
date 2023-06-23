@@ -111,7 +111,7 @@ gitResolverConfig:
     # The key in the API token secret containing the actual token. Required when using the authenticated API.
     api-token-secret-key: "password"
     # The namespace containing the API token secret. Defaults to "default".
-    api-token-secret-namespace: '{{ .Release.Namespace }}' 
+    api-token-secret-namespace: '{{ .Release.Namespace }}'
     # The default organization to look for repositories under when using the authenticated API.
     # if not specified in the resolver parameters. Optional.
     default-org: ""
