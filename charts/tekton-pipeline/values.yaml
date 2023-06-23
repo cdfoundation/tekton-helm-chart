@@ -94,6 +94,27 @@ remoteResolversPod:
     requests:
       cpu: 100m
       memory: 100Mi
+gitResolverConfig:
+  data:
+    # The maximum amount of time a single anonymous cloning resolution may take.
+    fetch-timeout: "1m"
+    # The git url to fetch the remote resource from when using anonymous cloning.
+    default-url: "https://github.com/tektoncd/catalog.git"
+    # The git revision to fetch the remote resource from with either anonymous cloning or the authenticated API.
+    default-revision: "main"
+    # The SCM type to use with the authenticated API. Can be github, gitlab, gitea, bitbucketserver, bitbucketcloud
+    scm-type: ""
+    # The SCM server URL to use with the authenticated API. Not needed when using github.com, gitlab.com, or BitBucket Cloud
+    server-url: ""
+    # The Kubernetes secret containing the API token for the SCM provider. Required when using the authenticated API.
+    api-token-secret-name: "tekton-git"
+    # The key in the API token secret containing the actual token. Required when using the authenticated API.
+    api-token-secret-key: "password"
+    # The namespace containing the API token secret. Defaults to "default".
+    api-token-secret-namespace: '{{ .Release.Namespace }}' 
+    # The default organization to look for repositories under when using the authenticated API.
+    # if not specified in the resolver parameters. Optional.
+    default-org: ""
 # feature flags to put in feature-flags ConfigMap
 featureFlags:
   # Setting this flag to "true" will prevent Tekton to create an
