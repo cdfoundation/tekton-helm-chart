@@ -4,4 +4,4 @@ metadata:
   name: git-resolver-config
 data:
   helmTemplateRemoveMe: |
-    {{- toYaml .Values.gitResolverConfig | nindent 2 }}
+    {{- tpl (toYaml .Values.gitResolverConfig | nindent 2) . }}
