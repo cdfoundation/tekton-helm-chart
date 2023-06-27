@@ -15,28 +15,31 @@ endif
 	jx gitops split -d ${CHART_DIR}/templates
 	jx gitops rename -d ${CHART_DIR}/templates
     # Remove tekton-pipelines-resolvers-ns
-	rm -r charts/tekton-pipeline/templates/tekton-pipelines-resolvers-ns.yaml
+	rm -r $(CHART_DIR)/templates/tekton-pipelines-resolvers-ns.yaml
 	# Amend subjects.namespace with release.namespace
-	find . -type f \( -name "*-crb.yaml" -o -name "*-rb.yaml" \)  -exec yq -i '(.subjects[] | select(has("namespace"))).namespace = "{{ .Release.Namespace }}"' "{}" \;
+	find $(CHART_DIR)/templates -type f \( -name "*-crb.yaml" -o -name "*-rb.yaml" \) -exec yq -i '(.subjects[] | select(has("namespace"))).namespace = "{{ .Release.Namespace }}"' "{}" \;
 	# Remove namespace from metadata to force with helm install
-	yq -i eval 'del(.metadata.namespace)' charts/tekton-pipeline/templates/*.yaml
+	find $(CHART_DIR)/templates -type f -name "*.yaml" -exec yq -i eval 'del(.metadata.namespace)' "{}" \;
 	# Move content of data: from feature-slags-cm.yaml to featureFlags: in values.yaml
 	yq -i '.featureFlags = load("$(CHART_DIR)/templates/feature-flags-cm.yaml").data' $(CHART_DIR)/values.yaml
 	yq -i '.data = null' $(CHART_DIR)/templates/feature-flags-cm.yaml
 	# Move content of data: from config-defaults-cm.yaml to configDefaults: in values.yaml
 	yq -i '.configDefaults = load("$(CHART_DIR)/templates/config-defaults-cm.yaml").data' $(CHART_DIR)/values.yaml
 	yq -i '.data = null' $(CHART_DIR)/templates/config-defaults-cm.yaml
+	# Move content of data: from git-resolver-config-cm.yaml to gitResolverConfig: in values.yaml
+	yq -i '.gitResolverConfig = load("$(CHART_DIR)/templates/git-resolver-config-cm.yaml").data' $(CHART_DIR)/values.yaml
+	yq -i '.data = null' $(CHART_DIR)/templates/git-resolver-config-cm.yaml
 	# Retrieve the image value from the template
 	yq -i '.controller.deployment.image = load("$(CHART_DIR)/templates/tekton-pipelines-controller-deploy.yaml").spec.template.spec.containers[].image' $(CHART_DIR)/values.yaml
 	# Remove the image value, so that end users can customize the image
-	yq -i '.spec.template.spec.containers[].image = null'  charts/tekton-pipeline/templates/tekton-pipelines-controller-deploy.yaml
+	yq -i '.spec.template.spec.containers[].image = null' $(CHART_DIR)/templates/tekton-pipelines-controller-deploy.yaml
 	# kustomize the resources to include some helm template blocs
 	kustomize build ${CHART_DIR} | sed '/helmTemplateRemoveMe/d' > ${CHART_DIR}/templates/resource.yaml
 	jx gitops split -d ${CHART_DIR}/templates
 	jx gitops rename -d ${CHART_DIR}/templates
 	cp src/templates/* ${CHART_DIR}/templates
 ifneq ($(CHART_VERSION),latest)
-	sed -i "s/^appVersion:.*/appVersion: ${CHART_VERSION}/" ${CHART_DIR}/Chart.yaml
+	sed -i.bak "s/^appVersion:.*/appVersion: ${CHART_VERSION}/" ${CHART_DIR}/Chart.yaml
 endif
 
 build:
