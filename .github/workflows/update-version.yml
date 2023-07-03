@@ -1,0 +1,25 @@
+name: Increment Version
+on: pull_request
+
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+    steps:
+    #  - name: check source code
+    #    uses: actions/checkout@v2
+    #    with:
+    #      fetch-depth: 0
+    #      token: ${{ secrets.GIT_BOT_TOKEN }}
+    #  - run: git fetch --depth=1 origin +refs/tags/*:refs/tags/*
+
+      - name: next release version
+        id: nextversion
+        uses: jenkins-x-plugins/jx-release-version@v2.6.11
+        with:
+          previous-version: from-file:charts/tekton-pipeline/Chart.yaml
+
+      - name: Update version in Chart.yaml
+        uses: mikefarah/yq@v4.34.1
+        if: ${{ steps.nextversion.outputs.available == 'true' }}
+        with:
+          cmd: yq eval '.version = "${{ steps.nextversion.outputs.version }}"' -i charts/tekton-pipeline/Chart.yaml
