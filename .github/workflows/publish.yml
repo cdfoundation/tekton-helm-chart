@@ -16,13 +16,13 @@ jobs:
         id: nextversion
         uses: jenkins-x-plugins/jx-release-version@v2.6.11
         with:
-          previous-version: from-file:charts/tekton-dashboard/Chart.yaml
+          previous-version: from-file:charts/tekton-pipeline/Chart.yaml
 
       - name: Update version in Chart.yaml
         id: updatechart
         uses: mikefarah/yq@v4.34.1
         with:
-          cmd: yq eval '.version = "${{ steps.nextversion.outputs.version }}"' -i charts/tekton-dashboard/Chart.yaml
+          cmd: yq eval '.version = "${{ steps.nextversion.outputs.version }}"' -i charts/tekton-pipeline/Chart.yaml
           
       - name: Commit Changes
         uses: stefanzweifel/git-auto-commit-action@v4
