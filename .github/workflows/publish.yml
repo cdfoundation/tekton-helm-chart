@@ -11,6 +11,14 @@ jobs:
     steps:
       - name: check source code
         uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.ACCESS_TOKEN }}
+        
+      - uses: J12934/helm-gh-pages-action@master
+        with:
+          access-token: ${{ secrets.ACCESS_TOKEN }}
+          charts-folder: "charts"
+          deploy-branch: "gh-pages"
 
       - name: next release version
         id: nextversion
@@ -23,14 +31,8 @@ jobs:
         uses: mikefarah/yq@v4.34.1
         with:
           cmd: yq eval '.version = "${{ steps.nextversion.outputs.version }}"' -i charts/tekton-pipeline/Chart.yaml
-          
+
       - name: Commit Changes
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
           commit_message: 'chore: update Chart.yaml'
-
-      - uses: J12934/helm-gh-pages-action@master
-        with:
-          access-token: ${{ secrets.ACCESS_TOKEN }}
-          charts-folder: "charts"
-          deploy-branch: "gh-pages"
