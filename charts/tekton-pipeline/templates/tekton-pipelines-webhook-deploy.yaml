@@ -125,4 +125,12 @@ spec:
           runAsUser: 65532
           seccompProfile:
             type: RuntimeDefault
+      nodeSelector:
+          {{- with .Values.webhookDeploymentTolerations.nodeSelector }}
+            {{- toYaml . |  nindent 8 }}
+          {{- end}}
       serviceAccountName: tekton-pipelines-webhook
+      tolerations:
+          {{- with .Values.webhookDeploymentTolerations.tolerations }}
+            {{- toYaml . |  nindent 6 }}
+          {{- end}}

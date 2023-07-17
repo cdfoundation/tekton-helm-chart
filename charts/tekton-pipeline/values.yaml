@@ -94,6 +94,21 @@ remoteResolversPod:
     requests:
       cpu: 100m
       memory: 100Mi
+# Add node affinity tolerations for tekton-remote-resolvers
+resolverDeploymentTolerations:
+  nodeAffinity: []
+  nodeSelector: []
+  tolerations: []
+# Add node affinity tolerations for tekton-pipeline-controller
+controllerDeploymentTolerations:
+  nodeSelectorTerms: []
+  nodeSelector: []
+  tolerations: []
+# Add node affinity tolerations for tekton-pipelines-webhook
+webhookDeploymentTolerations:
+  nodeSelectorTerms: []
+  nodeSelector: []
+  tolerations: []
 gitResolverConfig:
   # The maximum amount of time a single anonymous cloning resolution may take.
   fetch-timeout: "1m"
