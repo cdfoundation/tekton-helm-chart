@@ -45,6 +45,9 @@ spec:
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
             nodeSelectorTerms:
+                {{- with .Values.controllerDeploymentTolerations.nodeSelectorTerms }}
+                  {{- toYaml . |  nindent 12 }}
+                {{- end}}
             - matchExpressions:
               - key: kubernetes.io/os
                 operator: NotIn
@@ -147,7 +150,15 @@ spec:
           name: verification-secrets
           readOnly: true
         image: {{ .Values.controller.deployment.image }}
+      nodeSelector:
+          {{- with .Values.controllerDeploymentTolerations.nodeSelector }}
+            {{- toYaml . |  nindent 8 }}
+          {{- end}}
       serviceAccountName: tekton-pipelines-controller
+      tolerations:
+          {{- with .Values.controllerDeploymentTolerations.tolerations }}
+            {{- toYaml . |  nindent 6 }}
+          {{- end}}
       volumes:
       - configMap:
           name: config-logging

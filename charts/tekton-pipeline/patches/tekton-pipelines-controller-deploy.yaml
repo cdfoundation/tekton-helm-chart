@@ -22,6 +22,19 @@ spec:
             {{- toYaml . | nindent 8 }}
           {{- end}}
     spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            -  helmTemplateRemoveMe: |
+                {{- with .Values.controllerDeploymentTolerations.nodeSelectorTerms }}
+                  {{- toYaml . |  nindent 12 }}
+                {{- end}}
+            - matchExpressions:
+              - key: kubernetes.io/os
+                operator: NotIn
+                values:
+                  - windows
       containers:
       - name: tekton-pipelines-controller
         envFrom:
@@ -30,3 +43,13 @@ spec:
             optional: true
       helmTemplateRemoveMe: |
         image: {{ .Values.controller.deployment.image }}
+      nodeSelector:
+        helmTemplateRemoveMe: |
+          {{- with .Values.controllerDeploymentTolerations.nodeSelector }}
+            {{- toYaml . |  nindent 8 }}
+          {{- end}}
+      tolerations:
+        - helmTemplateRemoveMe: |
+            {{- with .Values.controllerDeploymentTolerations.tolerations }}
+              {{- toYaml . |  nindent 6 }}
+            {{- end}}

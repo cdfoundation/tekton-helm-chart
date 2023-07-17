@@ -22,3 +22,13 @@ spec:
         - secretRef:
             name: "{{ .Values.webhook.envFromSecret }}"
             optional: true
+      nodeSelector:
+        helmTemplateRemoveMe: |
+          {{- with .Values.webhookDeploymentTolerations.nodeSelector }}
+            {{- toYaml . |  nindent 8 }}
+          {{- end}}
+      tolerations:
+        - helmTemplateRemoveMe: |
+            {{- with .Values.webhookDeploymentTolerations.tolerations }}
+              {{- toYaml . |  nindent 6 }}
+            {{- end}}
