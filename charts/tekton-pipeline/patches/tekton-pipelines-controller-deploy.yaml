@@ -24,7 +24,7 @@ spec:
     spec:
       affinity:
           helmTemplateRemoveMe: |
-            {{- with .Values.controllerDeploymentTolerations.nodeSelectorTerms }}
+            {{- with .Values.controllerDeploymentTolerations.nodeAffinity }}
              {{- toYaml . |  nindent 8 }}
             {{- end }}
       containers:
