@@ -96,7 +96,7 @@ remoteResolversPod:
       memory: 100Mi
 # Add node affinity tolerations for tekton-remote-resolvers
 resolverDeploymentTolerations:
-  nodeAffinity: []
+  nodeAffinity: {}
   #  nodeAffinity:
   #    requiredDuringSchedulingIgnoredDuringExecution:
   #      nodeSelectorTerms:
@@ -109,7 +109,7 @@ resolverDeploymentTolerations:
   tolerations: []
 # Add node affinity tolerations for tekton-pipeline-controller
 controllerDeploymentTolerations:
-  nodeAffinity: []
+  nodeAffinity: {}
   #  nodeAffinity:
   #    requiredDuringSchedulingIgnoredDuringExecution:
   #      nodeSelectorTerms:
@@ -122,7 +122,7 @@ controllerDeploymentTolerations:
   tolerations: []
 # Add node affinity tolerations for tekton-pipelines-webhook
 webhookDeploymentTolerations:
-  nodeAffinity: []
+  nodeAffinity: {}
   #  nodeAffinity:
   #    requiredDuringSchedulingIgnoredDuringExecution:
   #      nodeSelectorTerms:
