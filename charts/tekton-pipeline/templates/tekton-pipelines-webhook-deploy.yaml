@@ -36,14 +36,9 @@ spec:
         version: v0.42.0
     spec:
       affinity:
-        nodeAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            nodeSelectorTerms:
-            - matchExpressions:
-              - key: kubernetes.io/os
-                operator: NotIn
-                values:
-                - windows
+          {{- with .Values.webhookDeploymentTolerations.nodeAffinity }}
+           {{- toYaml . |  nindent 8 }}
+          {{- end }}
         podAntiAffinity:
           preferredDuringSchedulingIgnoredDuringExecution:
           - podAffinityTerm:
