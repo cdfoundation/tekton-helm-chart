@@ -2,7 +2,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: tekton-pipelines-controller
-  namespace: tekton-pipelines
   labels:
     helmTemplateRemoveMe: |
       {{- with .Values.controller.deployment.labels }}
@@ -23,9 +22,26 @@ spec:
             {{- toYaml . | nindent 8 }}
           {{- end}}
     spec:
+      affinity:
+          helmTemplateRemoveMe: |
+            {{- with .Values.controllerDeploymentTolerations.nodeAffinity }}
+             {{- toYaml . |  nindent 8 }}
+            {{- end }}
       containers:
       - name: tekton-pipelines-controller
         envFrom:
         - secretRef:
             name: "{{ .Values.controller.envFromSecret }}"
             optional: true
+      helmTemplateRemoveMe: |
+        image: {{ .Values.controller.deployment.image }}
+      nodeSelector:
+        helmTemplateRemoveMe: |
+          {{- with .Values.controllerDeploymentTolerations.nodeSelector }}
+            {{- toYaml . |  nindent 8 }}
+          {{- end}}
+      tolerations:
+        - helmTemplateRemoveMe: |
+            {{- with .Values.controllerDeploymentTolerations.tolerations }}
+              {{- toYaml . |  nindent 6 }}
+            {{- end}}

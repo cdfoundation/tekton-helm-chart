@@ -1,4 +1,4 @@
-# Copyright 2019 The Tekton Authors
+# Copyright 2022 The Tekton Authors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,93 +15,86 @@
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
-  name: taskruns.tekton.dev
+  name: resolutionrequests.resolution.tekton.dev
   labels:
-    app.kubernetes.io/instance: default
-    app.kubernetes.io/part-of: tekton-pipelines
-    pipeline.tekton.dev/release: "v0.42.0"
-    version: "v0.42.0"
+    resolution.tekton.dev/release: devel
 spec:
-  group: tekton.dev
-  preserveUnknownFields: false
-  versions:
-    - name: v1beta1
-      served: true
-      storage: true
-      schema:
-        openAPIV3Schema:
-          type: object
-          # One can use x-kubernetes-preserve-unknown-fields: true
-          # at the root of the schema (and inside any properties, additionalProperties)
-          # to get the traditional CRD behaviour that nothing is pruned, despite
-          # setting spec.preserveUnknownProperties: false.
-          #
-          # See https://kubernetes.io/blog/2019/06/20/crd-structural-schema/
-          # See issue: https://github.com/knative/serving/issues/912
-          x-kubernetes-preserve-unknown-fields: true
-      additionalPrinterColumns:
-        - name: Succeeded
-          type: string
-          jsonPath: ".status.conditions[?(@.type==\"Succeeded\")].status"
-        - name: Reason
-          type: string
-          jsonPath: ".status.conditions[?(@.type==\"Succeeded\")].reason"
-        - name: StartTime
-          type: date
-          jsonPath: .status.startTime
-        - name: CompletionTime
-          type: date
-          jsonPath: .status.completionTime
-      # Opt into the status subresource so metadata.generation
-      # starts to increment
-      subresources:
-        status: {}
-    - name: v1
-      served: false
-      storage: false
-      schema:
-        openAPIV3Schema:
-          type: object
-          # One can use x-kubernetes-preserve-unknown-fields: true
-          # at the root of the schema (and inside any properties, additionalProperties)
-          # to get the traditional CRD behaviour that nothing is pruned, despite
-          # setting spec.preserveUnknownProperties: false.
-          #
-          # See https://kubernetes.io/blog/2019/06/20/crd-structural-schema/
-          # See issue: https://github.com/knative/serving/issues/912
-          x-kubernetes-preserve-unknown-fields: true
-      additionalPrinterColumns:
-        - name: Succeeded
-          type: string
-          jsonPath: ".status.conditions[?(@.type==\"Succeeded\")].status"
-        - name: Reason
-          type: string
-          jsonPath: ".status.conditions[?(@.type==\"Succeeded\")].reason"
-        - name: StartTime
-          type: date
-          jsonPath: .status.startTime
-        - name: CompletionTime
-          type: date
-          jsonPath: .status.completionTime
-      # Opt into the status subresource so metadata.generation
-      # starts to increment
-      subresources:
-        status: {}
+  group: resolution.tekton.dev
+  scope: Namespaced
   names:
-    kind: TaskRun
-    plural: taskruns
-    singular: taskrun
+    kind: ResolutionRequest
+    plural: resolutionrequests
+    singular: resolutionrequest
     categories:
       - tekton
       - tekton-pipelines
     shortNames:
-      - tr
-      - trs
-  scope: Namespaced
+      - resolutionrequest
+      - resolutionrequests
+  versions:
+    - name: v1alpha1
+      served: true
+      deprecated: true
+      storage: false
+      subresources:
+        status: {}
+      schema:
+        openAPIV3Schema:
+          type: object
+          # One can use x-kubernetes-preserve-unknown-fields: true
+          # at the root of the schema (and inside any properties, additionalProperties)
+          # to get the traditional CRD behaviour that nothing is pruned, despite
+          # setting spec.preserveUnknownProperties: false.
+          #
+          # See https://kubernetes.io/blog/2019/06/20/crd-structural-schema/
+          # See issue: https://github.com/knative/serving/issues/912
+          x-kubernetes-preserve-unknown-fields: true
+      additionalPrinterColumns:
+        - name: Succeeded
+          type: string
+          jsonPath: ".status.conditions[?(@.type=='Succeeded')].status"
+        - name: Reason
+          type: string
+          jsonPath: ".status.conditions[?(@.type=='Succeeded')].reason"
+    - name: v1beta1
+      served: true
+      storage: true
+      subresources:
+        status: {}
+      schema:
+        openAPIV3Schema:
+          type: object
+          # One can use x-kubernetes-preserve-unknown-fields: true
+          # at the root of the schema (and inside any properties, additionalProperties)
+          # to get the traditional CRD behaviour that nothing is pruned, despite
+          # setting spec.preserveUnknownProperties: false.
+          #
+          # See https://kubernetes.io/blog/2019/06/20/crd-structural-schema/
+          # See issue: https://github.com/knative/serving/issues/912
+          x-kubernetes-preserve-unknown-fields: true
+      additionalPrinterColumns:
+        - name: OwnerKind
+          type: string
+          jsonPath: ".metadata.ownerReferences[0].kind"
+        - name: Owner
+          type: string
+          jsonPath: ".metadata.ownerReferences[0].name"
+        - name: Succeeded
+          type: string
+          jsonPath: ".status.conditions[?(@.type=='Succeeded')].status"
+        - name: Reason
+          type: string
+          jsonPath: ".status.conditions[?(@.type=='Succeeded')].reason"
+        - name: StartTime
+          type: string
+          jsonPath: .metadata.creationTimestamp
+        - name: EndTime
+          type: string
+          jsonPath: .status.conditions[?(@.type=='Succeeded')].lastTransitionTime
   conversion:
     strategy: Webhook
     webhook:
-      conversionReviewVersions: ["v1beta1", "v1"]
+      conversionReviewVersions: ["v1alpha1", "v1beta1"]
       clientConfig:
         service:
           name: tekton-pipelines-webhook
