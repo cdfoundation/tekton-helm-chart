@@ -23,9 +23,10 @@ spec:
           {{- end}}
     spec:
       affinity:
+        nodeAffinity:
           helmTemplateRemoveMe: |
             {{- with .Values.controllerDeploymentTolerations.nodeAffinity }}
-             {{- toYaml . |  nindent 8 }}
+             {{- toYaml . |  nindent 10 }}
             {{- end }}
       containers:
       - name: tekton-pipelines-controller

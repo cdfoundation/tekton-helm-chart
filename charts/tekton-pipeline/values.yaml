@@ -107,30 +107,28 @@ resolverDeploymentTolerations:
   #                - "node"
   nodeSelector: []
   tolerations: []
-# Add node affinity tolerations for tekton-pipeline-controller
+# Add node affinity tolerations for tekton-pipeline-controller. Add additional matchExpressions below. Default is set.
 controllerDeploymentTolerations:
-  nodeAffinity: {}
-  #  nodeAffinity:
-  #    requiredDuringSchedulingIgnoredDuringExecution:
-  #      nodeSelectorTerms:
-  #        - matchExpressions:
-  #            - key: "key"
-  #              operator: "In"
-  #              values:
-  #                - "node"
+  nodeAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution:
+      nodeSelectorTerms:
+        - matchExpressions:
+            - key: kubernetes.io/os
+              operator: NotIn
+              values:
+                - windows
   nodeSelector: []
   tolerations: []
-# Add node affinity tolerations for tekton-pipelines-webhook
+# Add node affinity tolerations for tekton-pipelines-webhook. Add additional matchExpressions below. Default is set.
 webhookDeploymentTolerations:
-  nodeAffinity: {}
-  #  nodeAffinity:
-  #    requiredDuringSchedulingIgnoredDuringExecution:
-  #      nodeSelectorTerms:
-  #        - matchExpressions:
-  #            - key: "key"
-  #              operator: "In"
-  #              values:
-  #                - "node"
+  nodeAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution:
+      nodeSelectorTerms:
+        - matchExpressions:
+            - key: kubernetes.io/os
+              operator: NotIn
+              values:
+                - windows
   nodeSelector: []
   tolerations: []
 gitResolverConfig:
