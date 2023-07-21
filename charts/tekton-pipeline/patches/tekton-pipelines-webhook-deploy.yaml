@@ -17,10 +17,11 @@ spec:
           {{- end}}
     spec:
       affinity:
-        helmTemplateRemoveMe: |
-          {{- with .Values.webhookDeploymentTolerations.nodeAffinity }}
-           {{- toYaml . |  nindent 8 }}
-          {{- end }}
+        nodeAffinity:
+          helmTemplateRemoveMe: |
+            {{- with .Values.webhookDeploymentTolerations.nodeAffinity }}
+              {{- toYaml . |  nindent 10 }}
+            {{- end }}
       containers:
       - name: webhook
         envFrom:

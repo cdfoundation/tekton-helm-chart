@@ -11,6 +11,17 @@ jobs:
     steps:
       - name: check source code
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Get Chart.yaml version change
+        id: check-change
+        run: |
+          if git diff --name-only -r HEAD^1 HEAD | grep charts/tekton-pipeline/Chart.yaml; then
+            echo "changed_version=$(git diff --name-only -r HEAD^1 HEAD | grep charts/tekton-pipeline/Chart.yaml)"
+          else
+            exit 1
+          fi
 
       - uses: J12934/helm-gh-pages-action@master
         with:

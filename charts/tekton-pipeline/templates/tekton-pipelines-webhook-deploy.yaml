@@ -36,9 +36,10 @@ spec:
         version: v0.42.0
     spec:
       affinity:
-          {{- with .Values.webhookDeploymentTolerations.nodeAffinity }}
-           {{- toYaml . |  nindent 8 }}
-          {{- end }}
+        nodeAffinity:
+            {{- with .Values.webhookDeploymentTolerations.nodeAffinity }}
+              {{- toYaml . |  nindent 10 }}
+            {{- end }}
         podAntiAffinity:
           preferredDuringSchedulingIgnoredDuringExecution:
           - podAffinityTerm:
