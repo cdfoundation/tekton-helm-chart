@@ -33,9 +33,14 @@ endif
 	# Retrieve the image value from the template
 	yq -i '.controller.deployment.image = load("$(CHART_DIR)/templates/tekton-pipelines-controller-deploy.yaml").spec.template.spec.containers[].image' $(CHART_DIR)/values.yaml
 	# Remove the image value, so that end users can customize the image
-	yq -i '.spec.template.spec.containers[].image = null' $(CHART_DIR)/templates/tekton-pipelines-controller-deploy.yaml
-	# Remove duplicated node affinity
-	find $(CHART_DIR)/templates -type f -name "*deploy.yaml" -exec yq -i eval 'del(.spec.template.spec.affinity.nodeAffinity)' "{}" \;
+	yq -i 'del(.spec.template.spec.containers[].image)' $(CHART_DIR)/templates/tekton-pipelines-controller-deploy.yaml
+	# Make node affinity configurable
+	yq -i '.webhookDeploymentTolerations.nodeAffinity = load("$(CHART_DIR)/templates/tekton-pipelines-webhook-deploy.yaml").spec.template.spec.affinity.nodeAffinity' $(CHART_DIR)/values.yaml
+	yq -i 'del(.spec.template.spec.affinity.nodeAffinity)' $(CHART_DIR)/templates/tekton-pipelines-webhook-deploy.yaml
+	yq -i '.controllerDeploymentTolerations.nodeAffinity = load("$(CHART_DIR)/templates/tekton-pipelines-controller-deploy.yaml").spec.template.spec.affinity.nodeAffinity' $(CHART_DIR)/values.yaml
+	yq -i 'del(.spec.template.spec.affinity.nodeAffinity)' $(CHART_DIR)/templates/tekton-pipelines-controller-deploy.yaml
+	yq -i '.resolverDeploymentTolerations.nodeAffinity = load("$(CHART_DIR)/templates/tekton-pipelines-remote-resolvers-deploy.yaml").spec.template.spec.affinity.nodeAffinity' $(CHART_DIR)/values.yaml
+	yq -i 'del(.spec.template.spec.affinity.nodeAffinity)' $(CHART_DIR)/templates/tekton-pipelines-remote-resolvers-deploy.yaml
 	# kustomize the resources to include some helm template blocs
 	kustomize build ${CHART_DIR} | sed '/helmTemplateRemoveMe/d' > ${CHART_DIR}/templates/resource.yaml
 	jx gitops split -d ${CHART_DIR}/templates
