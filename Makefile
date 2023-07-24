@@ -1,7 +1,7 @@
 NAME := tekton-pipeline
 CHART_DIR := charts/${NAME}
 CHART_VERSION ?= latest
-RELEASE_VERSION := $(shell jx-release-version -previous-version=from-file:charts/tekton-pipeline/Chart.yaml)
+RELEASE_VERSION := $(shell jx release version -previous-version=from-file:charts/tekton-pipeline/Chart.yaml)
 
 CHART_REPO := gs://jenkinsxio/charts
 
@@ -49,6 +49,8 @@ endif
 ifneq ($(CHART_VERSION),latest)
 	sed -i.bak "s/^appVersion:.*/appVersion: ${CHART_VERSION}/" ${CHART_DIR}/Chart.yaml
 endif
+	# Increment Chart.yaml version for minor changes to helm chart
+	yq eval '.version = "$(RELEASE_VERSION)"' -i charts/tekton-pipeline/Chart.yaml
 
 build:
 	rm -rf Chart.lock
@@ -67,8 +69,6 @@ delete:
 clean:
 
 release: clean
-	# Increment Chart.yaml version for minor changes to helm chart
-	yq eval '.version = "$(RELEASE_VERSION)"' -i charts/tekton-pipeline/Chart.yaml
 	helm dependency build
 	helm lint
 	helm package .
