@@ -17,11 +17,10 @@ spec:
           {{- end}}
     spec:
       affinity:
-        nodeAffinity:
-          helmTemplateRemoveMe: |
-            {{- with .Values.webhookDeploymentTolerations.nodeAffinity }}
-              {{- toYaml . |  nindent 10 }}
-            {{- end }}
+        helmTemplateRemoveMe: |
+          {{- with .Values.webhook.affinity }}
+            {{- toYaml . |  nindent 8 }}
+          {{- end }}
       containers:
       - name: webhook
         envFrom:
@@ -30,11 +29,11 @@ spec:
             optional: true
       nodeSelector:
         helmTemplateRemoveMe: |
-          {{- with .Values.webhookDeploymentTolerations.nodeSelector }}
+          {{- with .Values.webhook.nodeSelector }}
             {{- toYaml . |  nindent 8 }}
           {{- end}}
       tolerations:
         - helmTemplateRemoveMe: |
-            {{- with .Values.webhookDeploymentTolerations.tolerations }}
+            {{- with .Values.webhook.tolerations }}
               {{- toYaml . |  nindent 6 }}
             {{- end}}

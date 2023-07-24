@@ -36,10 +36,9 @@ spec:
         version: v0.42.0
     spec:
       affinity:
-        nodeAffinity:
-            {{- with .Values.webhookDeploymentTolerations.nodeAffinity }}
-              {{- toYaml . |  nindent 10 }}
-            {{- end }}
+          {{- with .Values.webhook.affinity }}
+            {{- toYaml . |  nindent 8 }}
+          {{- end }}
         podAntiAffinity:
           preferredDuringSchedulingIgnoredDuringExecution:
           - podAffinityTerm:
@@ -122,11 +121,11 @@ spec:
           seccompProfile:
             type: RuntimeDefault
       nodeSelector:
-          {{- with .Values.webhookDeploymentTolerations.nodeSelector }}
+          {{- with .Values.webhook.nodeSelector }}
             {{- toYaml . |  nindent 8 }}
           {{- end}}
       serviceAccountName: tekton-pipelines-webhook
       tolerations:
-          {{- with .Values.webhookDeploymentTolerations.tolerations }}
+          {{- with .Values.webhook.tolerations }}
             {{- toYaml . |  nindent 6 }}
           {{- end}}

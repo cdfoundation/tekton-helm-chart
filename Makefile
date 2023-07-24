@@ -30,6 +30,10 @@ endif
 	# Move content of data: from git-resolver-config-cm.yaml to gitResolverConfig: in values.yaml
 	yq -i '.gitResolverConfig = load("$(CHART_DIR)/templates/git-resolver-config-cm.yaml").data' $(CHART_DIR)/values.yaml
 	yq -i '.data = null' $(CHART_DIR)/templates/git-resolver-config-cm.yaml
+	# Move content of : from tekton-pipelines-controller-deploy.yaml to controller.affinities.nodeAffinities in values.yaml
+	yq -i '.controller.affinity.nodeAffinity = load("$(CHART_DIR)/templates/tekton-pipelines-controller-deploy.yaml").spec.template.spec.affinity.nodeAffinity' $(CHART_DIR)/values.yaml
+	# Move content of : from tekton-pipelines-webhook-deploy.yaml to webhook.affinities.nodeAffinities in values.yaml
+	yq -i '.webhook.affinity.nodeAffinity = load("$(CHART_DIR)/templates/tekton-pipelines-webhook-deploy.yaml").spec.template.spec.affinity.nodeAffinity' $(CHART_DIR)/values.yaml
 	# Retrieve the image value from the template
 	yq -i '.controller.deployment.image = load("$(CHART_DIR)/templates/tekton-pipelines-controller-deploy.yaml").spec.template.spec.containers[].image' $(CHART_DIR)/values.yaml
 	# Remove the image value, so that end users can customize the image

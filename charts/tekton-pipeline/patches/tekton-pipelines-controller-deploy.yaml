@@ -23,11 +23,10 @@ spec:
           {{- end}}
     spec:
       affinity:
-        nodeAffinity:
-          helmTemplateRemoveMe: |
-            {{- with .Values.controllerDeploymentTolerations.nodeAffinity }}
-             {{- toYaml . |  nindent 10 }}
-            {{- end }}
+        helmTemplateRemoveMe: |
+          {{- with .Values.controller.affinity }}
+            {{- toYaml . |  nindent 8 }}
+          {{- end }}
       containers:
       - name: tekton-pipelines-controller
         envFrom:
@@ -38,11 +37,11 @@ spec:
         image: {{ .Values.controller.deployment.image }}
       nodeSelector:
         helmTemplateRemoveMe: |
-          {{- with .Values.controllerDeploymentTolerations.nodeSelector }}
+          {{- with .Values.controller.nodeSelector }}
             {{- toYaml . |  nindent 8 }}
           {{- end}}
       tolerations:
         - helmTemplateRemoveMe: |
-            {{- with .Values.controllerDeploymentTolerations.tolerations }}
+            {{- with .Values.controller.tolerations }}
               {{- toYaml . |  nindent 6 }}
             {{- end}}

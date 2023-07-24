@@ -17,15 +17,59 @@ controller:
   pod:
     labels: {}
     annotations: {}
-  # specifies the name of an optional kubernetes secret to mount environment variables from for things like HTTP proxy
+    # specifies the name of an optional kubernetes secret to mount environment variables from for things like HTTP proxy
   envFromSecret: "tekton-env"
+  # Add node affinity tolerations for tekton-pipeline-controller. Add additional matchExpressions below. Default is set.
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+          - matchExpressions:
+              - key: kubernetes.io/os
+                operator: NotIn
+                values:
+                  - windows
+  tolerations: []
+  nodeSelector: []
 webhook:
   deployment:
     labels: {}
   pod:
     labels: {}
-  # specifies the name of an optional kubernetes secret to mount environment variables from for things like HTTP proxy
+    # specifies the name of an optional kubernetes secret to mount environment variables from for things like HTTP proxy
   envFromSecret: "tekton-env"
+  # Add node affinity tolerations for tekton-pipelines-webhook. Add additional matchExpressions below. Default is set.
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+          - matchExpressions:
+              - key: kubernetes.io/os
+                operator: NotIn
+                values:
+                  - windows
+  tolerations: []
+  nodeSelector: []
+# Settings to increase deployment resources for tekton-pipelines-remote-resolvers-deployment
+remoteResolversPod:
+  resources:
+    limits:
+      cpu: 1000m
+      memory: 1000Mi
+    requests:
+      cpu: 100m
+      memory: 100Mi
+resolverDeploymentTolerations:
+  nodeAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution:
+      nodeSelectorTerms:
+        - matchExpressions:
+            - key: "agentpool"
+              operator: "In"
+              values:
+                - "buildnode"
+  tolerations: []
+  nodeSelector: []
 # configuration to put in the config-defaults ConfigMap
 configDefaults:
   _example: |
@@ -85,52 +129,6 @@ configDefaults:
     # default-max-matrix-combinations-count contains the default maximum number
     # of combinations from a Matrix, if none is specified.
     default-max-matrix-combinations-count: "256"
-# Settings to increase deployment resources for tekton-pipelines-remote-resolvers-deployment
-remoteResolversPod:
-  resources:
-    limits:
-      cpu: 1000m
-      memory: 1000Mi
-    requests:
-      cpu: 100m
-      memory: 100Mi
-# Add node affinity tolerations for tekton-remote-resolvers
-resolverDeploymentTolerations:
-  nodeAffinity: {}
-  #  nodeAffinity:
-  #    requiredDuringSchedulingIgnoredDuringExecution:
-  #      nodeSelectorTerms:
-  #        - matchExpressions:
-  #            - key: "key"
-  #              operator: "In"
-  #              values:
-  #                - "node"
-  nodeSelector: []
-  tolerations: []
-# Add node affinity tolerations for tekton-pipeline-controller. Add additional matchExpressions below. Default is set.
-controllerDeploymentTolerations:
-  nodeAffinity:
-    requiredDuringSchedulingIgnoredDuringExecution:
-      nodeSelectorTerms:
-        - matchExpressions:
-            - key: kubernetes.io/os
-              operator: NotIn
-              values:
-                - windows
-  nodeSelector: []
-  tolerations: []
-# Add node affinity tolerations for tekton-pipelines-webhook. Add additional matchExpressions below. Default is set.
-webhookDeploymentTolerations:
-  nodeAffinity:
-    requiredDuringSchedulingIgnoredDuringExecution:
-      nodeSelectorTerms:
-        - matchExpressions:
-            - key: kubernetes.io/os
-              operator: NotIn
-              values:
-                - windows
-  nodeSelector: []
-  tolerations: []
 gitResolverConfig:
   # The maximum amount of time a single anonymous cloning resolution may take.
   fetch-timeout: "1m"
