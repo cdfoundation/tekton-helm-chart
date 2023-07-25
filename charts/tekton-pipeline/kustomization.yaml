@@ -7,6 +7,7 @@ resources:
 - templates/config-defaults-cm.yaml
 - templates/feature-flags-cm.yaml
 - templates/git-resolver-config-cm.yaml
+- templates/tekton-pipelines-remote-resolvers-deploy.yaml
 
 patchesStrategicMerge:
 - patches/tekton-pipelines-controller-deploy.yaml
@@ -14,3 +15,4 @@ patchesStrategicMerge:
 - patches/config-defaults-cm.yaml
 - patches/feature-flags-cm.yaml
 - patches/git-resolver-config-cm.yaml
+- patches/tekton-pipelines-remote-resolvers-deploy.yaml
