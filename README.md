@@ -22,18 +22,20 @@ make fetch
 ```
 
 This will fetch the latest version.
-To fetch a specific version (say 0.32.0), use CHART_VERSION
 
 ```bash
 make CHART_VERSION=0.32.0 fetch
 ```
+To fetch a specific version (say 0.32.0), use CHART_VERSION
+```bash
+make version
+```
+This will increment the chart version by 1. Please use this command when making changes to the charts to maintain version control.
 
 ```bash
 make release
 ```
 This will also check the current version in Chart.yaml and increment the patch version by 1.
-
-Please use this command when making changes to the charts to maintain version control.
 
 The `app_version` will be set to the `CHART_VERSION` automatically by the makefile if a `CHART_VERSION` is specified.
 For latest set `app_version` to the latest tekton version from the [tekton release page](https://github.com/tektoncd/pipeline/releases) and not `latest`.
