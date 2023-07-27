@@ -8,11 +8,10 @@ CDF official helm chart for [Tekton Pipelines](https://github.com/tektoncd/pipel
 
 ## Prerequisites
 
-The following tools need to be installed locally:
+The following tools need to be installed locally (apart from jx):
 
 - [kustomize](https://kubectl.docs.kubernetes.io/installation/kustomize/)
 - [yq](https://github.com/mikefarah/yq/#install)
-- [jx-release-version](https://github.com/jenkins-x-plugins/jx-release-version)
 
 ### Jenkins X
 
@@ -32,10 +31,10 @@ make CHART_VERSION=0.32.0 fetch
 ```bash
 make release
 ```
-This will check the current version in Chart.yaml and increment the minor version by 0.0.1.
+This will also check the current version in Chart.yaml and increment the patch version by 1.
+
 Please use this command when making changes to the charts to maintain version control.
 
-Also, remember to change the `version` in `charts/tekton-pipeline/Chart.yaml`.
 The `app_version` will be set to the `CHART_VERSION` automatically by the makefile if a `CHART_VERSION` is specified.
 For latest set `app_version` to the latest tekton version from the [tekton release page](https://github.com/tektoncd/pipeline/releases) and not `latest`.
 

@@ -98,7 +98,6 @@ spec:
         - secretRef:
             name: '{{ .Values.controller.envFromSecret }}'
             optional: true
-        image: null
         livenessProbe:
           httpGet:
             path: /health
