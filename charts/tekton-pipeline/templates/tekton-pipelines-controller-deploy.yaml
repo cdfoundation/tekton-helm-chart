@@ -42,10 +42,9 @@ spec:
         version: v0.42.0
     spec:
       affinity:
-        nodeAffinity:
-            {{- with .Values.controllerDeploymentTolerations.nodeAffinity }}
-             {{- toYaml . |  nindent 10 }}
-            {{- end }}
+          {{- with .Values.controller.affinity }}
+            {{- toYaml . |  nindent 8 }}
+          {{- end }}
       containers:
       - args:
         - -kubeconfig-writer-image
@@ -99,7 +98,6 @@ spec:
         - secretRef:
             name: '{{ .Values.controller.envFromSecret }}'
             optional: true
-        image: null
         livenessProbe:
           httpGet:
             path: /health
@@ -144,12 +142,12 @@ spec:
           readOnly: true
         image: {{ .Values.controller.deployment.image }}
       nodeSelector:
-          {{- with .Values.controllerDeploymentTolerations.nodeSelector }}
+          {{- with .Values.controller.nodeSelector }}
             {{- toYaml . |  nindent 8 }}
           {{- end}}
       serviceAccountName: tekton-pipelines-controller
       tolerations:
-          {{- with .Values.controllerDeploymentTolerations.tolerations }}
+          {{- with .Values.controller.tolerations }}
             {{- toYaml . |  nindent 6 }}
           {{- end}}
       volumes:

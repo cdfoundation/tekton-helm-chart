@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tekton-pipelines-remote-resolvers
+spec:
+  template:
+    spec:
+      affinity:
+        helmTemplateRemoveMe: |
+          {{- with .Values.remoteresolver.affinity }}
+            {{- toYaml . |  nindent 8 }}
+          {{- end }}
+      nodeSelector:
+        helmTemplateRemoveMe: |
+          {{- with .Values.remoteresolver.nodeSelector }}
+            {{- toYaml . |  nindent 8 }}
+          {{- end}}
+      tolerations:
+        - helmTemplateRemoveMe: |
+            {{- with .Values.remoteresolver.tolerations }}
+              {{- toYaml . |  nindent 6 }}
+            {{- end}}
+      containers:
+        - name: controller
+          resources:
+            helmTemplateRemoveMe: |
+              {{- with .Values.remoteresolver.resources }}
+                {{- toYaml . | trim | nindent 10 }}
+              {{- end }}
