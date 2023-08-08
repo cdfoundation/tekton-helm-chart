@@ -1,0 +1,11 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "tekton-operator.fullname" . }}-defaults
+  namespace: {{ template "tekton-operator.namespace" . }}
+  labels:
+    {{- include "tekton-operator.labels" . | nindent 4 }}
+data:
+  AUTOINSTALL_COMPONENTS: "true"
+  DEFAULT_TARGET_NAMESPACE: tekton-pipelines
