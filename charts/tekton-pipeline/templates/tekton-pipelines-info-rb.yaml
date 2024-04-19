@@ -3,7 +3,7 @@ kind: RoleBinding
 metadata:
   name: tekton-pipelines-info
   labels:
-    app.kubernetes.io/instance: default
+    app.kubernetes.io/instance: tekton-default
     app.kubernetes.io/part-of: tekton-pipelines
 subjects:
   # Giving all system:authenticated users the access of the

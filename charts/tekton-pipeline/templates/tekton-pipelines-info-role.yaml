@@ -3,7 +3,7 @@ kind: Role
 metadata:
   name: tekton-pipelines-info
   labels:
-    app.kubernetes.io/instance: default
+    app.kubernetes.io/instance: tekton-default
     app.kubernetes.io/part-of: tekton-pipelines
 rules:
   # All system:authenticated users needs to have access

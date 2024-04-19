@@ -17,7 +17,7 @@ kind: ConfigMap
 metadata:
   name: config-trusted-resources
   labels:
-    app.kubernetes.io/instance: default
+    app.kubernetes.io/instance: tekton-default
     app.kubernetes.io/part-of: tekton-pipelines
 data:
   _example: |

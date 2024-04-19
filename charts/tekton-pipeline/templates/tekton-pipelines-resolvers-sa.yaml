@@ -18,5 +18,5 @@ metadata:
   name: tekton-pipelines-resolvers
   labels:
     app.kubernetes.io/component: resolvers
-    app.kubernetes.io/instance: default
+    app.kubernetes.io/instance: tekton-default
     app.kubernetes.io/part-of: tekton-pipelines

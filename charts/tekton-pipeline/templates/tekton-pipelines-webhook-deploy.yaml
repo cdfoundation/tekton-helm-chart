@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   labels:
     app.kubernetes.io/component: webhook
-    app.kubernetes.io/instance: default
+    app.kubernetes.io/instance: tekton-default
     app.kubernetes.io/name: webhook
     app.kubernetes.io/part-of: tekton-pipelines
     app.kubernetes.io/version: v0.42.0
@@ -17,7 +17,7 @@ spec:
   selector:
     matchLabels:
       app.kubernetes.io/component: webhook
-      app.kubernetes.io/instance: default
+      app.kubernetes.io/instance: tekton-default
       app.kubernetes.io/name: webhook
       app.kubernetes.io/part-of: tekton-pipelines
   template:
@@ -25,7 +25,7 @@ spec:
       labels:
         app: tekton-pipelines-webhook
         app.kubernetes.io/component: webhook
-        app.kubernetes.io/instance: default
+        app.kubernetes.io/instance: tekton-default
         app.kubernetes.io/name: webhook
         app.kubernetes.io/part-of: tekton-pipelines
         app.kubernetes.io/version: v0.42.0
@@ -45,7 +45,7 @@ spec:
               labelSelector:
                 matchLabels:
                   app.kubernetes.io/component: webhook
-                  app.kubernetes.io/instance: default
+                  app.kubernetes.io/instance: tekton-default
                   app.kubernetes.io/name: webhook
                   app.kubernetes.io/part-of: tekton-pipelines
               topologyKey: kubernetes.io/hostname

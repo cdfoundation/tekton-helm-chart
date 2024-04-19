@@ -19,7 +19,7 @@ metadata:
   name: tekton-pipelines-resolvers-resolution-request-updates
   labels:
     app.kubernetes.io/component: resolvers
-    app.kubernetes.io/instance: default
+    app.kubernetes.io/instance: tekton-default
     app.kubernetes.io/part-of: tekton-pipelines
 rules:
   - apiGroups: ["resolution.tekton.dev"]

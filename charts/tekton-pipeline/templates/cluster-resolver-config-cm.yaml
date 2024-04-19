@@ -18,7 +18,7 @@ metadata:
   name: cluster-resolver-config
   labels:
     app.kubernetes.io/component: resolvers
-    app.kubernetes.io/instance: default
+    app.kubernetes.io/instance: tekton-default
     app.kubernetes.io/part-of: tekton-pipelines
 data:
   # The default kind to fetch.
