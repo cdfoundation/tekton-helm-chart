@@ -19,7 +19,7 @@ metadata:
   name: config-leader-election
   namespace: tekton-pipelines
   labels:
-    app.kubernetes.io/instance: default
+    app.kubernetes.io/instance: tekton-default
     app.kubernetes.io/part-of: tekton-pipelines
 data:
   # An inactive but valid configuration follows; see example.

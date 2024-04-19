@@ -19,7 +19,7 @@ metadata:
   namespace: tekton-pipelines
   labels:
     app.kubernetes.io/component: controller
-    app.kubernetes.io/instance: default
+    app.kubernetes.io/instance: tekton-default
     app.kubernetes.io/part-of: tekton-pipelines
   annotations: 
     eks.amazonaws.com/role-arn: arn:aws:iam::myproject:role/myclsuter-mynamespace-tekton-bot

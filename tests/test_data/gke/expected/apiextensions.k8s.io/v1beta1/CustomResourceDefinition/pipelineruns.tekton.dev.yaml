@@ -18,7 +18,7 @@ kind: CustomResourceDefinition
 metadata:
   name: pipelineruns.tekton.dev
   labels:
-    app.kubernetes.io/instance: default
+    app.kubernetes.io/instance: tekton-default
     app.kubernetes.io/part-of: tekton-pipelines
     pipeline.tekton.dev/release: "v0.16.3"
     version: "v0.16.3"

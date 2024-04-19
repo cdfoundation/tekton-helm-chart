@@ -18,5 +18,5 @@ kind: Namespace
 metadata:
   name: tekton-pipelines
   labels:
-    app.kubernetes.io/instance: default
+    app.kubernetes.io/instance: tekton-default
     app.kubernetes.io/part-of: tekton-pipelines
