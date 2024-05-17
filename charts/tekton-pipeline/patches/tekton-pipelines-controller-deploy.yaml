@@ -29,6 +29,9 @@ spec:
           {{- end }}
       containers:
       - name: tekton-pipelines-controller
+        resources:
+          helmTemplateRemoveMe: |
+            {{- toYaml  .Values.controller.resources |  nindent 10 }}
         envFrom:
         - secretRef:
             name: "{{ .Values.controller.envFromSecret }}"

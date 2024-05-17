@@ -32,6 +32,7 @@ controller:
                   - windows
   tolerations: []
   nodeSelector: {}
+  resources: {}
 # Values for tekton-pipelines-webhook
 webhook:
   deployment:
