@@ -1,0 +1,89 @@
+# Default values for tekton-operator.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+
+images:
+  operator:
+    repository: gcr.io/tekton-releases/github.com/tektoncd/operator/cmd/kubernetes/operator
+    pullPolicy: IfNotPresent
+    # Overrides the image tag whose default is the chart appVersion.
+    tag: v0.53.0@sha256:bc2c20bed07ca2ab78ce05525d142019374a4f959c1edc292fe97eb2b27e9c9f
+  
+  webhook:
+    repository: gcr.io/tekton-releases/github.com/tektoncd/operator/cmd/kubernetes/webhook
+    pullPolicy: IfNotPresent
+    # Overrides the image tag whose default is the chart appVersion.
+    tag: v0.53.0@sha256:88811100723b68540780e0cb2981f04ffc155975629a30691b6108523e413b72
+
+  proxy:
+    repository: gcr.io/tekton-releases/github.com/tektoncd/operator/cmd/kubernetes/proxy-webhook
+    tag: v0.53.0@sha256:9a8d434ef0299f7bd1ae0c69796a5f410472f9d1c3817296428482abf7f0651c
+
+  pruner:
+    repository: gcr.io/tekton-releases/dogfooding/tkn
+    tag: "@sha256:025de221fb059ca24a3b2d988889ea34bce48dc76c0cf0d6b4499edb8c21325f"
+
+
+imagePullSecrets: []
+
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+rbac:
+  create: true
+
+podAnnotations: {}
+
+podSecurityContext: {}
+  # fsGroup: 2000
+
+securityContext: {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+
+service:
+  type: ClusterIP
+  port: 443
+
+operator:
+  resources: {}
+    # We usually recommend not to specify default resources and to leave this as a conscious
+    # choice for the user. This also increases chances charts run on environments with little
+    # resources, such as Minikube. If you do want to specify resources, uncomment the following
+    # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+    # limits:
+    #   cpu: 100m
+    #   memory: 128Mi
+    # requests:
+    #   cpu: 100m
+    #   memory: 128Mi
+  
+  nodeSelector: {}
+  
+  tolerations: []
+  
+  affinity: {}
+
+webhook:
+  resources: {}
+
+  nodeSelector: {}
+  
+  tolerations: []
+  
+  affinity: {}
