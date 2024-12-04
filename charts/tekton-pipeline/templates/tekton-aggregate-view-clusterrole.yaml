@@ -28,9 +28,9 @@ rules:
       - taskruns
       - pipelines
       - pipelineruns
-      - pipelineresources
       - runs
       - customruns
+      - stepactions
     verbs:
       - get
       - list

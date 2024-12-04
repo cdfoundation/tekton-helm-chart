@@ -64,7 +64,7 @@ remoteresolver:
       memory: 100Mi
     limits:
       cpu: 1000m
-      memory: 1000Mi
+      memory: 4Gi
 # configuration to put in the config-defaults ConfigMap
 configDefaults:
   _example: |
@@ -124,6 +124,72 @@ configDefaults:
     # default-max-matrix-combinations-count contains the default maximum number
     # of combinations from a Matrix, if none is specified.
     default-max-matrix-combinations-count: "256"
+
+    # default-forbidden-env contains comma seperated environment variables that cannot be
+    # overridden by podTemplate.
+    default-forbidden-env:
+
+    # default-resolver-type contains the default resolver type to be used in the cluster,
+    # no default-resolver-type is specified by default
+    default-resolver-type:
+
+    # default-imagepullbackoff-timeout contains the default duration to wait
+    # before requeuing the TaskRun to retry, specifying 0 here is equivalent to fail fast
+    # possible values could be 1m, 5m, 10s, 1h, etc
+    # default-imagepullbackoff-timeout: "5m"
+
+    # default-container-resource-requirements allow users to update default resource requirements
+    # to a init-containers and containers of a pods create by the controller
+    # Onet: All the resource requirements are applied to init-containers and containers
+    # only if the existing resource requirements are empty.
+    # default-container-resource-requirements: |
+    #   place-scripts: # updates resource requirements of a 'place-scripts' container
+    #     requests:
+    #       memory: "64Mi"
+    #       cpu: "250m"
+    #     limits:
+    #       memory: "128Mi"
+    #       cpu: "500m"
+    #
+    #   prepare: # updates resource requirements of a 'prepare' container
+    #     requests:
+    #       memory: "64Mi"
+    #       cpu: "250m"
+    #     limits:
+    #       memory: "256Mi"
+    #       cpu: "500m"
+    #
+    #   working-dir-initializer: # updates resource requirements of a 'working-dir-initializer' container
+    #     requests:
+    #       memory: "64Mi"
+    #       cpu: "250m"
+    #     limits:
+    #       memory: "512Mi"
+    #       cpu: "500m"
+    #
+    #   prefix-scripts: # updates resource requirements of containers which starts with 'scripts-'
+    #     requests:
+    #       memory: "64Mi"
+    #       cpu: "250m"
+    #     limits:
+    #       memory: "128Mi"
+    #       cpu: "500m"
+    #
+    #   prefix-sidecar-scripts: # updates resource requirements of containers which starts with 'sidecar-scripts-'
+    #     requests:
+    #       memory: "64Mi"
+    #       cpu: "250m"
+    #     limits:
+    #       memory: "128Mi"
+    #       cpu: "500m"
+    #
+    #   default: # updates resource requirements of init-containers and containers which has empty resource resource requirements
+    #     requests:
+    #       memory: "64Mi"
+    #       cpu: "250m"
+    #     limits:
+    #       memory: "256Mi"
+    #       cpu: "500m"
 gitResolverConfig:
   # The maximum amount of time a single anonymous cloning resolution may take.
   fetch-timeout: "1m"
@@ -151,10 +217,24 @@ featureFlags:
   #
   # The default behaviour is for Tekton to create Affinity Assistants
   #
-  # See more in the workspace documentation about Affinity Assistant
-  # https://github.com/tektoncd/pipeline/blob/main/docs/workspaces.md#affinity-assistant-and-specifying-workspace-order-in-a-pipeline
+  # See more in the Affinity Assistant documentation
+  # https://github.com/tektoncd/pipeline/blob/main/docs/affinityassistants.md
   # or https://github.com/tektoncd/pipeline/pull/2630 for more info.
+  #
+  # Note: This feature flag is deprecated and will be removed in release v0.60. Consider using `coschedule` feature flag to configure Affinity Assistant behavior.
   disable-affinity-assistant: "false"
+  # Setting this flag will determine how PipelineRun Pods are scheduled with Affinity Assistant.
+  # Acceptable values are "workspaces" (default), "pipelineruns", "isolate-pipelinerun", or "disabled".
+  #
+  # Setting it to "workspaces" will schedule all the taskruns sharing the same PVC-based workspace in a pipelinerun to the same node.
+  # Setting it to "pipelineruns" will schedule all the taskruns in a pipelinerun to the same node.
+  # Setting it to "isolate-pipelinerun" will schedule all the taskruns in a pipelinerun to the same node,
+  # and only allows one pipelinerun to run on a node at a time.
+  # Setting it to "disabled" will not apply any coschedule policy.
+  #
+  # See more in the Affinity Assistant documentation
+  # https://github.com/tektoncd/pipeline/blob/main/docs/affinityassistants.md
+  coschedule: "workspaces"
   # Setting this flag to "true" will prevent Tekton scanning attached
   # service accounts and injecting any credentials it finds into your
   # Steps.
@@ -195,23 +275,59 @@ featureFlags:
   # This is an experimental feature and thus should still be considered
   # an alpha feature.
   enable-tekton-oci-bundles: "false"
-  # Setting this flag to "true" enables the use of custom tasks from
-  # within pipelines.
-  # This is an experimental feature and thus should still be considered
-  # an alpha feature.
-  enable-custom-tasks: "false"
   # Setting this flag will determine which gated features are enabled.
   # Acceptable values are "stable", "beta", or "alpha".
-  enable-api-fields: "stable"
-  # Setting this flag to "true" enables CloudEvents for Runs, as long as a
+  enable-api-fields: "beta"
+  # Setting this flag to "true" enables CloudEvents for CustomRuns and Runs, as long as a
   # CloudEvents sink is configured in the config-defaults config map
   send-cloudevents-for-runs: "false"
-  # Setting this flag to "enforce" will enforce verification of tasks/pipeline. Failing to verify
-  # will fail the taskrun/pipelinerun. "warn" will only log the err message and "skip"
-  # will skip the whole verification
-  resource-verification-mode: "skip"
+  # This flag affects the behavior of taskruns and pipelineruns in cases where no VerificationPolicies match them.
+  # If it is set to "fail", TaskRuns and PipelineRuns will fail verification if no matching policies are found.
+  # If it is set to "warn", TaskRuns and PipelineRuns will run to completion if no matching policies are found, and an error will be logged.
+  # If it is set to "ignore", TaskRuns and PipelineRuns will run to completion if no matching policies are found, and no error will be logged.
+  trusted-resources-verification-no-match-policy: "ignore"
   # Setting this flag to "true" enables populating the "provenance" field in TaskRun
   # and PipelineRun status. This field contains metadata about resources used
   # in the TaskRun/PipelineRun such as the source from where a remote Task/Pipeline
   # definition was fetched.
-  enable-provenance-in-status: "false"
+  enable-provenance-in-status: "true"
+  # Setting this flag will determine how Tekton pipelines will handle non-falsifiable provenance.
+  # If set to "spire", then SPIRE will be used to ensure non-falsifiable provenance.
+  # If set to "none", then Tekton will not have non-falsifiable provenance.
+  # This is an experimental feature and thus should still be considered an alpha feature.
+  enforce-nonfalsifiability: "none"
+  # Setting this flag will determine how Tekton pipelines will handle extracting results from the task.
+  # Acceptable values are "termination-message" or "sidecar-logs".
+  # "sidecar-logs" is now a beta feature.
+  results-from: "termination-message"
+  # Setting this flag will determine the upper limit of each task result
+  # This flag is optional and only associated with the previous flag, results-from
+  # When results-from is set to "sidecar-logs", this flag can be used to configure the upper limit of a task result
+  # max-result-size: "4096"
+  # Setting this flag to "true" will limit privileges for containers injected by Tekton into TaskRuns.
+  # This allows TaskRuns to run in namespaces with "restricted" pod security standards.
+  # Not all Kubernetes implementations support this option.
+  set-security-context: "false"
+  # Setting this flag to "true" will keep pod on cancellation
+  # allowing examination of the logs on the pods from cancelled taskruns
+  keep-pod-on-cancel: "false"
+  # Setting this flag to "true" will enable the CEL evaluation in WhenExpression
+  enable-cel-in-whenexpression: "false"
+  # Setting this flag to "true" will enable the use of StepActions in Steps
+  # This feature is in preview mode and not implemented yet. Please check #7259 for updates.
+  enable-step-actions: "false"
+  # Setting this flag to "true" will enable the use of Artifacts in Steps
+  # This feature is in preview mode and not implemented yet. Please check #7693 for updates.
+  enable-artifacts: "false"
+  # Setting this flag to "true" will enable the built-in param input validation via param enum.
+  enable-param-enum: "false"
+  # Setting this flag to "pipeline,pipelinerun,taskrun" will prevent users from creating
+  # embedded spec Taskruns or Pipelineruns for Pipeline, Pipelinerun and taskrun
+  # respectively. We can specify "pipeline" to disable for Pipeline resource only.
+  # "pipelinerun" for Pipelinerun and "taskrun" for Taskrun. Or a combination of
+  # these.
+  disable-inline-spec: ""
+  # Setting this flag to "true" will enable the use of concise resolver syntax
+  enable-concise-resolver-syntax: "false"
+  # Setthing this flag to "true" will enable native Kubernetes Sidecar support
+  enable-kubernetes-sidecar: "false"
