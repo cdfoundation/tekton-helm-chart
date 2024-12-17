@@ -6,12 +6,12 @@ metadata:
     app.kubernetes.io/instance: default
     app.kubernetes.io/name: webhook
     app.kubernetes.io/part-of: tekton-pipelines
-    app.kubernetes.io/version: v0.42.0
+    app.kubernetes.io/version: v0.65.3
       {{- with .Values.webhook.deployment.labels }}
         {{- toYaml . | nindent 4 }}
       {{- end}}
-    pipeline.tekton.dev/release: v0.42.0
-    version: v0.42.0
+    pipeline.tekton.dev/release: v0.65.3
+    version: v0.65.3
   name: tekton-pipelines-webhook
 spec:
   selector:
@@ -28,12 +28,12 @@ spec:
         app.kubernetes.io/instance: default
         app.kubernetes.io/name: webhook
         app.kubernetes.io/part-of: tekton-pipelines
-        app.kubernetes.io/version: v0.42.0
+        app.kubernetes.io/version: v0.65.3
           {{- with .Values.webhook.pod.labels }}
             {{- toYaml . | nindent 8 }}
           {{- end}}
-        pipeline.tekton.dev/release: v0.42.0
-        version: v0.42.0
+        pipeline.tekton.dev/release: v0.65.3
+        version: v0.65.3
     spec:
       affinity:
           {{- with .Values.webhook.affinity }}
@@ -61,11 +61,15 @@ spec:
         - name: CONFIG_OBSERVABILITY_NAME
           value: config-observability
         - name: CONFIG_LEADERELECTION_NAME
-          value: config-leader-election
+          value: config-leader-election-webhook
         - name: CONFIG_FEATURE_FLAGS_NAME
           value: feature-flags
+        - name: PROBES_PORT
+          value: "8080"
         - name: WEBHOOK_PORT
           value: "8443"
+        - name: WEBHOOK_ADMISSION_CONTROLLER_NAME
+          value: webhook.pipeline.tekton.dev
         - name: WEBHOOK_SERVICE_NAME
           value: tekton-pipelines-webhook
         - name: WEBHOOK_SECRET_NAME
@@ -76,7 +80,7 @@ spec:
         - secretRef:
             name: '{{ .Values.webhook.envFromSecret }}'
             optional: true
-        image: gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/webhook:v0.42.0@sha256:90989eeb6e0ba9c481b1faba3b01bcc70725baa58484c8f6ce9d22cc601e63dc
+        image: ghcr.io/tektoncd/pipeline/webhook-d4749e605405422fd87700164e31b2d1:v0.65.3@sha256:bc13a169e53ad152c1bf3bab769ecd382ba216236974f6bef4bb8c5baa5ec3d2
         livenessProbe:
           httpGet:
             path: /health
@@ -115,6 +119,7 @@ spec:
           capabilities:
             drop:
             - ALL
+          readOnlyRootFilesystem: true
           runAsGroup: 65532
           runAsNonRoot: true
           runAsUser: 65532

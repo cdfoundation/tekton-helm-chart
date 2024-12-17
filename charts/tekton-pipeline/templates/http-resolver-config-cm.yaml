@@ -1,4 +1,4 @@
-# Copyright 2019 The Tekton Authors
+# Copyright 2023 The Tekton Authors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,18 +15,11 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: config-artifact-bucket
+  name: http-resolver-config
   labels:
+    app.kubernetes.io/component: resolvers
     app.kubernetes.io/instance: default
     app.kubernetes.io/part-of: tekton-pipelines
-# data:
-#  # location of the gcs bucket to be used for artifact storage
-#  location: "gs://bucket-name"
-#  # name of the secret that will contain the credentials for the service account
-#  # with access to the bucket
-#  bucket.service.account.secret.name:
-#  # The key in the secret with the required service account json
-#  bucket.service.account.secret.key:
-#  # The field name that should be used for the service account
-#  # Valid values: GOOGLE_APPLICATION_CREDENTIALS, BOTO_CONFIG.
-#  bucket.service.account.field.name: GOOGLE_APPLICATION_CREDENTIALS
+data:
+  # The maximum amount of time the http resolver will wait for a response from the server.
+  fetch-timeout: "1m"

@@ -6,12 +6,12 @@ metadata:
     app.kubernetes.io/instance: default
     app.kubernetes.io/name: controller
     app.kubernetes.io/part-of: tekton-pipelines
-    app.kubernetes.io/version: v0.42.0
+    app.kubernetes.io/version: v0.65.3
       {{- with .Values.controller.deployment.labels }}
         {{- toYaml . | nindent 4 }}
       {{- end}}
-    pipeline.tekton.dev/release: v0.42.0
-    version: v0.42.0
+    pipeline.tekton.dev/release: v0.65.3
+    version: v0.65.3
   name: tekton-pipelines-controller
 spec:
   replicas: 1
@@ -34,12 +34,12 @@ spec:
         app.kubernetes.io/instance: default
         app.kubernetes.io/name: controller
         app.kubernetes.io/part-of: tekton-pipelines
-        app.kubernetes.io/version: v0.42.0
+        app.kubernetes.io/version: v0.65.3
           {{- with .Values.controller.pod.labels }}
             {{- toYaml . | nindent 8 }}
           {{- end}}
-        pipeline.tekton.dev/release: v0.42.0
-        version: v0.42.0
+        pipeline.tekton.dev/release: v0.65.3
+        version: v0.65.3
     spec:
       affinity:
           {{- with .Values.controller.affinity }}
@@ -47,22 +47,14 @@ spec:
           {{- end }}
       containers:
       - args:
-        - -kubeconfig-writer-image
-        - gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/kubeconfigwriter:v0.42.0@sha256:672df16c97c15d20102749c6e86195683d037bd6c8787560c9c07ade8b610071
-        - -git-image
-        - gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/git-init:v0.42.0@sha256:211b0822659b2030a9e12b1cdb47faab2187a63a24ed9d21044520f967674138
         - -entrypoint-image
-        - gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/entrypoint:v0.42.0@sha256:77e43d0fc9f7e7bdfa31dc16082b08dace05ce81c91a06c00dfa2f547212ce72
+        - ghcr.io/tektoncd/pipeline/entrypoint-bff0a22da108bc2f16c818c97641a296:v0.65.3@sha256:0b4eb672fc6ab0d9fd365bbe11bbefa83131f27185ff3c11cf7f20ccb0e43155
         - -nop-image
-        - gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/nop:v0.42.0@sha256:bd1fcc45d40a8ef1621789856caa2f54d7a884f19af921105feafae0131648c5
-        - -imagedigest-exporter-image
-        - gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/imagedigestexporter:v0.42.0@sha256:370d5a0e39577f784f1376fac0822230b9a44950c01fe2190692a0a5a810adc6
-        - -pr-image
-        - gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/pullrequest-init:v0.42.0@sha256:e00d578d40d57a5124bee5107cb3358763874588a7fe2522ebc7bb979280d06e
+        - ghcr.io/tektoncd/pipeline/nop-8eac7c133edad5df719dc37b36b62482:v0.65.3@sha256:5d6d6f3fce07a7e2d65c77f706c081c0d6fea22fdb085a879eeb0e6c1f12ce78
+        - -sidecarlogresults-image
+        - ghcr.io/tektoncd/pipeline/sidecarlogresults-7501c6a20d741631510a448b48ab098f:v0.65.3@sha256:fc3b8c29c6056e5639ac3ae9083c00701a20722dec9991c0fd3a14e46b45f02e
         - -workingdirinit-image
-        - gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/workingdirinit:v0.42.0@sha256:60a39c629448ac2845c4781513ef44c2f2fbcb6eb321d70a016002b5fa7b2379
-        - -gsutil-image
-        - gcr.io/google.com/cloudsdktool/cloud-sdk@sha256:27b2c22bf259d9bc1a291e99c63791ba0c27a04d2db0a43241ba0f1f20f4067f
+        - ghcr.io/tektoncd/pipeline/workingdirinit-0c558922ec6a1b739e550e349f2d5fc1:v0.65.3@sha256:c3a301aebc2fca8f0c477e4246d48d9b85a37ed0b41dd541f6503e7f1e15571e
         - -shell-image
         - cgr.dev/chainguard/busybox@sha256:19f02276bf8dbdd62f069b922f10c65262cc34b710eea26ff928129a736be791
         - -shell-image-win
@@ -78,16 +70,12 @@ spec:
           value: config-logging
         - name: CONFIG_OBSERVABILITY_NAME
           value: config-observability
-        - name: CONFIG_ARTIFACT_BUCKET_NAME
-          value: config-artifact-bucket
-        - name: CONFIG_ARTIFACT_PVC_NAME
-          value: config-artifact-pvc
         - name: CONFIG_FEATURE_FLAGS_NAME
           value: feature-flags
         - name: CONFIG_LEADERELECTION_NAME
-          value: config-leader-election
-        - name: CONFIG_TRUSTED_RESOURCES_NAME
-          value: config-trusted-resources
+          value: config-leader-election-controller
+        - name: CONFIG_SPIRE
+          value: config-spire
         - name: SSL_CERT_FILE
           value: /etc/config-registry-cert/cert
         - name: SSL_CERT_DIR
@@ -122,11 +110,14 @@ spec:
           initialDelaySeconds: 5
           periodSeconds: 10
           timeoutSeconds: 5
+        resources:
+            {{- toYaml  .Values.controller.resources |  nindent 10 }}
         securityContext:
           allowPrivilegeEscalation: false
           capabilities:
             drop:
             - ALL
+          readOnlyRootFilesystem: true
           runAsGroup: 65532
           runAsNonRoot: true
           runAsUser: 65532
@@ -137,9 +128,6 @@ spec:
           name: config-logging
         - mountPath: /etc/config-registry-cert
           name: config-registry-cert
-        - mountPath: /etc/verification-secrets
-          name: verification-secrets
-          readOnly: true
         image: {{ .Values.controller.deployment.image }}
       nodeSelector:
           {{- with .Values.controller.nodeSelector }}
@@ -157,7 +145,3 @@ spec:
       - configMap:
           name: config-registry-cert
         name: config-registry-cert
-      - name: verification-secrets
-        secret:
-          optional: true
-          secretName: verification-secrets

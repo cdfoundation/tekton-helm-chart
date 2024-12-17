@@ -1,4 +1,4 @@
-# Copyright 2019 The Tekton Authors
+# Copyright 2022 The Tekton Authors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,12 +15,12 @@
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
-  name: pipelineresources.tekton.dev
+  name: verificationpolicies.tekton.dev
   labels:
     app.kubernetes.io/instance: default
     app.kubernetes.io/part-of: tekton-pipelines
-    pipeline.tekton.dev/release: "v0.42.0"
-    version: "v0.42.0"
+    pipeline.tekton.dev/release: "v0.65.3"
+    version: "v0.65.3"
 spec:
   group: tekton.dev
   versions:
@@ -38,14 +38,10 @@ spec:
           # See https://kubernetes.io/blog/2019/06/20/crd-structural-schema/
           # See issue: https://github.com/knative/serving/issues/912
           x-kubernetes-preserve-unknown-fields: true
-      # Opt into the status subresource so metadata.generation
-      # starts to increment
-      subresources:
-        status: {}
   names:
-    kind: PipelineResource
-    plural: pipelineresources
-    singular: pipelineresource
+    kind: VerificationPolicy
+    plural: verificationpolicies
+    singular: verificationpolicy
     categories:
       - tekton
       - tekton-pipelines
