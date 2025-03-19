@@ -6,12 +6,12 @@ metadata:
     app.kubernetes.io/instance: default
     app.kubernetes.io/name: controller
     app.kubernetes.io/part-of: tekton-pipelines
-    app.kubernetes.io/version: v0.65.3
+    app.kubernetes.io/version: v0.69.0
       {{- with .Values.controller.deployment.labels }}
         {{- toYaml . | nindent 4 }}
       {{- end}}
-    pipeline.tekton.dev/release: v0.65.3
-    version: v0.65.3
+    pipeline.tekton.dev/release: v0.69.0
+    version: v0.69.0
   name: tekton-pipelines-controller
 spec:
   replicas: 1
@@ -34,12 +34,12 @@ spec:
         app.kubernetes.io/instance: default
         app.kubernetes.io/name: controller
         app.kubernetes.io/part-of: tekton-pipelines
-        app.kubernetes.io/version: v0.65.3
+        app.kubernetes.io/version: v0.69.0
           {{- with .Values.controller.pod.labels }}
             {{- toYaml . | nindent 8 }}
           {{- end}}
-        pipeline.tekton.dev/release: v0.65.3
-        version: v0.65.3
+        pipeline.tekton.dev/release: v0.69.0
+        version: v0.69.0
     spec:
       affinity:
           {{- with .Values.controller.affinity }}
@@ -48,13 +48,13 @@ spec:
       containers:
       - args:
         - -entrypoint-image
-        - ghcr.io/tektoncd/pipeline/entrypoint-bff0a22da108bc2f16c818c97641a296:v0.65.3@sha256:0b4eb672fc6ab0d9fd365bbe11bbefa83131f27185ff3c11cf7f20ccb0e43155
+        - ghcr.io/tektoncd/pipeline/entrypoint-bff0a22da108bc2f16c818c97641a296:v0.69.0@sha256:c4427dc67f89552db62e0ce2f5d573ad54dc386a975d38201f30943120adf1e9
         - -nop-image
-        - ghcr.io/tektoncd/pipeline/nop-8eac7c133edad5df719dc37b36b62482:v0.65.3@sha256:5d6d6f3fce07a7e2d65c77f706c081c0d6fea22fdb085a879eeb0e6c1f12ce78
+        - ghcr.io/tektoncd/pipeline/nop-8eac7c133edad5df719dc37b36b62482:v0.69.0@sha256:4a2e726ce80ea573b6348a44ce783ee4a7c1c6aaeab1a0c00001f321f4c38c0f
         - -sidecarlogresults-image
-        - ghcr.io/tektoncd/pipeline/sidecarlogresults-7501c6a20d741631510a448b48ab098f:v0.65.3@sha256:fc3b8c29c6056e5639ac3ae9083c00701a20722dec9991c0fd3a14e46b45f02e
+        - ghcr.io/tektoncd/pipeline/sidecarlogresults-7501c6a20d741631510a448b48ab098f:v0.69.0@sha256:9925427cd47c224fc5432ed388b7b60be5cb237d2478d6d925e2bc3d1052d688
         - -workingdirinit-image
-        - ghcr.io/tektoncd/pipeline/workingdirinit-0c558922ec6a1b739e550e349f2d5fc1:v0.65.3@sha256:c3a301aebc2fca8f0c477e4246d48d9b85a37ed0b41dd541f6503e7f1e15571e
+        - ghcr.io/tektoncd/pipeline/workingdirinit-0c558922ec6a1b739e550e349f2d5fc1:v0.69.0@sha256:afbf8087e7e89f5e82d1ec366c5f74eaff3a63b3a2ab28a601d5de450d6fd144
         - -shell-image
         - cgr.dev/chainguard/busybox@sha256:19f02276bf8dbdd62f069b922f10c65262cc34b710eea26ff928129a736be791
         - -shell-image-win
@@ -64,6 +64,8 @@ spec:
           valueFrom:
             fieldRef:
               fieldPath: metadata.namespace
+        - name: KUBERNETES_MIN_VERSION
+          value: v1.28.0
         - name: CONFIG_DEFAULTS_NAME
           value: config-defaults
         - name: CONFIG_LOGGING_NAME

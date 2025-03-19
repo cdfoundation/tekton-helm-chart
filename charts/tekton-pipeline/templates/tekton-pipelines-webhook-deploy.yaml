@@ -6,12 +6,12 @@ metadata:
     app.kubernetes.io/instance: default
     app.kubernetes.io/name: webhook
     app.kubernetes.io/part-of: tekton-pipelines
-    app.kubernetes.io/version: v0.65.3
+    app.kubernetes.io/version: v0.69.0
       {{- with .Values.webhook.deployment.labels }}
         {{- toYaml . | nindent 4 }}
       {{- end}}
-    pipeline.tekton.dev/release: v0.65.3
-    version: v0.65.3
+    pipeline.tekton.dev/release: v0.69.0
+    version: v0.69.0
   name: tekton-pipelines-webhook
 spec:
   selector:
@@ -28,12 +28,12 @@ spec:
         app.kubernetes.io/instance: default
         app.kubernetes.io/name: webhook
         app.kubernetes.io/part-of: tekton-pipelines
-        app.kubernetes.io/version: v0.65.3
+        app.kubernetes.io/version: v0.69.0
           {{- with .Values.webhook.pod.labels }}
             {{- toYaml . | nindent 8 }}
           {{- end}}
-        pipeline.tekton.dev/release: v0.65.3
-        version: v0.65.3
+        pipeline.tekton.dev/release: v0.69.0
+        version: v0.69.0
     spec:
       affinity:
           {{- with .Values.webhook.affinity }}
@@ -56,6 +56,8 @@ spec:
           valueFrom:
             fieldRef:
               fieldPath: metadata.namespace
+        - name: KUBERNETES_MIN_VERSION
+          value: v1.28.0
         - name: CONFIG_LOGGING_NAME
           value: config-logging
         - name: CONFIG_OBSERVABILITY_NAME
@@ -80,7 +82,7 @@ spec:
         - secretRef:
             name: '{{ .Values.webhook.envFromSecret }}'
             optional: true
-        image: ghcr.io/tektoncd/pipeline/webhook-d4749e605405422fd87700164e31b2d1:v0.65.3@sha256:bc13a169e53ad152c1bf3bab769ecd382ba216236974f6bef4bb8c5baa5ec3d2
+        image: ghcr.io/tektoncd/pipeline/webhook-d4749e605405422fd87700164e31b2d1:v0.69.0@sha256:d295b914dee401a7a23a28b779394b3d471d96e091f0ade937accf6d058915b6
         livenessProbe:
           httpGet:
             path: /health
