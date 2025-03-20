@@ -19,15 +19,15 @@ metadata:
   labels:
     app.kubernetes.io/instance: default
     app.kubernetes.io/part-of: tekton-pipelines
-    pipeline.tekton.dev/release: "v0.42.0"
-    version: "v0.42.0"
+    pipeline.tekton.dev/release: "v0.69.0"
+    version: "v0.69.0"
 spec:
   group: tekton.dev
   preserveUnknownFields: false
   versions:
     - name: v1beta1
       served: true
-      storage: true
+      storage: false
       subresources:
         status: {}
       schema:
@@ -42,8 +42,8 @@ spec:
           # See issue: https://github.com/knative/serving/issues/912
           x-kubernetes-preserve-unknown-fields: true
     - name: v1
-      served: false
-      storage: false
+      served: true
+      storage: true
       schema:
         openAPIV3Schema:
           type: object
