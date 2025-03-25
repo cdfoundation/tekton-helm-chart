@@ -4,7 +4,6 @@ namespace:
   labels:
     pod-security.kubernetes.io/enforce: restricted
     app.kubernetes.io/part-of: tekton-pipelines
-
 auth:
   git:
     username: "admin"
@@ -20,7 +19,7 @@ serviceaccount:
 # Values for tekton-pipelines-controller
 controller:
   deployment:
-    image: ghcr.io/tektoncd/pipeline/controller-10a3e32792f33651396d02b6855a6e36:v0.69.0@sha256:a3264de3edaae85ec7ce26f4f0876d4977ebdddceda793a8848ad8592347ecab
+    image: ghcr.io/tektoncd/pipeline/controller-10a3e32792f33651396d02b6855a6e36:v0.69.1@sha256:3f42d35f8c1231a1c4366c57140bcfe115edd106b5af79555757e56e9224c6b7
     labels: {}
   pod:
     labels: {}

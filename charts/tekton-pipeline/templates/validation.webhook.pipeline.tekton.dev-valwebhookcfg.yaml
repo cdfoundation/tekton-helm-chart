@@ -6,7 +6,7 @@ metadata:
     app.kubernetes.io/component: webhook
     app.kubernetes.io/instance: default
     app.kubernetes.io/part-of: tekton-pipelines
-    pipeline.tekton.dev/release: "v0.69.0"
+    pipeline.tekton.dev/release: "v0.69.1"
 webhooks:
   - admissionReviewVersions: ["v1"]
     clientConfig:
