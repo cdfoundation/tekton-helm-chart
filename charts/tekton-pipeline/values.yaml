@@ -1,3 +1,10 @@
+namespace:
+  name: tekton-pipelines
+  create: true
+  labels:
+    pod-security.kubernetes.io/enforce: restricted
+    app.kubernetes.io/part-of: tekton-pipelines
+
 auth:
   git:
     username: "admin"
