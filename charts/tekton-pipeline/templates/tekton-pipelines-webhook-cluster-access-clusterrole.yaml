@@ -16,7 +16,6 @@ rules:
       - pipelines.tekton.dev
       - pipelineruns.tekton.dev
       - tasks.tekton.dev
-      - clustertasks.tekton.dev
       - taskruns.tekton.dev
       - resolutionrequests.resolution.tekton.dev
       - customruns.tekton.dev
