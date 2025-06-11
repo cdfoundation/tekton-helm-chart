@@ -8,5 +8,5 @@ metadata:
     app.kubernetes.io/part-of: tekton-pipelines
 rules:
   - apiGroups: ["tekton.dev"]
-    resources: ["tasks", "clustertasks", "taskruns", "pipelines", "pipelineruns", "customruns"]
+    resources: ["tasks", "taskruns", "pipelines", "pipelineruns", "customruns"]
     verbs: ["get", "list", "watch"]

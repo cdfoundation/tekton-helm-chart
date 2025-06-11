@@ -6,9 +6,9 @@ metadata:
     app.kubernetes.io/instance: default
     app.kubernetes.io/name: resolvers
     app.kubernetes.io/part-of: tekton-pipelines
-    app.kubernetes.io/version: v0.69.1
-    pipeline.tekton.dev/release: v0.69.1
-    version: v0.69.1
+    app.kubernetes.io/version: v1.1.0
+    pipeline.tekton.dev/release: v1.1.0
+    version: v1.1.0
   name: tekton-pipelines-remote-resolvers
 spec:
   replicas: 1
@@ -26,9 +26,9 @@ spec:
         app.kubernetes.io/instance: default
         app.kubernetes.io/name: resolvers
         app.kubernetes.io/part-of: tekton-pipelines
-        app.kubernetes.io/version: v0.69.1
-        pipeline.tekton.dev/release: v0.69.1
-        version: v0.69.1
+        app.kubernetes.io/version: v1.1.0
+        pipeline.tekton.dev/release: v1.1.0
+        version: v1.1.0
     spec:
       affinity:
           {{- with .Values.remoteresolver.affinity }}
@@ -69,7 +69,7 @@ spec:
           value: https://artifacthub.io/
         - name: TEKTON_HUB_API
           value: https://api.hub.tekton.dev/
-        image: ghcr.io/tektoncd/pipeline/resolvers-ff86b24f130c42b88983d3c13993056d:v0.69.1@sha256:ef428fc3763f41ec48a504c72b6617bf020b529382a44c4ee366e8679bd33c85
+        image: ghcr.io/tektoncd/pipeline/resolvers-ff86b24f130c42b88983d3c13993056d:v1.1.0@sha256:874a8a2360ccf87aa386a78ef12da2085e97eb290607edfefa9c57864b7abfc5
         name: controller
         ports:
         - containerPort: 9090
@@ -91,6 +91,9 @@ spec:
           runAsNonRoot: true
           seccompProfile:
             type: RuntimeDefault
+        volumeMounts:
+        - mountPath: /tmp
+          name: tmp-clone-volume
       nodeSelector:
           {{- with .Values.remoteresolver.nodeSelector }}
             {{- toYaml . |  nindent 8 }}
@@ -100,3 +103,7 @@ spec:
           {{- with .Values.remoteresolver.tolerations }}
             {{- toYaml . |  nindent 6 }}
           {{- end}}
+      volumes:
+      - emptyDir:
+          sizeLimit: 4Gi
+        name: tmp-clone-volume
