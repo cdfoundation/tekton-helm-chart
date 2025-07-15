@@ -6,12 +6,12 @@ metadata:
     app.kubernetes.io/instance: default
     app.kubernetes.io/name: controller
     app.kubernetes.io/part-of: tekton-pipelines
-    app.kubernetes.io/version: v1.1.0
+    app.kubernetes.io/version: v1.2.0
       {{- with .Values.controller.deployment.labels }}
         {{- toYaml . | nindent 4 }}
       {{- end}}
-    pipeline.tekton.dev/release: v1.1.0
-    version: v1.1.0
+    pipeline.tekton.dev/release: v1.2.0
+    version: v1.2.0
   name: tekton-pipelines-controller
 spec:
   replicas: 1
@@ -34,12 +34,12 @@ spec:
         app.kubernetes.io/instance: default
         app.kubernetes.io/name: controller
         app.kubernetes.io/part-of: tekton-pipelines
-        app.kubernetes.io/version: v1.1.0
+        app.kubernetes.io/version: v1.2.0
           {{- with .Values.controller.pod.labels }}
             {{- toYaml . | nindent 8 }}
           {{- end}}
-        pipeline.tekton.dev/release: v1.1.0
-        version: v1.1.0
+        pipeline.tekton.dev/release: v1.2.0
+        version: v1.2.0
     spec:
       affinity:
           {{- with .Values.controller.affinity }}
@@ -48,13 +48,13 @@ spec:
       containers:
       - args:
         - -entrypoint-image
-        - ghcr.io/tektoncd/pipeline/entrypoint-bff0a22da108bc2f16c818c97641a296:v1.1.0@sha256:6e7031049f641583d651f3aac0ed58fe682076d05385d0962536d168bac993eb
+        - ghcr.io/tektoncd/pipeline/entrypoint-bff0a22da108bc2f16c818c97641a296:v1.2.0@sha256:da0a2dc55ed240d6b8c19bffe35eecf438d94db0d6874b534b4731b612a5dd66
         - -nop-image
-        - ghcr.io/tektoncd/pipeline/nop-8eac7c133edad5df719dc37b36b62482:v1.1.0@sha256:52f63949cf2e3934dc49481c237be075312d9aee07be155477d2fccddb0c61b6
+        - ghcr.io/tektoncd/pipeline/nop-8eac7c133edad5df719dc37b36b62482:v1.2.0@sha256:0ec9a1343ddd71d003953fc7866e96d9d6ee029978eb6f1f265e0055ec1bcb61
         - -sidecarlogresults-image
-        - ghcr.io/tektoncd/pipeline/sidecarlogresults-7501c6a20d741631510a448b48ab098f:v1.1.0@sha256:ded822917616eea7365e93b783699297b0f6f85e5588a8cba53e0e9c0eb47080
+        - ghcr.io/tektoncd/pipeline/sidecarlogresults-7501c6a20d741631510a448b48ab098f:v1.2.0@sha256:e8d9e1b0763008c3697e233f59183e8eeeadc32ce827ede7eb5335e5e42f99aa
         - -workingdirinit-image
-        - ghcr.io/tektoncd/pipeline/workingdirinit-0c558922ec6a1b739e550e349f2d5fc1:v1.1.0@sha256:ed8668edf1dfdc8d3c2875da7b5eab315ba8d9008309a33159f736eb97c71841
+        - ghcr.io/tektoncd/pipeline/workingdirinit-0c558922ec6a1b739e550e349f2d5fc1:v1.2.0@sha256:6dcedad306bf03a42b7446e65a8268ef99a606f641eaa9e37c6ee7d48aac6bf0
         - -shell-image
         - cgr.dev/chainguard/busybox@sha256:19f02276bf8dbdd62f069b922f10c65262cc34b710eea26ff928129a736be791
         - -shell-image-win
