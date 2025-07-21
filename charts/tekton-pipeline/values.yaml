@@ -26,6 +26,8 @@ controller:
     annotations: {}
     # specifies the name of an optional kubernetes secret to mount environment variables from for things like HTTP proxy
   envFromSecret: "tekton-env"
+  kubeApiQps: "5.0"
+  kubeApiBurst: "10"
   # Add node affinity tolerations for tekton-pipeline-controller. Add additional matchExpressions below. Default is set.
   affinity:
     nodeAffinity:

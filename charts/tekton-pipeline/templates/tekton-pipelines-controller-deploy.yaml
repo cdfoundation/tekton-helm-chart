@@ -84,6 +84,10 @@ spec:
           value: /etc/ssl/certs
         - name: METRICS_DOMAIN
           value: tekton.dev/pipeline
+        - name: KUBE_API_QPS
+          value: '{{ .Values.controller.kubeApiQps }}'
+        - name: KUBE_API_BURST
+          value: '{{ .Values.controller.kubeApiBurst }}'
         envFrom:
         - secretRef:
             name: '{{ .Values.controller.envFromSecret }}'
