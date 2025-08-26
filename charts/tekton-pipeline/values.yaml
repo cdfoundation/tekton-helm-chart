@@ -19,7 +19,7 @@ serviceaccount:
 # Values for tekton-pipelines-controller
 controller:
   deployment:
-    image: ghcr.io/tektoncd/pipeline/controller-10a3e32792f33651396d02b6855a6e36:v1.2.0@sha256:aed6d33658948bc81b7983dc66ca10fb19f479fd425ae4e0309153a72ddb59ee
+    image: ghcr.io/tektoncd/pipeline/controller-10a3e32792f33651396d02b6855a6e36:v1.3.1@sha256:702fca76e77ef1dc991d72b41fe7af4be00f0e0c84160060a7bdf11cd6a3429f
     labels: {}
   pod:
     labels: {}
@@ -201,6 +201,14 @@ configDefaults:
     #     limits:
     #       memory: "256Mi"
     #       cpu: "500m"
+
+    # default-sidecar-log-polling-interval specifies the polling interval for the Tekton sidecar log results container.
+    # This controls how frequently the sidecar checks for step completion files written by steps in a TaskRun.
+    # Lower values (e.g., "10ms") make the sidecar more responsive but may increase CPU usage; higher values (e.g., "1s")
+    # reduce resource usage but may delay result collection.
+    # This value is used by the sidecar-tekton-log-results container and can be tuned for performance or test scenarios.
+    # Example values: "100ms", "500ms", "1s"
+    default-sidecar-log-polling-interval: "100ms"
 gitResolverConfig:
   # The maximum amount of time a single anonymous cloning resolution may take.
   fetch-timeout: "1m"
@@ -332,3 +340,9 @@ featureFlags:
   enable-kubernetes-sidecar: "false"
   # Setting this flag to "false" will have no effect since StepActions are a stable feature
   enable-step-actions: "true"
+  # Controls whether exponential backoff is enabled when creating TaskRuns or CustomRuns.
+  # If set to "true", the controller will use exponential backoff when retrying failed create operations,
+  # which can help mitigate issues caused by temporary API server or webhook unavailability.
+  # If set to "false", exponential backoff will be disabled.
+  # For advanced tuning of backoff parameters, update the 'wait-exponential-backoff' ConfigMap.
+  enable-wait-exponential-backoff: "false"

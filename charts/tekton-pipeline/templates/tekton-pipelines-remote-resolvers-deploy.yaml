@@ -6,9 +6,9 @@ metadata:
     app.kubernetes.io/instance: default
     app.kubernetes.io/name: resolvers
     app.kubernetes.io/part-of: tekton-pipelines
-    app.kubernetes.io/version: v1.2.0
-    pipeline.tekton.dev/release: v1.2.0
-    version: v1.2.0
+    app.kubernetes.io/version: v1.3.1
+    pipeline.tekton.dev/release: v1.3.1
+    version: v1.3.1
   name: tekton-pipelines-remote-resolvers
 spec:
   replicas: 1
@@ -26,14 +26,22 @@ spec:
         app.kubernetes.io/instance: default
         app.kubernetes.io/name: resolvers
         app.kubernetes.io/part-of: tekton-pipelines
-        app.kubernetes.io/version: v1.2.0
-        pipeline.tekton.dev/release: v1.2.0
-        version: v1.2.0
+        app.kubernetes.io/version: v1.3.1
+        pipeline.tekton.dev/release: v1.3.1
+        version: v1.3.1
     spec:
       affinity:
           {{- with .Values.remoteresolver.affinity }}
             {{- toYaml . |  nindent 8 }}
           {{- end }}
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: kubernetes.io/os
+                operator: NotIn
+                values:
+                - windows
         podAntiAffinity:
           preferredDuringSchedulingIgnoredDuringExecution:
           - podAffinityTerm:
@@ -46,7 +54,12 @@ spec:
               topologyKey: kubernetes.io/hostname
             weight: 100
       containers:
-      - env:
+      - args: []
+        command:
+        - /sbin/tini
+        - --
+        - /ko-app/resolvers
+        env:
         - name: SYSTEM_NAMESPACE
           valueFrom:
             fieldRef:
@@ -65,11 +78,11 @@ spec:
           value: tekton.dev/resolution
         - name: PROBES_PORT
           value: "8080"
+        - name: TEKTON_HUB_API
+          value: ""
         - name: ARTIFACT_HUB_API
           value: https://artifacthub.io/
-        - name: TEKTON_HUB_API
-          value: https://api.hub.tekton.dev/
-        image: ghcr.io/tektoncd/pipeline/resolvers-ff86b24f130c42b88983d3c13993056d:v1.2.0@sha256:939102e67d09d277bdf19bc83b5fbc45ed3cbcf840017956b71995c3e68ed289
+        image: ghcr.io/tektoncd/pipeline/resolvers-ff86b24f130c42b88983d3c13993056d:v1.3.1@sha256:625e3314b0036766b71255791dc91cc5243a880b2f1c252f81f494facf8efd61
         name: controller
         ports:
         - containerPort: 9090
@@ -89,6 +102,7 @@ spec:
             - ALL
           readOnlyRootFilesystem: true
           runAsNonRoot: true
+          runAsUser: 65532
           seccompProfile:
             type: RuntimeDefault
         volumeMounts:
