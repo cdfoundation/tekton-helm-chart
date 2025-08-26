@@ -19,8 +19,8 @@ metadata:
   labels:
     app.kubernetes.io/instance: default
     app.kubernetes.io/part-of: tekton-pipelines
-    pipeline.tekton.dev/release: "v1.2.0"
-    version: "v1.2.0"
+    pipeline.tekton.dev/release: "v1.3.1"
+    version: "v1.3.1"
 spec:
   group: tekton.dev
   preserveUnknownFields: false
@@ -2162,7 +2162,7 @@ spec:
                           description: |-
                             EntryPoint identifies the entry point into the build. This is often a path to a
                             build definition file and/or a target label within that file.
-                            Example: "task/git-clone/0.8/git-clone.yaml"
+                            Example: "task/git-clone/0.10/git-clone.yaml"
                           type: string
                         uri:
                           description: |-
@@ -2199,6 +2199,8 @@ spec:
                           type: boolean
                         enableStepActions:
                           description: EnableStepActions is a no-op flag since StepActions are stable
+                          type: boolean
+                        enableWaitExponentialBackoff:
                           type: boolean
                         enforceNonfalsifiability:
                           type: string
@@ -2239,7 +2241,7 @@ spec:
                           description: |-
                             EntryPoint identifies the entry point into the build. This is often a path to a
                             build definition file and/or a target label within that file.
-                            Example: "task/git-clone/0.8/git-clone.yaml"
+                            Example: "task/git-clone/0.10/git-clone.yaml"
                           type: string
                         uri:
                           description: |-
@@ -2575,7 +2577,7 @@ spec:
                                     description: |-
                                       EntryPoint identifies the entry point into the build. This is often a path to a
                                       build definition file and/or a target label within that file.
-                                      Example: "task/git-clone/0.8/git-clone.yaml"
+                                      Example: "task/git-clone/0.10/git-clone.yaml"
                                     type: string
                                   uri:
                                     description: |-
@@ -2612,6 +2614,8 @@ spec:
                                     type: boolean
                                   enableStepActions:
                                     description: EnableStepActions is a no-op flag since StepActions are stable
+                                    type: boolean
+                                  enableWaitExponentialBackoff:
                                     type: boolean
                                   enforceNonfalsifiability:
                                     type: string
@@ -2652,7 +2656,7 @@ spec:
                                     description: |-
                                       EntryPoint identifies the entry point into the build. This is often a path to a
                                       build definition file and/or a target label within that file.
-                                      Example: "task/git-clone/0.8/git-clone.yaml"
+                                      Example: "task/git-clone/0.10/git-clone.yaml"
                                     type: string
                                   uri:
                                     description: |-
@@ -2862,7 +2866,7 @@ spec:
                                           description: |-
                                             EntryPoint identifies the entry point into the build. This is often a path to a
                                             build definition file and/or a target label within that file.
-                                            Example: "task/git-clone/0.8/git-clone.yaml"
+                                            Example: "task/git-clone/0.10/git-clone.yaml"
                                           type: string
                                         uri:
                                           description: |-
@@ -2899,6 +2903,8 @@ spec:
                                           type: boolean
                                         enableStepActions:
                                           description: EnableStepActions is a no-op flag since StepActions are stable
+                                          type: boolean
+                                        enableWaitExponentialBackoff:
                                           type: boolean
                                         enforceNonfalsifiability:
                                           type: string
@@ -2939,7 +2945,7 @@ spec:
                                           description: |-
                                             EntryPoint identifies the entry point into the build. This is often a path to a
                                             build definition file and/or a target label within that file.
-                                            Example: "task/git-clone/0.8/git-clone.yaml"
+                                            Example: "task/git-clone/0.10/git-clone.yaml"
                                           type: string
                                         uri:
                                           description: |-
@@ -5120,6 +5126,8 @@ spec:
                         enableStepActions:
                           description: EnableStepActions is a no-op flag since StepActions are stable
                           type: boolean
+                        enableWaitExponentialBackoff:
+                          type: boolean
                         enforceNonfalsifiability:
                           type: string
                         maxResultSize:
@@ -5159,7 +5167,7 @@ spec:
                           description: |-
                             EntryPoint identifies the entry point into the build. This is often a path to a
                             build definition file and/or a target label within that file.
-                            Example: "task/git-clone/0.8/git-clone.yaml"
+                            Example: "task/git-clone/0.10/git-clone.yaml"
                           type: string
                         uri:
                           description: |-
