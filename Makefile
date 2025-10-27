@@ -44,6 +44,14 @@ endif
 	kustomize build ${CHART_DIR} | sed '/helmTemplateRemoveMe/d' > ${CHART_DIR}/templates/resource.yaml
 	jx gitops split -d ${CHART_DIR}/templates
 	jx gitops rename -d ${CHART_DIR}/templates
+	# Wrap CRDs with crds.install conditional
+	find $(CHART_DIR)/templates -type f -name "*-crd.yaml" -exec sh -c 'echo "{{- if .Values.crds.install }}" | cat - "$$1" > temp && mv temp "$$1"' _ {} \;
+	find $(CHART_DIR)/templates -type f -name "*-crd.yaml" -exec sh -c 'echo "{{- end }}" >> "$$1"' _ {} \;
+	# Wrap ClusterRoles and ClusterRoleBindings with createClusterRoles conditional
+	find $(CHART_DIR)/templates -type f \( -name "*-clusterrole.yaml" -o -name "*-crb.yaml" \) -exec sh -c 'echo "{{- if .Values.createClusterRoles }}" | cat - "$$1" > temp && mv temp "$$1"' _ {} \;
+	find $(CHART_DIR)/templates -type f \( -name "*-clusterrole.yaml" -o -name "*-crb.yaml" \) -exec sh -c 'echo "{{- end }}" >> "$$1"' _ {} \;
+	# Wrap aggregate ClusterRoles with additional createAggregateRoles conditional
+	find $(CHART_DIR)/templates -type f -name "*aggregate*clusterrole.yaml" -exec sh -c 'sed -i.bak "1s/{{- if .Values.createClusterRoles }}/{{- if and .Values.createAggregateRoles .Values.createClusterRoles }}/" "$$1" && rm "$$1.bak"' _ {} \;
 	cp src/templates/* ${CHART_DIR}/templates
 ifneq ($(CHART_VERSION),latest)
 	sed -i.bak "s/^appVersion:.*/appVersion: ${CHART_VERSION}/" ${CHART_DIR}/Chart.yaml

@@ -1,3 +1,12 @@
+# Set to false to skip CRD installation (useful when CRDs are already installed or managed separately)
+crds:
+  install: true
+# Set to false to skip ClusterRole and ClusterRoleBinding installation
+# Useful when RBAC is managed separately by cluster admins
+createClusterRoles: true
+# Create aggregated roles that extend existing cluster roles
+# Ref: https://kubernetes.io/docs/reference/access-authn-authz/rbac/#aggregated-clusterroles
+createAggregateRoles: true
 namespace:
   name: tekton-pipelines
   create: true
