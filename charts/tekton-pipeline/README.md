@@ -36,6 +36,9 @@ helm upgrade --install --set auth.docker.username=fred --set auth.docker.passwor
 
 | Parameter                           | Description                                             | Default                                                                                     |
 |------------------------------------|---------------------------------------------------------|---------------------------------------------------------------------------------------------|
+| `crds.install`                   | Whether to install CRDs (Custom Resource Definitions)  | `true`                                                                          |
+| `createClusterRoles`                   | Whether to create ClusterRoles and ClusterRoleBindings | `true`                                                                          |
+| `createAggregateRoles`                   | Whether to create aggregated ClusterRoles that extend existing roles | `true` |
 | `namespace.name`                   | Namespace to deploy Tekton components into             | `tekton-pipelines`                                                                          |
 | `namespace.create`                 | Whether to create the namespace via Helm               | `true`                                                                                      |
 | `namespace.labels`                | Key-value map of labels to apply to the namespace      | `{ pod-security.kubernetes.io/enforce: restricted, app.kubernetes.io/part-of: tekton-pipelines }` |
