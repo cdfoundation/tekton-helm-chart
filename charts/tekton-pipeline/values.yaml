@@ -1,6 +1,3 @@
-# Set to false to skip CRD installation (useful when CRDs are already installed or managed separately)
-crds:
-  install: true
 # Set to false to skip ClusterRole and ClusterRoleBinding installation
 # Useful when RBAC is managed separately by cluster admins
 createClusterRoles: true

@@ -7,7 +7,9 @@ CHART_REPO := gs://jenkinsxio/charts
 
 fetch:
 	rm -f ${CHART_DIR}/templates/*.yaml
+	rm -f ${CHART_DIR}/crds/*.yaml
 	mkdir -p ${CHART_DIR}/templates
+	mkdir -p $(CHART_DIR)/crds
 ifeq ($(CHART_VERSION),latest)
 	curl -sS https://storage.googleapis.com/tekton-releases/pipeline/latest/release.yaml > ${CHART_DIR}/templates/resource.yaml
 else
@@ -44,9 +46,8 @@ endif
 	kustomize build ${CHART_DIR} | sed '/helmTemplateRemoveMe/d' > ${CHART_DIR}/templates/resource.yaml
 	jx gitops split -d ${CHART_DIR}/templates
 	jx gitops rename -d ${CHART_DIR}/templates
-	# Wrap CRDs with crds.install conditional
-	find $(CHART_DIR)/templates -type f -name "*-crd.yaml" -exec sh -c 'echo "{{- if .Values.crds.install }}" | cat - "$$1" > temp && mv temp "$$1"' _ {} \;
-	find $(CHART_DIR)/templates -type f -name "*-crd.yaml" -exec sh -c 'echo "{{- end }}" >> "$$1"' _ {} \;
+	# Move CRDs to crds/ directory
+	find $(CHART_DIR)/templates -type f -name "*-crd.yaml" -exec mv {} $(CHART_DIR)/crds/ \;
 	# Wrap ClusterRoles and ClusterRoleBindings with createClusterRoles conditional
 	find $(CHART_DIR)/templates -type f \( -name "*-clusterrole.yaml" -o -name "*-crb.yaml" \) -exec sh -c 'echo "{{- if .Values.createClusterRoles }}" | cat - "$$1" > temp && mv temp "$$1"' _ {} \;
 	find $(CHART_DIR)/templates -type f \( -name "*-clusterrole.yaml" -o -name "*-crb.yaml" \) -exec sh -c 'echo "{{- end }}" >> "$$1"' _ {} \;
