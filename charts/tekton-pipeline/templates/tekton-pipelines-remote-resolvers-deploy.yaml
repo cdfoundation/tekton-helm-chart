@@ -1,123 +1,129 @@
+# Copyright 2022 The Tekton Authors
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  name: tekton-pipelines-remote-resolvers
   labels:
+    app.kubernetes.io/name: resolvers
     app.kubernetes.io/component: resolvers
     app.kubernetes.io/instance: default
-    app.kubernetes.io/name: resolvers
+    app.kubernetes.io/version: "v1.6.0"
     app.kubernetes.io/part-of: tekton-pipelines
-    app.kubernetes.io/version: v1.4.0
-    pipeline.tekton.dev/release: v1.4.0
-    version: v1.4.0
-  name: tekton-pipelines-remote-resolvers
+    # tekton.dev/release value replaced with inputs.params.versionTag in pipeline/tekton/publish.yaml
+    pipeline.tekton.dev/release: "v1.6.0"
+    # labels below are related to istio and should not be used for resource lookup
+    version: "v1.6.0"
 spec:
   replicas: 1
   selector:
     matchLabels:
+      app.kubernetes.io/name: resolvers
       app.kubernetes.io/component: resolvers
       app.kubernetes.io/instance: default
-      app.kubernetes.io/name: resolvers
       app.kubernetes.io/part-of: tekton-pipelines
   template:
     metadata:
       labels:
-        app: tekton-pipelines-resolvers
+        app.kubernetes.io/name: resolvers
         app.kubernetes.io/component: resolvers
         app.kubernetes.io/instance: default
-        app.kubernetes.io/name: resolvers
+        app.kubernetes.io/version: "v1.6.0"
         app.kubernetes.io/part-of: tekton-pipelines
-        app.kubernetes.io/version: v1.4.0
-        pipeline.tekton.dev/release: v1.4.0
-        version: v1.4.0
+        # tekton.dev/release value replaced with inputs.params.versionTag in pipeline/tekton/publish.yaml
+        pipeline.tekton.dev/release: "v1.6.0"
+        # labels below are related to istio and should not be used for resource lookup
+        app: tekton-pipelines-resolvers
+        version: "v1.6.0"
     spec:
       affinity:
-          {{- with .Values.remoteresolver.affinity }}
-            {{- toYaml . |  nindent 8 }}
-          {{- end }}
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
             nodeSelectorTerms:
-            - matchExpressions:
-              - key: kubernetes.io/os
-                operator: NotIn
-                values:
-                - windows
+              - matchExpressions:
+                  - key: kubernetes.io/os
+                    operator: NotIn
+                    values:
+                      - windows
         podAntiAffinity:
           preferredDuringSchedulingIgnoredDuringExecution:
-          - podAffinityTerm:
-              labelSelector:
-                matchLabels:
-                  app.kubernetes.io/component: resolvers
-                  app.kubernetes.io/instance: default
-                  app.kubernetes.io/name: resolvers
-                  app.kubernetes.io/part-of: tekton-pipelines
-              topologyKey: kubernetes.io/hostname
-            weight: 100
-      containers:
-      - args: []
-        command:
-        - /sbin/tini
-        - --
-        - /ko-app/resolvers
-        env:
-        - name: SYSTEM_NAMESPACE
-          valueFrom:
-            fieldRef:
-              fieldPath: metadata.namespace
-        - name: KUBERNETES_MIN_VERSION
-          value: v1.28.0
-        - name: CONFIG_LOGGING_NAME
-          value: config-logging
-        - name: CONFIG_OBSERVABILITY_NAME
-          value: config-observability
-        - name: CONFIG_FEATURE_FLAGS_NAME
-          value: feature-flags
-        - name: CONFIG_LEADERELECTION_NAME
-          value: config-leader-election-resolvers
-        - name: METRICS_DOMAIN
-          value: tekton.dev/resolution
-        - name: PROBES_PORT
-          value: "8080"
-        - name: TEKTON_HUB_API
-          value: ""
-        - name: ARTIFACT_HUB_API
-          value: https://artifacthub.io/
-        image: ghcr.io/tektoncd/pipeline/resolvers-ff86b24f130c42b88983d3c13993056d:v1.4.0@sha256:25b9cbeae5b6d8d0b183d9b213fee176585552436c88e4203027d83496f9085d
-        name: controller
-        ports:
-        - containerPort: 9090
-          name: metrics
-        - containerPort: 8008
-          name: profiling
-        - containerPort: 8080
-          name: probes
-        resources:
-            {{- with .Values.remoteresolver.resources }}
-              {{- toYaml . | trim | nindent 10 }}
-            {{- end }}
-        securityContext:
-          allowPrivilegeEscalation: false
-          capabilities:
-            drop:
-            - ALL
-          readOnlyRootFilesystem: true
-          runAsNonRoot: true
-          runAsUser: 65532
-          seccompProfile:
-            type: RuntimeDefault
-        volumeMounts:
-        - mountPath: /tmp
-          name: tmp-clone-volume
-      nodeSelector:
-          {{- with .Values.remoteresolver.nodeSelector }}
-            {{- toYaml . |  nindent 8 }}
-          {{- end}}
+            - podAffinityTerm:
+                labelSelector:
+                  matchLabels:
+                    app.kubernetes.io/name: resolvers
+                    app.kubernetes.io/component: resolvers
+                    app.kubernetes.io/instance: default
+                    app.kubernetes.io/part-of: tekton-pipelines
+                topologyKey: kubernetes.io/hostname
+              weight: 100
       serviceAccountName: tekton-pipelines-resolvers
-      tolerations:
-          {{- with .Values.remoteresolver.tolerations }}
-            {{- toYaml . |  nindent 6 }}
-          {{- end}}
+      containers:
+        - name: controller
+          image: ghcr.io/tektoncd/pipeline/resolvers-ff86b24f130c42b88983d3c13993056d:v1.6.0@sha256:e77cc55c6e507c393be029335c765c6c34238ee48b49379428da3d01713e9293
+          command:
+            - /sbin/tini
+            - --
+            - /ko-app/resolvers
+          args: []
+          ports:
+            - name: metrics
+              containerPort: 9090
+            - name: profiling
+              containerPort: 8008
+            # This must match the value of the environment variable PROBES_PORT.
+            - name: probes
+              containerPort: 8080
+          env:
+            - name: SYSTEM_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            - name: KUBERNETES_MIN_VERSION
+              value: "v1.28.0"
+            # If you are changing these names, you will also need to update
+            # the controller's Role in 200-role.yaml to include the new
+            # values in the "configmaps" "get" rule.
+            - name: CONFIG_LOGGING_NAME
+              value: config-logging
+            - name: CONFIG_OBSERVABILITY_NAME
+              value: config-observability
+            - name: CONFIG_FEATURE_FLAGS_NAME
+              value: feature-flags
+            - name: CONFIG_LEADERELECTION_NAME
+              value: config-leader-election-resolvers
+            - name: METRICS_DOMAIN
+              value: tekton.dev/resolution
+            - name: PROBES_PORT
+              value: "8080"
+            - name: TEKTON_HUB_API
+              value: "" # Override this env var to set a private hub api endpoint
+            - name: ARTIFACT_HUB_API
+              value: "https://artifacthub.io/"
+          volumeMounts:
+            - name: tmp-clone-volume
+              mountPath: "/tmp"
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            runAsNonRoot: true
+            runAsUser: 65532
+            capabilities:
+              drop:
+                - "ALL"
+            seccompProfile:
+              type: RuntimeDefault
       volumes:
-      - emptyDir:
-          sizeLimit: 4Gi
-        name: tmp-clone-volume
+        - name: tmp-clone-volume
+          emptyDir:
+            sizeLimit: 4Gi

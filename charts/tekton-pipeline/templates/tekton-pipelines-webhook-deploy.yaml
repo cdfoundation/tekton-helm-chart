@@ -1,138 +1,158 @@
+# Copyright 2020 The Tekton Authors
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     https://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  # Note: the Deployment name must be the same as the Service name specified in
+  # config/400-webhook-service.yaml. If you change this name, you must also
+  # change the value of WEBHOOK_SERVICE_NAME below.
+  name: tekton-pipelines-webhook
   labels:
+    app.kubernetes.io/name: webhook
     app.kubernetes.io/component: webhook
     app.kubernetes.io/instance: default
-    app.kubernetes.io/name: webhook
+    app.kubernetes.io/version: "v1.6.0"
     app.kubernetes.io/part-of: tekton-pipelines
-    app.kubernetes.io/version: v1.4.0
-      {{- with .Values.webhook.deployment.labels }}
-        {{- toYaml . | nindent 4 }}
-      {{- end}}
-    pipeline.tekton.dev/release: v1.4.0
-    version: v1.4.0
-  name: tekton-pipelines-webhook
+    # tekton.dev/release value replaced with inputs.params.versionTag in pipeline/tekton/publish.yaml
+    pipeline.tekton.dev/release: "v1.6.0"
+    # labels below are related to istio and should not be used for resource lookup
+    version: "v1.6.0"
 spec:
   selector:
     matchLabels:
+      app.kubernetes.io/name: webhook
       app.kubernetes.io/component: webhook
       app.kubernetes.io/instance: default
-      app.kubernetes.io/name: webhook
       app.kubernetes.io/part-of: tekton-pipelines
   template:
     metadata:
       labels:
-        app: tekton-pipelines-webhook
+        app.kubernetes.io/name: webhook
         app.kubernetes.io/component: webhook
         app.kubernetes.io/instance: default
-        app.kubernetes.io/name: webhook
+        app.kubernetes.io/version: "v1.6.0"
         app.kubernetes.io/part-of: tekton-pipelines
-        app.kubernetes.io/version: v1.4.0
-          {{- with .Values.webhook.pod.labels }}
-            {{- toYaml . | nindent 8 }}
-          {{- end}}
-        pipeline.tekton.dev/release: v1.4.0
-        version: v1.4.0
+        # tekton.dev/release value replaced with inputs.params.versionTag in pipeline/tekton/publish.yaml
+        pipeline.tekton.dev/release: "v1.6.0"
+        # labels below are related to istio and should not be used for resource lookup
+        app: tekton-pipelines-webhook
+        version: "v1.6.0"
     spec:
       affinity:
-          {{- with .Values.webhook.affinity }}
-            {{- toYaml . |  nindent 8 }}
-          {{- end }}
         podAntiAffinity:
           preferredDuringSchedulingIgnoredDuringExecution:
-          - podAffinityTerm:
-              labelSelector:
-                matchLabels:
-                  app.kubernetes.io/component: webhook
-                  app.kubernetes.io/instance: default
-                  app.kubernetes.io/name: webhook
-                  app.kubernetes.io/part-of: tekton-pipelines
-              topologyKey: kubernetes.io/hostname
-            weight: 100
-      containers:
-      - env:
-        - name: SYSTEM_NAMESPACE
-          valueFrom:
-            fieldRef:
-              fieldPath: metadata.namespace
-        - name: KUBERNETES_MIN_VERSION
-          value: v1.28.0
-        - name: CONFIG_LOGGING_NAME
-          value: config-logging
-        - name: CONFIG_OBSERVABILITY_NAME
-          value: config-observability
-        - name: CONFIG_LEADERELECTION_NAME
-          value: config-leader-election-webhook
-        - name: CONFIG_FEATURE_FLAGS_NAME
-          value: feature-flags
-        - name: PROBES_PORT
-          value: "8080"
-        - name: WEBHOOK_PORT
-          value: "8443"
-        - name: WEBHOOK_ADMISSION_CONTROLLER_NAME
-          value: webhook.pipeline.tekton.dev
-        - name: WEBHOOK_SERVICE_NAME
-          value: tekton-pipelines-webhook
-        - name: WEBHOOK_SECRET_NAME
-          value: webhook-certs
-        - name: METRICS_DOMAIN
-          value: tekton.dev/pipeline
-        envFrom:
-        - secretRef:
-            name: '{{ .Values.webhook.envFromSecret }}'
-            optional: true
-        image: ghcr.io/tektoncd/pipeline/webhook-d4749e605405422fd87700164e31b2d1:v1.4.0@sha256:b5ff9aa1a413eb469f39846f60d2576e86b5faab3835b70750f07a77789dbc98
-        livenessProbe:
-          httpGet:
-            path: /health
-            port: probes
-            scheme: HTTP
-          initialDelaySeconds: 5
-          periodSeconds: 10
-          timeoutSeconds: 5
-        name: webhook
-        ports:
-        - containerPort: 9090
-          name: metrics
-        - containerPort: 8008
-          name: profiling
-        - containerPort: 8443
-          name: https-webhook
-        - containerPort: 8080
-          name: probes
-        readinessProbe:
-          httpGet:
-            path: /readiness
-            port: probes
-            scheme: HTTP
-          initialDelaySeconds: 5
-          periodSeconds: 10
-          timeoutSeconds: 5
-        resources:
-          limits:
-            cpu: 500m
-            memory: 500Mi
-          requests:
-            cpu: 100m
-            memory: 100Mi
-        securityContext:
-          allowPrivilegeEscalation: false
-          capabilities:
-            drop:
-            - ALL
-          readOnlyRootFilesystem: true
-          runAsGroup: 65532
-          runAsNonRoot: true
-          runAsUser: 65532
-          seccompProfile:
-            type: RuntimeDefault
-      nodeSelector:
-          {{- with .Values.webhook.nodeSelector }}
-            {{- toYaml . |  nindent 8 }}
-          {{- end}}
+            - podAffinityTerm:
+                labelSelector:
+                  matchLabels:
+                    app.kubernetes.io/name: webhook
+                    app.kubernetes.io/component: webhook
+                    app.kubernetes.io/instance: default
+                    app.kubernetes.io/part-of: tekton-pipelines
+                topologyKey: kubernetes.io/hostname
+              weight: 100
       serviceAccountName: tekton-pipelines-webhook
-      tolerations:
-          {{- with .Values.webhook.tolerations }}
-            {{- toYaml . |  nindent 6 }}
-          {{- end}}
+      containers:
+        - name: webhook
+          # This is the Go import path for the binary that is containerized
+          # and substituted here.
+          image: ghcr.io/tektoncd/pipeline/webhook-d4749e605405422fd87700164e31b2d1:v1.6.0@sha256:c326a2f5c4988abcfd67b5a8edd5525da2110f2b8d3f6c50c27f8d25a721e566
+          # Resource request required for autoscaler to take any action for a metric
+          resources:
+            requests:
+              cpu: 100m
+              memory: 100Mi
+            limits:
+              cpu: 500m
+              memory: 500Mi
+          env:
+            - name: SYSTEM_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            - name: KUBERNETES_MIN_VERSION
+              value: "v1.28.0"
+            # If you are changing these names, you will also need to update
+            # the webhook's Role in 200-role.yaml to include the new
+            # values in the "configmaps" "get" rule.
+            - name: CONFIG_LOGGING_NAME
+              value: config-logging
+            - name: CONFIG_OBSERVABILITY_NAME
+              value: config-observability
+            - name: CONFIG_LEADERELECTION_NAME
+              value: config-leader-election-webhook
+            - name: CONFIG_FEATURE_FLAGS_NAME
+              value: feature-flags
+            # If you change PROBES_PORT, you will also need to change the
+            # containerPort "probes" to the same value.
+            - name: PROBES_PORT
+              value: "8080"
+            # If you change WEBHOOK_PORT, you will also need to change the
+            # containerPort "https-webhook" to the same value.
+            - name: WEBHOOK_PORT
+              value: "8443"
+            # if you change WEBHOOK_ADMISSION_CONTROLLER_NAME, you will also need to update
+            # the webhooks.name in 500-webhooks.yaml to include the new names of admission webhooks.
+            # Additionally, you will also need to change the resource names (metadata.name) of
+            # "MutatingWebhookConfiguration" and "ValidatingWebhookConfiguration" in 500-webhooks.yaml
+            # to reflect the change in the name of the admission webhook.
+            # Followed by changing the webhook's Role in 200-clusterrole.yaml to update the "resourceNames" of
+            # "mutatingwebhookconfigurations" and "validatingwebhookconfigurations" resources.
+            - name: WEBHOOK_ADMISSION_CONTROLLER_NAME
+              value: webhook.pipeline.tekton.dev
+            - name: WEBHOOK_SERVICE_NAME
+              value: tekton-pipelines-webhook
+            - name: WEBHOOK_SECRET_NAME
+              value: webhook-certs
+            - name: METRICS_DOMAIN
+              value: tekton.dev/pipeline
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop:
+                - "ALL"
+            # User 65532 is the distroless nonroot user ID
+            runAsUser: 65532
+            runAsGroup: 65532
+            runAsNonRoot: true
+            seccompProfile:
+              type: RuntimeDefault
+          ports:
+            - name: metrics
+              containerPort: 9090
+            - name: profiling
+              containerPort: 8008
+            # This must match the value of the environment variable WEBHOOK_PORT.
+            - name: https-webhook
+              containerPort: 8443
+            # This must match the value of the environment variable PROBES_PORT.
+            - name: probes
+              containerPort: 8080
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: probes
+              scheme: HTTP
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            timeoutSeconds: 5
+          readinessProbe:
+            httpGet:
+              path: /readiness
+              port: probes
+              scheme: HTTP
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            timeoutSeconds: 5
