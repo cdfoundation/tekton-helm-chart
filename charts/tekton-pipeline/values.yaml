@@ -243,6 +243,11 @@ gitResolverConfig:
   # The default organization to look for repositories under when using the authenticated API,
   # if not specified in the resolver parameters. Optional.
   default-org: ""
+  # Optional: Default cache mode for this resolver. Valid values: "always", "never", "auto" (default: "auto")
+  # "always" - Always cache resolved resources
+  # "never"  - Never cache resolved resources
+  # "auto"   - Only cache when revision is a commit hash
+  # default-cache-mode: "auto"
 # feature flags to put in feature-flags ConfigMap
 featureFlags:
   # Setting this flag will determine how PipelineRun Pods are scheduled with Affinity Assistant.
