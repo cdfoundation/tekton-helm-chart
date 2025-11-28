@@ -45,7 +45,11 @@ For latest set `app_version` to the latest tekton version from the [tekton relea
 [Helm](https://helm.sh) must be installed to use the charts.
 Please refer to Helm's [documentation](https://helm.sh/docs/) to get started.
 
-Once Helm is set up properly, add the repo as follows:
+Once Helm is set up properly, you can install the chart using one of the following methods:
+
+#### Method 1: GitHub Pages Repository
+
+Add the repo as follows:
 
 ```bash
 helm repo add cdf https://cdfoundation.github.io/tekton-helm-chart/
@@ -55,6 +59,14 @@ you can then do
 
 ```bash
 helm search repo tekton
+```
+
+#### Method 2: GHCR OCI Registry
+
+The chart is also available as an OCI artifact in GitHub Container Registry:
+
+```bash
+helm install tekton-pipeline oci://ghcr.io/cdfoundation/charts/tekton-pipeline --version <version>
 ```
 
 The chart installs resources into the `tekton-pipelines` namespace
