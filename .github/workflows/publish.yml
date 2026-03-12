@@ -8,6 +8,9 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
     steps:
       - name: check source code
         uses: actions/checkout@v3
@@ -23,8 +26,28 @@ jobs:
             exit 1
           fi
 
-      - uses: J12934/helm-gh-pages-action@master
+      # Publish chart to GitHub Pages
+      - name: Publish chart to GitHub Pages
+        uses: J12934/helm-gh-pages-action@master
         with:
           access-token: ${{ secrets.ACCESS_TOKEN }}
           charts-folder: "charts"
           deploy-branch: "gh-pages"
+
+      # Publish OCI-based chart to GitHub Container Registry
+      - name: Install Helm
+        uses: azure/setup-helm@v4.3.0
+        with:
+          version: v3.19.1
+
+      - name: Login to GHCR
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          echo "${GH_TOKEN}" | helm registry login ghcr.io -u ${{ github.actor }} --password-stdin
+
+      - name: Package and publish chart to GHCR
+        run: |
+          CHART_VERSION=$(grep '^version:' charts/tekton-pipeline/Chart.yaml | awk '{print $2}')
+          helm package charts/tekton-pipeline
+          helm push tekton-pipeline-${CHART_VERSION}.tgz oci://ghcr.io/${{ github.repository_owner }}/charts
