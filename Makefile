@@ -11,14 +11,14 @@ fetch:
 	mkdir -p ${CHART_DIR}/templates
 	mkdir -p $(CHART_DIR)/crds
 ifeq ($(CHART_VERSION),latest)
-	curl -sS https://storage.googleapis.com/tekton-releases/pipeline/latest/release.yaml > ${CHART_DIR}/templates/resource.yaml
+	curl -sSL https://infra.tekton.dev/tekton-releases/pipeline/latest/release.yaml > ${CHART_DIR}/templates/resource.yaml
 else
-	curl -sS https://storage.googleapis.com/tekton-releases/pipeline/previous/v${CHART_VERSION}/release.yaml > ${CHART_DIR}/templates/resource.yaml
+	curl -sSL https://infra.tekton.dev/tekton-releases/pipeline/previous/v${CHART_VERSION}/release.yaml > ${CHART_DIR}/templates/resource.yaml
 endif
 	jx gitops split -d ${CHART_DIR}/templates
 	jx gitops rename -d ${CHART_DIR}/templates
     # Remove tekton-pipelines-resolvers-ns
-	rm -r $(CHART_DIR)/templates/tekton-pipelines-resolvers-ns.yaml
+	rm -f $(CHART_DIR)/templates/tekton-pipelines-resolvers-ns.yaml
 	# Amend subjects.namespace with release.namespace
 	find $(CHART_DIR)/templates -type f \( -name "*-crb.yaml" -o -name "*-rb.yaml" \) -exec yq -i '(.subjects[] | select(has("namespace"))).namespace = "{{ .Release.Namespace }}"' "{}" \;
 	# Remove namespace from metadata to force with helm install
