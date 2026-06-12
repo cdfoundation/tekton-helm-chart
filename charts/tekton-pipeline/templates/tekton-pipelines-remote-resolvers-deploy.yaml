@@ -112,7 +112,7 @@ spec:
           {{- with .Values.remoteresolver.nodeSelector }}
             {{- toYaml . |  nindent 8 }}
           {{- end}}
-      serviceAccountName: tekton-pipelines-resolvers
+      serviceAccountName: {{ include "tektonPipeline.resolvers.serviceAccountName" . }}
       tolerations:
           {{- with .Values.remoteresolver.tolerations }}
             {{- toYaml . |  nindent 6 }}

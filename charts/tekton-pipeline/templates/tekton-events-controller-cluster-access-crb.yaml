@@ -9,7 +9,7 @@ metadata:
     app.kubernetes.io/part-of: tekton-pipelines
 subjects:
   - kind: ServiceAccount
-    name: tekton-events-controller
+    name: {{ include "tektonPipeline.eventsController.serviceAccountName" . }}
     namespace: '{{ .Release.Namespace }}'
 roleRef:
   kind: ClusterRole

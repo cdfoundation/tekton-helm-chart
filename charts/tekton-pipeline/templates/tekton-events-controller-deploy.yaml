@@ -101,7 +101,7 @@ spec:
         - mountPath: /etc/config-registry-cert
           name: config-registry-cert
         image: {{ .Values.eventscontroller.deployment.image }}
-      serviceAccountName: tekton-events-controller
+      serviceAccountName: {{ include "tektonPipeline.eventsController.serviceAccountName" . }}
       volumes:
       - configMap:
           name: config-logging

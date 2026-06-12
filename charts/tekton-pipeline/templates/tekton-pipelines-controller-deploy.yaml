@@ -146,7 +146,7 @@ spec:
           {{- with .Values.controller.nodeSelector }}
             {{- toYaml . |  nindent 8 }}
           {{- end}}
-      serviceAccountName: tekton-pipelines-controller
+      serviceAccountName: {{ include "tektonPipeline.controller.serviceAccountName" . }}
       tolerations:
           {{- with .Values.controller.tolerations }}
             {{- toYaml . |  nindent 6 }}

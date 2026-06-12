@@ -20,8 +20,19 @@ auth:
     # https://github.com/tektoncd/pipeline/blob/master/docs/auth.md#configuring-docker-authentication-for-docker
     configJson: ""
 serviceaccount:
+  # true:  the chart creates the ServiceAccounts and all workloads/RBAC use the
+  #        chart-generated names.
+  # false: the chart does NOT create the ServiceAccounts; workloads/RBAC use the
+  #        names provided under `names` below (bring your own ServiceAccount).
   enabled: true
   annotations: {}
+  # Only used when `enabled` is false. Provide the name of your existing
+  # ServiceAccount per component. If left empty, the chart-generated name is used.
+  names:
+    controller: ""
+    webhook: ""
+    eventsController: ""
+    resolvers: ""
 # Values for tekton-pipelines-controller
 controller:
   deployment:

@@ -131,7 +131,7 @@ spec:
           {{- with .Values.webhook.nodeSelector }}
             {{- toYaml . |  nindent 8 }}
           {{- end}}
-      serviceAccountName: tekton-pipelines-webhook
+      serviceAccountName: {{ include "tektonPipeline.webhook.serviceAccountName" . }}
       tolerations:
           {{- with .Values.webhook.tolerations }}
             {{- toYaml . |  nindent 6 }}

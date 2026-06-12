@@ -13,7 +13,7 @@ metadata:
     app.kubernetes.io/part-of: tekton-pipelines
 subjects:
   - kind: ServiceAccount
-    name: tekton-pipelines-controller
+    name: {{ include "tektonPipeline.controller.serviceAccountName" . }}
     namespace: '{{ .Release.Namespace }}'
 roleRef:
   kind: ClusterRole

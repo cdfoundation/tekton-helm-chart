@@ -1,3 +1,4 @@
+{{- if .Values.serviceaccount.enabled }}
 apiVersion: v1
 kind: ServiceAccount
 metadata:
@@ -6,3 +7,7 @@ metadata:
     app.kubernetes.io/component: webhook
     app.kubernetes.io/instance: default
     app.kubernetes.io/part-of: tekton-pipelines
+  {{- with .Values.serviceaccount.annotations }}
+  annotations: {{ toYaml . | nindent 4 }}
+  {{- end }}
+{{- end }}

@@ -22,7 +22,7 @@ metadata:
     app.kubernetes.io/part-of: tekton-pipelines
 subjects:
   - kind: ServiceAccount
-    name: tekton-pipelines-resolvers
+    name: {{ include "tektonPipeline.resolvers.serviceAccountName" . }}
     namespace: '{{ .Release.Namespace }}'
 roleRef:
   kind: Role
