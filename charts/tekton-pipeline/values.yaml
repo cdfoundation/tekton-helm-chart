@@ -79,6 +79,14 @@ webhook:
   # Secrets used to pull the webhook image from a private registry.
   imagePullSecrets: []
   # - name: my-registry-secret
+
+  resources:
+    requests:
+      cpu: 100m
+      memory: 100Mi
+    limits:
+      cpu: 500m
+      memory: 500Mi
 # Values to amend tekton-pipelines-remote-resolvers
 remoteresolver:
   deployment:
