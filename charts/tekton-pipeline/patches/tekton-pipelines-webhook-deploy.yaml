@@ -32,6 +32,9 @@ spec:
         - secretRef:
             name: "{{ .Values.webhook.envFromSecret }}"
             optional: true
+        resources:
+          helmTemplateRemoveMe: |
+            {{- toYaml  .Values.webhook.resources |  nindent 10 }}
       helmTemplateRemoveMe: |
         image: {{ .Values.webhook.deployment.image }}
       nodeSelector:

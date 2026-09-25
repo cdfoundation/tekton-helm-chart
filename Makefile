@@ -26,6 +26,9 @@ endif
 	# Move content of containers.resources from tekton-pipelines-remote-resolvers-deploy.yaml to remoteresolver.resources
 	yq -i '.remoteresolver.resources = load("$(CHART_DIR)/templates/tekton-pipelines-remote-resolvers-deploy.yaml").spec.template.spec.containers[].resources' $(CHART_DIR)/values.yaml
 	yq e -i 'del(.spec.template.spec.containers[].resources)' $(CHART_DIR)/templates/tekton-pipelines-remote-resolvers-deploy.yaml
+	# Move content of containers.resources from tekton-pipelines-webhook-deploy.yaml to webhook.resources
+	yq -i '.webhook.resources = load("$(CHART_DIR)/templates/tekton-pipelines-webhook-deploy.yaml").spec.template.spec.containers[].resources' $(CHART_DIR)/values.yaml
+	yq e -i 'del(.spec.template.spec.containers[].resources)' $(CHART_DIR)/templates/tekton-pipelines-webhook-deploy.yaml
 	# Move content of data: from feature-slags-cm.yaml to featureFlags: in values.yaml
 	yq -i '.featureFlags = load("$(CHART_DIR)/templates/feature-flags-cm.yaml").data' $(CHART_DIR)/values.yaml
 	yq -i '.data = null' $(CHART_DIR)/templates/feature-flags-cm.yaml
